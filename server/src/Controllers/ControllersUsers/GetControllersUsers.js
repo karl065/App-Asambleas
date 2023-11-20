@@ -1,4 +1,4 @@
-const {Usuarios} = require('../../DB.js');
+const {Usuarios, Respuestas} = require('../../DB.js');
 
 const getControllerUsers = async (
   documento,
@@ -23,6 +23,10 @@ const getControllerUsers = async (
     const usuarios = await Usuarios.findAll({
       where:
         Object.keys(whereConditions).length > 0 ? whereConditions : undefined,
+      include: {
+        model: Respuestas,
+        as: 'respuestas',
+      },
     });
 
     return usuarios;
