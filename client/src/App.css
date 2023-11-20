@@ -1,0 +1,15 @@
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  /* Esto establece la altura del contenedor al 100% de la altura de la ventana */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://res.cloudinary.com/dpjeltekx/image/upload/v1700513237/asambleas/app/cor033-p0rx9wxdjqomx5p3zagnjmxt8p9rq3u5vkm64ws774_omnhyo.jpg");
+  background-size: cover;
+  /* Esto hace que la imagen de fondo cubra todo el contenedor */
+  background-position: center;
+  background-repeat: no-repeat;
+}

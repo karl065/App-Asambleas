@@ -1,4 +1,5 @@
 const {Usuarios, Respuestas} = require('../../DB.js');
+const {Op} = require('sequelize');
 
 const getControllerUsers = async (
   documento,
@@ -11,11 +12,11 @@ const getControllerUsers = async (
 ) => {
   try {
     const whereConditions = {
-      ...(documento && {documento}),
-      ...(nombre && {nombre}),
-      ...(torreMz && {torreMz}),
-      ...(predio && {predio}),
-      ...(parqueadero && {parqueadero}),
+      ...(documento && {documento: {[Op.iLike]: `%${documento}%`}}),
+      ...(nombre && {nombre: {[Op.iLike]: `%${nombre}%`}}),
+      ...(torreMz && {torreMz: {[Op.iLike]: `%${torreMz}%`}}),
+      ...(predio && {predio: {[Op.iLike]: `%${predio}%`}}),
+      ...(parqueadero && {parqueadero: {[Op.iLike]: `%${parqueadero}%`}}),
       ...(coeficiente && {coeficiente}),
       ...(userStatus !== undefined && {userStatus}),
     };
