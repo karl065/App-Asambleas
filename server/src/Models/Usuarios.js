@@ -11,11 +11,25 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-
       documento: {
         type: DataTypes.STRING,
       },
-      nombre: {
+      primerNombre: {
+        type: DataTypes.STRING,
+      },
+      segundoNombre: {
+        type: DataTypes.STRING,
+      },
+      primerApellido: {
+        type: DataTypes.STRING,
+      },
+      segundoApellido: {
+        type: DataTypes.STRING,
+      },
+      correo: {
+        type: DataTypes.STRING,
+      },
+      celular: {
         type: DataTypes.STRING,
       },
       torreMz: {
@@ -35,7 +49,13 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.ENUM('SuperAdmin', 'Admin', 'Propietario'),
+        type: DataTypes.ENUM(
+          'SuperAdmin',
+          'Admin',
+          'Propietario',
+          'Propietario-Empoderado',
+          'Empoderado'
+        ),
         allowNull: false,
       },
       userStatus: {

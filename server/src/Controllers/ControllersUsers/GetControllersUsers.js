@@ -3,7 +3,12 @@ const {Op} = require('sequelize');
 
 const getControllerUsers = async (
   documento,
-  nombre,
+  primerNombre,
+  segundoNombre,
+  primerApellido,
+  segundoApellido,
+  correo,
+  celular,
   torreMz,
   predio,
   parqueadero,
@@ -13,7 +18,16 @@ const getControllerUsers = async (
   try {
     const whereConditions = {
       ...(documento && {documento: {[Op.iLike]: `%${documento}%`}}),
-      ...(nombre && {nombre: {[Op.iLike]: `%${nombre}%`}}),
+      ...(primerNombre && {primerNombre: {[Op.iLike]: `%${primerNombre}%`}}),
+      ...(segundoNombre && {segundoNombre: {[Op.iLike]: `%${segundoNombre}%`}}),
+      ...(primerApellido && {
+        primerApellido: {[Op.iLike]: `%${primerApellido}%`},
+      }),
+      ...(segundoApellido && {
+        segundoApellido: {[Op.iLike]: `%${segundoApellido}%`},
+      }),
+      ...(correo && {correo: {[Op.iLike]: `%${correo}%`}}),
+      ...(celular && {celular: {[Op.iLike]: `%${celular}%`}}),
       ...(torreMz && {torreMz: {[Op.iLike]: `%${torreMz}%`}}),
       ...(predio && {predio: {[Op.iLike]: `%${predio}%`}}),
       ...(parqueadero && {parqueadero: {[Op.iLike]: `%${parqueadero}%`}}),
@@ -24,10 +38,20 @@ const getControllerUsers = async (
     const usuarios = await Usuarios.findAll({
       where:
         Object.keys(whereConditions).length > 0 ? whereConditions : undefined,
-      include: {
-        model: Respuestas,
-        as: 'respuestas',
-      },
+      include: [
+        {
+          model: Respuestas,
+          as: 'respuestas',
+        },
+        {
+          model: Usuarios,
+          as: 'autorizador', // Incluye el usuario autorizador
+        },
+        {
+          model: Usuarios,
+          as: 'autorizados', // Incluye los usuarios autorizados
+        },
+      ],
     });
 
     return usuarios;

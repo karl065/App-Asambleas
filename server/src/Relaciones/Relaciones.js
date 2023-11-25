@@ -1,6 +1,7 @@
 const relaciones = (models) => {
-  const {Usuarios, Preguntas, Respuestas} = models;
+  const {Usuarios, Preguntas, Respuestas, Empoderados} = models;
 
+  // Relación muchos a muchos entre Usuarios y Respuestas
   Usuarios.belongsToMany(Respuestas, {
     through: 'UsuariosRespuestas',
     foreignKey: 'idUsuario',
@@ -15,6 +16,22 @@ const relaciones = (models) => {
     as: 'usuarios',
   });
 
+  // Relación de auto-asociación
+  Usuarios.belongsToMany(Usuarios, {
+    through: 'UsuariosAutorizaciones',
+    foreignKey: 'idUserAutorizador',
+    otherKey: 'idUserAutorizado',
+    as: 'autorizados',
+  });
+
+  Usuarios.belongsToMany(Usuarios, {
+    through: 'UsuariosAutorizaciones',
+    foreignKey: 'idUserAutorizado',
+    otherKey: 'idUserAutorizador',
+    as: 'autorizador',
+  });
+
+  // Relación de uno a muchos entre Preguntas y Respuestas
   Preguntas.hasMany(Respuestas, {
     foreignKey: 'idPregunta',
     as: 'respuestas',
@@ -27,6 +44,7 @@ const relaciones = (models) => {
     Usuarios,
     Preguntas,
     Respuestas,
+    Empoderados,
   };
 };
 
