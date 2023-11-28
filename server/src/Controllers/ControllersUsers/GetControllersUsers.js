@@ -13,6 +13,7 @@ const getControllerUsers = async (
   predio,
   parqueadero,
   coeficiente,
+  role,
   userStatus
 ) => {
   try {
@@ -32,10 +33,12 @@ const getControllerUsers = async (
       ...(predio && {predio: {[Op.iLike]: `%${predio}%`}}),
       ...(parqueadero && {parqueadero: {[Op.iLike]: `%${parqueadero}%`}}),
       ...(coeficiente && {coeficiente}),
+      ...(role && {role: {[Op.iLike]: `%${role}%`}}),
       ...(userStatus !== undefined && {userStatus}),
     };
 
     const usuarios = await Usuarios.findAll({
+      attributes: {exclude: ['password']},
       where:
         Object.keys(whereConditions).length > 0 ? whereConditions : undefined,
       include: [
@@ -45,10 +48,12 @@ const getControllerUsers = async (
         },
         {
           model: Usuarios,
+          attributes: {exclude: ['password']},
           as: 'autorizador', // Incluye el usuario autorizador
         },
         {
           model: Usuarios,
+          attributes: {exclude: ['password']},
           as: 'autorizados', // Incluye los usuarios autorizados
         },
       ],

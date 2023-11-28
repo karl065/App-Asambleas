@@ -6,21 +6,33 @@ const getHandlerUsers = async (req, res) => {
   try {
     const {
       documento,
-      nombre,
+      primerNombre,
+      segundoNombre,
+      primerApellido,
+      segundoApellido,
+      correo,
+      celular,
       torreMz,
       predio,
       parqueadero,
       coeficiente,
+      role,
       userStatus,
     } = req.query;
 
     const usuarios = await getControllerUsers(
       documento,
-      nombre,
+      primerNombre,
+      segundoNombre,
+      primerApellido,
+      segundoApellido,
+      correo,
+      celular,
       torreMz,
       predio,
       parqueadero,
       coeficiente,
+      role,
       userStatus
     );
     return res.status(200).json(usuarios);

@@ -1,4 +1,5 @@
 const {Usuarios, Respuestas} = require('../../DB.js');
+const bcryptjs = require('bcryptjs');
 
 const putControllerUser = async (updateUser, idUser) => {
   try {
@@ -21,11 +22,41 @@ const putControllerUser = async (updateUser, idUser) => {
       await usuarioAutorizador.addAutorizados(usuarioAutorizado);
     }
 
+    if (updateUser.password) {
+      const password = await bcryptjs.hash(updateUser.password, 10);
+      updateUser.password = password;
+      await Usuarios.update(updateUser, {
+        where: {idUser},
+      });
+      const usuario = await Usuarios.findByPk(idUser, {
+        attributes: {exclude: ['password']},
+        include: [
+          {
+            model: Respuestas,
+            as: 'respuestas',
+          },
+          {
+            model: Usuarios,
+            attributes: {exclude: ['password']},
+            as: 'autorizador', // Incluye el usuario autorizador
+          },
+          {
+            model: Usuarios,
+            attributes: {exclude: ['password']},
+            as: 'autorizados', // Incluye los usuarios autorizados
+          },
+        ],
+      });
+
+      return usuario;
+    }
+
     await Usuarios.update(updateUser, {
       where: {idUser},
     });
 
     const usuario = await Usuarios.findByPk(idUser, {
+      attributes: {exclude: ['password']},
       include: [
         {
           model: Respuestas,

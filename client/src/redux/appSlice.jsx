@@ -4,6 +4,7 @@ const appSlice = createSlice({
   name: 'asambleas',
   initialState: {
     usuarios: [],
+    login: [],
     preguntas: [],
     repuestas: [],
   },
@@ -11,8 +12,11 @@ const appSlice = createSlice({
     cargarUsuariosSuccess: (state, action) => {
       state.usuarios = action.payload;
     },
+    login: (state, action) => {
+      state.login = action.payload;
+    },
   },
 });
 
-export const {cargarUsuariosSuccess} = appSlice.actions;
+export const {cargarUsuariosSuccess, login} = appSlice.actions;
 export default appSlice.reducer;

@@ -9,7 +9,8 @@ const superUser = async () => {
   try {
     if (!root) {
       const rootSuperUser = await Usuarios.create({
-        nombre: 'SuperAdmin',
+        documento: 'SuperAdmin',
+        primerNombre: 'SuperAdmin',
         password: password,
         role: 'SuperAdmin',
         userStatus: false,

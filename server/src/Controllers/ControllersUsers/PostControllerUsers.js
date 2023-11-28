@@ -16,7 +16,9 @@ const crearUsuario = async (usuario) => {
     const passwordPass = await bcryptjs.hash(password, 10);
     usuario.password = passwordPass;
     if (!usuario.role) usuario.role = 'Propietario';
-    const newUser = await Usuarios.create(usuario);
+    const newUser = await Usuarios.create(usuario, {
+      attributes: {exclude: ['password']},
+    });
     return newUser;
   } catch (error) {
     return error;
