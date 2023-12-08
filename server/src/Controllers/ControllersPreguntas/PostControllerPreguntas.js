@@ -1,4 +1,4 @@
-const {Preguntas} = require('../../DB.js');
+const Preguntas = require('../../Models/Preguntas');
 
 const postControllerPreguntas = async (pregunta) => {
   try {

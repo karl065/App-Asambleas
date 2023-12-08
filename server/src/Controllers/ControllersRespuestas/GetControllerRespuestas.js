@@ -1,21 +1,13 @@
-const {Preguntas, Respuestas} = require('../../DB.js');
+const Respuestas = require('../../Models/Respuestas');
 
 const getControllerRespuestas = async (idRespuesta, opcion) => {
   try {
     const whereConditions = {
-      ...(idRespuesta && {idRespuesta}),
+      ...(idRespuesta && {_id: idRespuesta}),
       ...(opcion && {opcion}),
     };
-    const respuestas = await Respuestas.findAll({
-      where:
-        Object.keys(whereConditions).length > 0 ? whereConditions : undefined,
-      include: [
-        {
-          model: Preguntas,
-          as: 'preguntas',
-        },
-      ],
-    });
+
+    const respuestas = await Respuestas.find(whereConditions);
     return respuestas;
   } catch (error) {
     return error;

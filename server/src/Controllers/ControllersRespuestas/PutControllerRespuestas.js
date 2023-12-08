@@ -1,14 +1,10 @@
-const {Respuestas, Preguntas} = require('../../DB.js');
+const Respuestas = require('../../Models/Respuestas');
+const Preguntas = require('../../Models/Preguntas');
 
 const putControllerRespuestas = async (updateRespuesta, idRespuesta) => {
   try {
-    await Respuestas.update(updateRespuesta, {where: {idRespuesta}});
-    const respuestaActualizada = await Respuestas.findByPk(idRespuesta, {
-      include: {
-        model: Preguntas,
-        as: 'preguntas',
-      },
-    });
+    await Respuestas.findByIdAndUpdate(idRespuesta, updateRespuesta);
+    const respuestaActualizada = await Respuestas.findById(idRespuesta);
     return respuestaActualizada;
   } catch (error) {
     return error;

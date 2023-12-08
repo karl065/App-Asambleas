@@ -1,71 +1,60 @@
-const {DataTypes} = require('sequelize');
+const mongoose = require('mongoose');
 
-/* El código que proporcionó está definiendo un modelo Sequelize para una tabla llamada "Usuarios" en
-una base de datos. */
-module.exports = (sequelize) => {
-  sequelize.define(
-    'Usuarios',
-    {
-      idUser: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      documento: {
-        type: DataTypes.STRING,
-      },
-      primerNombre: {
-        type: DataTypes.STRING,
-      },
-      segundoNombre: {
-        type: DataTypes.STRING,
-      },
-      primerApellido: {
-        type: DataTypes.STRING,
-      },
-      segundoApellido: {
-        type: DataTypes.STRING,
-      },
-      correo: {
-        type: DataTypes.STRING,
-      },
-      celular: {
-        type: DataTypes.STRING,
-      },
-      torreMz: {
-        type: DataTypes.STRING,
-      },
-      predio: {
-        type: DataTypes.INTEGER,
-      },
-      parqueadero: {
-        type: DataTypes.STRING,
-      },
-      coeficiente: {
-        type: DataTypes.DECIMAL,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: DataTypes.ENUM(
-          'SuperAdmin',
-          'Admin',
-          'Propietario',
-          'Propietario-Empoderado',
-          'Empoderado'
-        ),
-        allowNull: false,
-      },
-      userStatus: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
+const usuarioSchema = new mongoose.Schema(
+  {
+    documento: String,
+    primerNombre: String,
+    segundoNombre: String,
+    primerApellido: String,
+    segundoApellido: String,
+    correo: String,
+    celular: Number,
+    torreMz: String,
+    predio: Number,
+    parqueadero: String,
+    coeficiente: Number,
+    password: {
+      type: String,
+      required: true,
     },
-    {
-      timestamps: false,
-    }
-  );
-};
+    role: {
+      type: String,
+      enum: [
+        'SuperAdmin',
+        'Admin',
+        'Propietario',
+        'Propietario-Empoderado',
+        'Empoderado',
+      ],
+      required: true,
+    },
+    userStatus: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    respuestas: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Respuestas',
+      },
+    ],
+    autorizador: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuarios',
+      },
+    ],
+    autorizados: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuarios',
+      },
+    ],
+  },
+  {timestamps: false}
+);
+
+const UsuarioModel = mongoose.model('Usuarios', usuarioSchema);
+
+module.exports = UsuarioModel;

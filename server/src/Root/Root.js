@@ -1,20 +1,25 @@
-const {Usuarios} = require('../DB.js');
+const Usuarios = require('../Models/Usuarios.js');
 const bcryptjs = require('bcryptjs');
 const {PSWROOT} = process.env;
 
 const superUser = async () => {
-  const root = await Usuarios.findByPk(1);
+  const root = await Usuarios.findOne({documento: 'SuperAdmin'});
 
   const password = await bcryptjs.hash(PSWROOT, 10);
   try {
     if (!root) {
-      const rootSuperUser = await Usuarios.create({
+      const SuperUser = {
         documento: 'SuperAdmin',
         primerNombre: 'SuperAdmin',
         password: password,
         role: 'SuperAdmin',
         userStatus: false,
-      });
+      };
+
+      const usuario = new Usuarios(SuperUser);
+
+      const rootSuperUser = await usuario.save();
+
       return rootSuperUser;
     }
     return root;

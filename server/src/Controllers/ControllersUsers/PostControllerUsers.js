@@ -1,4 +1,4 @@
-const {Usuarios} = require('../../DB.js');
+const Usuarios = require('../../Models/Usuarios.js');
 const bcryptjs = require('bcryptjs');
 
 const crearUsuario = async (usuario) => {
@@ -9,16 +9,16 @@ const crearUsuario = async (usuario) => {
         const passwordDoc = await bcryptjs.hash(documento, 10);
         usuario.password = passwordDoc;
         if (!usuario.role) usuario.role = 'Propietario';
-        const newUser = await Usuarios.create(usuario);
+        const usuarios = new Usuarios(usuario);
+        const newUser = await usuarios.save();
         return newUser;
       }
     }
     const passwordPass = await bcryptjs.hash(password, 10);
     usuario.password = passwordPass;
     if (!usuario.role) usuario.role = 'Propietario';
-    const newUser = await Usuarios.create(usuario, {
-      attributes: {exclude: ['password']},
-    });
+    const usuarios = new Usuarios(usuario);
+    const newUser = await usuarios.save();
     return newUser;
   } catch (error) {
     return error;

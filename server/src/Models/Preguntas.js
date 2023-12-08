@@ -1,18 +1,18 @@
-const {DataTypes} = require('sequelize');
+const mongoose = require('mongoose');
 
-/* El código que proporcionó está definiendo un modelo Sequelize para una tabla llamada "Usuarios" en
-una base de datos. */
-module.exports = (sequelize) => {
-  sequelize.define('Preguntas', {
-    idPregunta: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+const preguntaSchema = new mongoose.Schema({
+  pregunta: {
+    type: String,
+    required: true,
+  },
+  respuestas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Respuestas',
     },
+  ],
+});
 
-    pregunta: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  });
-};
+const PreguntasModel = mongoose.model('Preguntas', preguntaSchema);
+
+module.exports = PreguntasModel;

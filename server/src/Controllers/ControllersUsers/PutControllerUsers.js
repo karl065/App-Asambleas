@@ -1,4 +1,5 @@
-const {Usuarios, Respuestas} = require('../../DB.js');
+const Usuarios = require('../../Models/Usuarios');
+const Respuestas = require('../../Models/Respuestas'); // Asegúrate de tener el modelo de Respuestas configurado
 const bcryptjs = require('bcryptjs');
 
 const putControllerUser = async (updateUser, idUser) => {
@@ -8,70 +9,42 @@ const putControllerUser = async (updateUser, idUser) => {
     // Verifica si se proporcionó un idEmpoderado
     if (autorizado) {
       // Cambia el rol del usuario B a 'Propietario-Empoderado'
-      await Usuarios.update(
-        {role: 'Propietario-Empoderado'},
-        {where: {idUser: autorizado}}
+      await Usuarios.updateOne(
+        {_id: autorizado},
+        {role: 'Propietario-Empoderado'}
       );
 
       // Asocia el usuario B con el usuario A (autorizador) sin borrar los anteriores
-      const usuarioAutorizador = await Usuarios.findByPk(idUser);
-      const usuarioAutorizado = await Usuarios.findByPk(autorizado);
+      const usuarioAutorizador = await Usuarios.findById(idUser);
+      const usuarioAutorizado = await Usuarios.findById(autorizado);
 
       // Agrega el usuario autorizador a la lista de autorizadores del usuario autorizado
-      await usuarioAutorizado.addAutorizador(usuarioAutorizador);
-      await usuarioAutorizador.addAutorizados(usuarioAutorizado);
+      usuarioAutorizado.autorizador.push(usuarioAutorizador);
+      usuarioAutorizador.autorizados.push(usuarioAutorizado);
+
+      await usuarioAutorizador.save();
+      await usuarioAutorizado.save();
     }
 
     if (updateUser.password) {
       const password = await bcryptjs.hash(updateUser.password, 10);
       updateUser.password = password;
-      await Usuarios.update(updateUser, {
-        where: {idUser},
-      });
-      const usuario = await Usuarios.findByPk(idUser, {
-        attributes: {exclude: ['password']},
-        include: [
-          {
-            model: Respuestas,
-            as: 'respuestas',
-          },
-          {
-            model: Usuarios,
-            attributes: {exclude: ['password']},
-            as: 'autorizador', // Incluye el usuario autorizador
-          },
-          {
-            model: Usuarios,
-            attributes: {exclude: ['password']},
-            as: 'autorizados', // Incluye los usuarios autorizados
-          },
-        ],
-      });
-
-      return usuario;
     }
 
-    await Usuarios.update(updateUser, {
-      where: {idUser},
-    });
+    // Actualiza el usuario
+    await Usuarios.updateOne({_id: idUser}, updateUser);
 
-    const usuario = await Usuarios.findByPk(idUser, {
-      attributes: {exclude: ['password']},
-      include: [
-        {
-          model: Respuestas,
-          as: 'respuestas',
-        },
-        {
-          model: Usuarios,
-          as: 'autorizador', // Incluye el usuario autorizador
-        },
-        {
-          model: Usuarios,
-          as: 'autorizados', // Incluye los usuarios autorizados
-        },
-      ],
-    });
+    // Obtiene el usuario actualizado
+    const usuario = await Usuarios.findById(idUser, '-password')
+      .populate('respuestas')
+      .populate({
+        path: 'autorizador',
+        select: '-password',
+      })
+      .populate({
+        path: 'autorizados',
+        select: '-password',
+      });
 
     return usuario;
   } catch (error) {

@@ -1,20 +1,18 @@
-const {Preguntas, Respuestas} = require('../../DB.js');
+const Respuestas = require('../../Models/Respuestas');
+const Preguntas = require('../../Models/Preguntas');
 
 const postControllerRespuestas = async (respuestas) => {
   try {
     const nuevaRespuesta = await Respuestas.create(respuestas);
-    const preguntaCompleta = await Preguntas.findByPk(
+
+    // Asociar la respuesta con la pregunta
+    const pregunta = await Preguntas.findByIdAndUpdate(
       nuevaRespuesta.idPregunta,
-      {
-        include: [
-          {
-            model: Respuestas,
-            as: 'respuestas',
-          },
-        ],
-      }
-    );
-    return preguntaCompleta;
+      {$push: {respuestas: nuevaRespuesta._id}},
+      {new: true}
+    ).populate('respuestas');
+
+    return pregunta;
   } catch (error) {
     return error;
   }

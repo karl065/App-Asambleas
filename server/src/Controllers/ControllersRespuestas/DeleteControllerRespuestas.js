@@ -1,9 +1,9 @@
-const {Respuestas} = require('../../DB.js');
+const Respuestas = require('../../Models/Respuestas');
 
 const deleteControllerRespuestas = async (idRespuesta) => {
   try {
-    const respuesta = await Respuestas.findByPk(idRespuesta);
-    await Respuestas.destroy({where: {idRespuesta}});
+    const respuesta = await Respuestas.findById(idRespuesta);
+    await Respuestas.findByIdAndDelete(idRespuesta);
     return respuesta;
   } catch (error) {
     return error;

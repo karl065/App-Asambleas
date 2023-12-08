@@ -1,5 +1,4 @@
-const {Usuarios, Respuestas} = require('../../DB.js');
-const {Op} = require('sequelize');
+const Usuarios = require('../../Models/Usuarios');
 
 const getControllerUsers = async (
   documento,
@@ -18,46 +17,39 @@ const getControllerUsers = async (
 ) => {
   try {
     const whereConditions = {
-      ...(documento && {documento: {[Op.iLike]: `%${documento}%`}}),
-      ...(primerNombre && {primerNombre: {[Op.iLike]: `%${primerNombre}%`}}),
-      ...(segundoNombre && {segundoNombre: {[Op.iLike]: `%${segundoNombre}%`}}),
-      ...(primerApellido && {
-        primerApellido: {[Op.iLike]: `%${primerApellido}%`},
-      }),
+      ...(documento && {documento: new RegExp(documento, 'i')}),
+      ...(primerNombre && {primerNombre: new RegExp(primerNombre, 'i')}),
+      ...(segundoNombre && {segundoNombre: new RegExp(segundoNombre, 'i')}),
+      ...(primerApellido && {primerApellido: new RegExp(primerApellido, 'i')}),
       ...(segundoApellido && {
-        segundoApellido: {[Op.iLike]: `%${segundoApellido}%`},
+        segundoApellido: new RegExp(segundoApellido, 'i'),
       }),
-      ...(correo && {correo: {[Op.iLike]: `%${correo}%`}}),
-      ...(celular && {celular: {[Op.iLike]: `%${celular}%`}}),
-      ...(torreMz && {torreMz: {[Op.iLike]: `%${torreMz}%`}}),
-      ...(predio && {predio: {[Op.iLike]: `%${predio}%`}}),
-      ...(parqueadero && {parqueadero: {[Op.iLike]: `%${parqueadero}%`}}),
+      ...(correo && {correo: new RegExp(correo, 'i')}),
+      ...(celular && {celular: new RegExp(celular, 'i')}),
+      ...(torreMz && {torreMz: new RegExp(torreMz, 'i')}),
+      ...(predio && {predio: new RegExp(predio, 'i')}),
+      ...(parqueadero && {parqueadero: new RegExp(parqueadero, 'i')}),
       ...(coeficiente && {coeficiente}),
-      ...(role && {role: {[Op.iLike]: `%${role}%`}}),
+      ...(role && {role: new RegExp(role, 'i')}),
       ...(userStatus !== undefined && {userStatus}),
     };
 
-    const usuarios = await Usuarios.findAll({
-      attributes: {exclude: ['password']},
-      where:
-        Object.keys(whereConditions).length > 0 ? whereConditions : undefined,
-      include: [
-        {
-          model: Respuestas,
-          as: 'respuestas',
-        },
-        {
-          model: Usuarios,
-          attributes: {exclude: ['password']},
-          as: 'autorizador', // Incluye el usuario autorizador
-        },
-        {
-          model: Usuarios,
-          attributes: {exclude: ['password']},
-          as: 'autorizados', // Incluye los usuarios autorizados
-        },
-      ],
-    });
+    const usuarios = await Usuarios.find(
+      Object.keys(whereConditions).length > 0 ? whereConditions : {}
+    )
+      .select('-password') // Excluye el campo de contraseña
+      .populate({
+        path: 'respuestas',
+        model: 'Respuestas',
+      })
+      .populate({
+        path: 'autorizador',
+        select: '-password', // Excluye el campo de contraseña
+      })
+      .populate({
+        path: 'autorizados',
+        select: '-password', // Excluye el campo de contraseña
+      });
 
     return usuarios;
   } catch (error) {

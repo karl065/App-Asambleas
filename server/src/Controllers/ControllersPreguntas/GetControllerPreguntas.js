@@ -1,21 +1,13 @@
-const {Preguntas, Respuestas} = require('../../DB.js');
+const Preguntas = require('../../Models/Preguntas');
+const Respuestas = require('../../Models/Respuestas');
 
 const getControllerPreguntas = async (id) => {
   try {
-    if (id)
-      return await Preguntas.findByPk(id, {
-        include: {
-          model: Respuestas,
-          as: 'respuestas',
-        },
-      });
+    if (id) {
+      return await Preguntas.findById(id).populate('respuestas');
+    }
 
-    return await Preguntas.findAll({
-      include: {
-        model: Respuestas,
-        as: 'respuestas',
-      },
-    });
+    return await Preguntas.find().populate('respuestas');
   } catch (error) {
     return error;
   }
