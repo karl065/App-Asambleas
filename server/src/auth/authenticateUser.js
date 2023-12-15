@@ -12,10 +12,12 @@ const authenticateUser = async (documento, password) => {
     if (documento === 'SuperAdmin') {
       await conectarDB('DBAdmin', ['Preguntas', 'Respuestas']);
     }
+
     const user = await Usuarios.findOne({documento})
       .populate('respuestas')
       .populate('autorizador')
       .populate('autorizados');
+
     const passwordValid = await bcryptjs.compare(password, user.password);
 
     if (!user || !passwordValid) {
@@ -36,7 +38,10 @@ const authenticateUser = async (documento, password) => {
       .populate('autorizador')
       .populate('autorizados');
     const payload = {
-      user: {id: usuarioLogin.idUser},
+      user: {
+        id: userLogin._id,
+        role: userLogin.role,
+      },
     };
 
     return new Promise((resolve, reject) => {

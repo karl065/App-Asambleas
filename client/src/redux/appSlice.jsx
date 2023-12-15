@@ -7,6 +7,7 @@ const appSlice = createSlice({
     login: [],
     preguntas: [],
     repuestas: [],
+    DBS: [],
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
@@ -15,8 +16,17 @@ const appSlice = createSlice({
     login: (state, action) => {
       state.login = action.payload;
     },
+    cargarDBs: (state, action) => {
+      const newDBs = action.payload.filter((newDB) => {
+        // Verificar si ya existe una DB con el mismo nombre
+        return !state.DBS.some(
+          (existingDB) => existingDB.nombre === newDB.nombre
+        );
+      });
+      state.DBS = [...state.DBS, ...newDBs];
+    },
   },
 });
 
-export const {cargarUsuariosSuccess, login} = appSlice.actions;
+export const {cargarUsuariosSuccess, login, cargarDBs} = appSlice.actions;
 export default appSlice.reducer;
