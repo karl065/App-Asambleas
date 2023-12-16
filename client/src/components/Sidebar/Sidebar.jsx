@@ -7,15 +7,12 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const login = useSelector((state) => state.asambleas.login);
-  const role = login.role;
-
-  console.log(login);
 
   useEffect(() => {
     if (
-      role === 'Propietario' ||
-      role === 'Propietario-Empoderado' ||
-      role === 'Empoderado'
+      login.role === 'Propietario' ||
+      login.role === 'Propietario-Empoderado' ||
+      login.role === 'Empoderado'
     )
       navigate('/usuario');
   }, []);
@@ -27,105 +24,110 @@ const Sidebar = () => {
           <div className="text-white font-bold">
             <span>{login.primerNombre}</span>
           </div>
-          <hr className="border-2" />
-          <div className="sidebar-brand-text mx-3">
-            <span> </span>
-          </div>
-          <ul className="navbar-nav text-light" id="accordionSidebar">
+          <hr className="my-2 border-2" />
+
+          <ul className="m2">
             <li
-              className={`nav-item ${
+              className={`flex w-full ${
                 location.pathname === '/admin'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              } `}
+            >
+              {location.pathname === '/admin' ? (
+                <span className=" text-white flex-grow ">Conjuntos</span>
+              ) : (
+                <Link to="/admin" className="text-white flex-grow">
+                  <span>Conjuntos</span>
+                </Link>
+              )}
+            </li>
+
+            <hr className="my-2" />
+            <li
+              className={`flex w-full ${
+                location.pathname === '/CrearConjunto'
                   ? 'opacity-60 cursor-not-allowed'
                   : ''
               }`}
             >
-              {location.pathname === '/admin' ? (
-                <span className="ml-2 text-white">Conjuntos</span>
+              {location.pathname === '/CrearConjunto' ? (
+                <span className=" text-white flex-grow">Crear Conjunto</span>
               ) : (
-                <Link to="/admin" className="text-white">
-                  <span className="ml-2">Conjuntos</span>
+                <Link to="/CrearConjunto" className="text-white flex-grow">
+                  <span>Crear Conjunto</span>
                 </Link>
               )}
             </li>
-            {role !== 'Empleados' ? (
-              <>
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminUsers' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminUsers" className="text-white">
-                    <span className="ml-2"> Usuarios</span>
-                  </Link>
-                </li>
-                {role === 'SuperUser' ? (
-                  <>
-                    <hr className="sidebar-divider my-2" />
-                    <li
-                      className={`nav-item ${
-                        location.pathname === '/adminNewUser' ? 'active' : ''
-                      }`}
-                    >
-                      <Link to="/adminNewUser" className="text-white">
-                        <span className="ml-2"> Crear Usuario</span>
-                      </Link>
-                    </li>
-                  </>
-                ) : null}
+            <hr className="my-2" />
+            <li
+              className={`flex w-full ${
+                location.pathname === '/GestionarConjunto'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {location.pathname === '/CrearConjunto' ? (
+                <span className=" text-white flex-grow">
+                  Gestionar Conjunto
+                </span>
+              ) : (
+                <Link to="/GestionarConjunto" className="text-white flex-grow">
+                  <span>Gestionar Conjunto</span>
+                </Link>
+              )}
+            </li>
+            <hr className="my-2" />
+            <li
+              className={`nav-item ${
+                location.pathname === '/adminNewUser' ? 'active' : ''
+              }`}
+            >
+              <Link to="/adminNewUser" className="text-white">
+                <span className="ml-2"> Crear Usuario</span>
+              </Link>
+            </li>
+            <hr className="sidebar-divider my-2" />
+            <li
+              className={`nav-item ${
+                location.pathname === '/adminNewDeportes' ? 'active' : ''
+              }`}
+            >
+              <Link to="/adminNewDeportes" className="text-white">
+                <span className="ml-2"> Crear Deporte</span>
+              </Link>
+            </li>
+            <hr className="sidebar-divider my-2" />
+            <li
+              className={`nav-item ${
+                location.pathname === '/adminNewMarca' ? 'active' : ''
+              }`}
+            >
+              <Link to="/adminNewMarca" className="text-white">
+                <span className="ml-2"> Crear Marca</span>
+              </Link>
+            </li>
+            <hr className="sidebar-divider my-2" />
+            <li
+              className={`nav-item ${
+                location.pathname === '/adminNewCategory' ? 'active' : ''
+              }`}
+            >
+              <Link to="/adminNewCategory" className="text-white">
+                <span className="ml-2"> Crear Categoria</span>
+              </Link>
+            </li>
+            <hr className="sidebar-divider my-2" />
+            <li
+              className={`nav-item ${
+                location.pathname === '/adminNewProduct' ? 'active' : ''
+              }`}
+            >
+              <Link to="/adminNewProduct" className="text-white">
+                <span className="ml-2"> Crear Producto</span>
+              </Link>
+            </li>
 
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminSales' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminSales" className="text-white">
-                    <span className="ml-2"> Ventas</span>
-                  </Link>
-                </li>
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminNewDeportes' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminNewDeportes" className="text-white">
-                    <span className="ml-2"> Crear Deporte</span>
-                  </Link>
-                </li>
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminNewMarca' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminNewMarca" className="text-white">
-                    <span className="ml-2"> Crear Marca</span>
-                  </Link>
-                </li>
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminNewCategory' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminNewCategory" className="text-white">
-                    <span className="ml-2"> Crear Categoria</span>
-                  </Link>
-                </li>
-                <hr className="sidebar-divider my-2" />
-                <li
-                  className={`nav-item ${
-                    location.pathname === '/adminNewProduct' ? 'active' : ''
-                  }`}
-                >
-                  <Link to="/adminNewProduct" className="text-white">
-                    <span className="ml-2"> Crear Producto</span>
-                  </Link>
-                </li>
-              </>
-            ) : null}
             <hr className="sidebar-divider my-2" />
             <li
               className={`nav-item ${

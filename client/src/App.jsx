@@ -1,7 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './App.css';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {IngresoAdmin, IngresoCliente, Login} from './views';
+import {
+  CrearConjunto,
+  GestionarConjunto,
+  IngresoAdmin,
+  IngresoCliente,
+  Login,
+} from './views';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {reLogin} from './redux/actions';
@@ -18,6 +24,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/admin" element={<IngresoAdmin />} />
+        <Route path="/CrearConjunto" element={<CrearConjunto />} />
+        <Route path="/GestionarConjunto" element={<GestionarConjunto />} />
         <Route path="/usuario" element={<IngresoCliente />} />
       </Routes>
     </div>

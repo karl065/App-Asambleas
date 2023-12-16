@@ -49,9 +49,7 @@ const IngresoAdmin = () => {
   }, [totalCoeficiente]);
   return (
     <div className="flex p-2 ">
-      <div className="rounded-lg">
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="bg-black opacity-70 w-full m-2 rounded-lg p-5 space-y-5">
         <Tabla columns={columns} data={data} />
       </div>

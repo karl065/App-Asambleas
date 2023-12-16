@@ -9,10 +9,6 @@ const usuarioSchema = new mongoose.Schema(
     segundoApellido: String,
     correo: String,
     celular: Number,
-    torreMz: String,
-    predio: Number,
-    parqueadero: String,
-    coeficiente: Number,
     password: {
       type: String,
       required: true,

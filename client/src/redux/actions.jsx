@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
-import {cargarDBs, cargarUsuariosSuccess, login} from './appSlice';
+import {cargarDBs, cargarUsuariosSuccess, crearDB, login} from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
 
@@ -77,5 +77,20 @@ export const reLogin = async (token, dispatch, navigate) => {
     }
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const crearDBs = async (token, dispatch, navigate, DB) => {
+  try {
+    const {data} = await axios.post(`${server.api.baseURL}DB`, DB, {
+      headers: {
+        'x-auth-token': token,
+      },
+    });
+
+    dispatch(crearDB(data));
+    navigate('/admin');
+  } catch (error) {
+    console.log({error: error.message});
   }
 };
