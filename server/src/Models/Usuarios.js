@@ -47,6 +47,12 @@ const usuarioSchema = new mongoose.Schema(
         ref: 'Usuarios',
       },
     ],
+    predios: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Predios',
+      },
+    ],
   },
   {timestamps: false}
 );

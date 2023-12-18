@@ -11,6 +11,7 @@ const conectarDB = async (DB, excludeModels = []) => {
       const connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
       console.log(`MongoDB Conectado en: ${DB}`);
       const DBS = await GetControllerDB();
+
       const dbExists = DBS.some((db) => db.nombre === DB);
 
       // Obtener una lista de todos los modelos registrados
@@ -76,19 +77,20 @@ const conectarDB = async (DB, excludeModels = []) => {
       );
       // Desregistrar los modelos excluidos
       for (const modelName of modelsToExclude) {
-        const collection = modelName.toLowerCase();
+        let collection = modelName.toLowerCase();
+        collection = collection + 's';
+
         // Verificar si la colección aún existe
         let collectionExists = false;
+        let attempts = 0;
+        const maxAttempts = 2;
 
         // Esperar hasta que la colección exista
-        while (!collectionExists) {
+        while (!collectionExists && attempts < maxAttempts) {
           collectionExists = await connection.connection.db
             .listCollections({name: collection})
             .hasNext();
-
-          if (!collectionExists) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
+          attempts++;
         }
         await connection.connection.dropCollection(collection);
         console.log(`Colección excluida: ${collection}`);

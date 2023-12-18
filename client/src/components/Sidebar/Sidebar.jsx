@@ -1,12 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../../redux/actions';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const login = useSelector((state) => state.asambleas.login);
+
+  const handleLogout = () => {
+    logout(dispatch, navigate, login.id);
+  };
 
   useEffect(() => {
     if (
@@ -67,7 +73,7 @@ const Sidebar = () => {
                   : ''
               }`}
             >
-              {location.pathname === '/CrearConjunto' ? (
+              {location.pathname === '/GestionarConjunto' ? (
                 <span className=" text-white flex-grow">
                   Gestionar Conjunto
                 </span>
@@ -78,80 +84,13 @@ const Sidebar = () => {
               )}
             </li>
             <hr className="my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminNewUser' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminNewUser" className="text-white">
-                <span className="ml-2"> Crear Usuario</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminNewDeportes' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminNewDeportes" className="text-white">
-                <span className="ml-2"> Crear Deporte</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminNewMarca' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminNewMarca" className="text-white">
-                <span className="ml-2"> Crear Marca</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminNewCategory' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminNewCategory" className="text-white">
-                <span className="ml-2"> Crear Categoria</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminNewProduct' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminNewProduct" className="text-white">
-                <span className="ml-2"> Crear Producto</span>
-              </Link>
-            </li>
-
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminEditProd' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminEditProd" className="text-white">
-                <span className="ml-2"> Editar Producto</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li
-              className={`nav-item ${
-                location.pathname === '/adminQuestions' ? 'active' : ''
-              }`}
-            >
-              <Link to="/adminQuestions" className="text-white">
-                <span className="ml-2"> Preguntas</span>
-              </Link>
-            </li>
-            <hr className="sidebar-divider my-2" />
-            <li className="nav-item">
-              <Link to="/" className="text-white">
-                <span className="ml-2"> Salir</span>
+            <li className="flex w-full">
+              <Link
+                to="/"
+                onClick={handleLogout}
+                className="text-white flex-grow"
+              >
+                <span>Salir</span>
               </Link>
             </li>
           </ul>

@@ -10,7 +10,7 @@ const {SECRETA} = process.env;
 const authenticateUser = async (documento, password) => {
   try {
     if (documento === 'SuperAdmin') {
-      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas']);
+      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
     }
 
     const user = await Usuarios.findOne({documento})

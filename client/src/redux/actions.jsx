@@ -60,13 +60,13 @@ export const reLogin = async (token, dispatch, navigate) => {
         ) {
           navigate('/usuario');
         } else {
+          navigate('/admin');
           const response = await axios.get(`${server.api.baseURL}DB`, {
             headers: {
               'x-auth-token': token,
             },
           });
           dispatch(cargarDBs(response.data));
-          navigate('/admin');
         }
         const socket = io(server.api.baseURL);
         socket.on('cargarUsuario', (data) => {
@@ -76,11 +76,34 @@ export const reLogin = async (token, dispatch, navigate) => {
       dispatch(login(data));
     }
   } catch (error) {
-    console.log(error.message);
+    const {msg} = error.response.data;
+    if (msg === 'Token no valido') {
+      localStorage.removeItem('token');
+      alert('Tu sesión ha expirado');
+      navigate('/');
+    }
+    if (msg === 'No hay token') navigate('/');
   }
 };
 
-export const crearDBs = async (token, dispatch, navigate, DB) => {
+export const logout = async (dispatch, navigate, idUser) => {
+  try {
+    await axios.put(`${server.api.baseURL}users/${idUser}`, {
+      userStatus: false,
+    });
+    const socket = io(server.api.baseURL);
+    socket.disconnect();
+    localStorage.removeItem('token');
+    dispatch(login([]));
+    dispatch(cargarUsuariosSuccess([]));
+    dispatch(cargarDBs([]));
+    navigate('/');
+  } catch (error) {
+    console.log({error: error.message});
+  }
+};
+
+export const crearDBs = async (token, dispatch, DB) => {
   try {
     const {data} = await axios.post(`${server.api.baseURL}DB`, DB, {
       headers: {
@@ -89,8 +112,18 @@ export const crearDBs = async (token, dispatch, navigate, DB) => {
     });
 
     dispatch(crearDB(data));
-    navigate('/admin');
   } catch (error) {
     console.log({error: error.message});
+  }
+};
+
+export const crearUsuariosDBs = async (usuarios, predios) => {
+  try {
+    const response = await axios.post(`${server.api.baseURL}users`, usuarios);
+    console.log('Esto es response Carga de usuarios', response);
+    const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
+    console.log('Esto es usuarios Predios, ', data);
+  } catch (error) {
+    console.log(error);
   }
 };

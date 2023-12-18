@@ -1,3 +1,4 @@
+const {default: mongoose} = require('mongoose');
 const {
   default: GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB.js');
@@ -7,7 +8,8 @@ const {conectarDB} = require('../config/DB.js');
 const authenticatedUser = async ({id, role}) => {
   try {
     if (role === 'SuperAdmin') {
-      conectarDB('DBAdmin');
+      await mongoose.disconnect();
+      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
       const user = await Usuarios.findById(id)
         .select('-password')
         .populate('respuestas')

@@ -6,12 +6,15 @@ const prediosSchema = new mongoose.Schema(
     predio: Number,
     parqueadero: String,
     coeficiente: Number,
-    usuario: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuarios',
-      },
-    ],
+    idUsuario: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Usuarios', // Nombre del modelo al que estás haciendo referencia
+      required: true,
+    },
   },
   {timestamps: false}
 );
+
+const PrediosModel = mongoose.model('Predios', prediosSchema);
+
+module.exports = PrediosModel;
