@@ -14,7 +14,7 @@ const socket = (io) => {
 
     // Manejar desconexiones
     socket.on('disconnect', () => {
-      console.log('Un cliente se ha desconectado.');
+      console.log(`El cliente ${socket.id} se ha desconectado.`);
     });
   });
 };

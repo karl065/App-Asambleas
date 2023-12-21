@@ -60,7 +60,7 @@ const CrearConjunto = () => {
             usuario.correo = value ? value.trim() : 'Sin Correo';
             break;
           case 'CELULAR':
-            usuario.celular = value ? value.trim() : 0;
+            usuario.celular = value ? value : 0;
             break;
           case 'TORRE - MZ':
             predio.torreMz = value ? value.trim() : '';

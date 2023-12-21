@@ -3,6 +3,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../redux/actions';
+import {useCallback} from 'react';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -10,9 +11,13 @@ const Sidebar = () => {
   const location = useLocation();
   const login = useSelector((state) => state.asambleas.login);
 
-  const handleLogout = () => {
-    logout(dispatch, navigate, login.id);
-  };
+  const handleLogout = useCallback(
+    (e) => {
+      e.preventDefault();
+      logout(dispatch, navigate, login.id);
+    },
+    [dispatch, navigate, login.id]
+  );
 
   useEffect(() => {
     if (
@@ -85,13 +90,15 @@ const Sidebar = () => {
             </li>
             <hr className="my-2" />
             <li className="flex w-full">
-              <Link
-                to="/"
-                onClick={handleLogout}
+              <button
+                type="submit"
+                onClick={(e) => handleLogout(e)}
                 className="text-white flex-grow"
               >
-                <span>Salir</span>
-              </Link>
+                <Link to="/">
+                  <span>Salir</span>
+                </Link>
+              </button>
             </li>
           </ul>
         </div>

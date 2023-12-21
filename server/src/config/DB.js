@@ -3,11 +3,13 @@ const {superUser} = require('../Root/Root');
 const {
   default: GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB');
+const {waitForCollectionsExists} = require('../helper/Collections');
 const {DB_MONGODB} = process.env;
 
 const conectarDB = async (DB, excludeModels = []) => {
   try {
     if (DB === 'DBAdmin') {
+      await mongoose.disconnect();
       const connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
       console.log(`MongoDB Conectado en: ${DB}`);
       const DBS = await GetControllerDB();
@@ -66,6 +68,8 @@ const conectarDB = async (DB, excludeModels = []) => {
         await superUser(DB);
       }
     } else {
+      await mongoose.disconnect();
+      DB = DB.replace(/\s/g, '_');
       const connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
       console.log(`MongoDB Conectado en: ${DB}`);
 
@@ -75,26 +79,21 @@ const conectarDB = async (DB, excludeModels = []) => {
       const modelsToExclude = allModels.filter((model) =>
         excludeModels.includes(model)
       );
-      // Desregistrar los modelos excluidos
-      for (const modelName of modelsToExclude) {
+      // Crear una promesa para cada colección a excluir
+      const excludePromises = modelsToExclude.map(async (modelName) => {
         let collection = modelName.toLowerCase();
         collection = collection + 's';
 
-        // Verificar si la colección aún existe
-        let collectionExists = false;
-        let attempts = 0;
-        const maxAttempts = 2;
+        // Esperar hasta que la colección exista antes de intentar eliminarla
+        await waitForCollectionsExists(connection, collection);
 
-        // Esperar hasta que la colección exista
-        while (!collectionExists && attempts < maxAttempts) {
-          collectionExists = await connection.connection.db
-            .listCollections({name: collection})
-            .hasNext();
-          attempts++;
-        }
+        // Finalmente, eliminar la colección
         await connection.connection.dropCollection(collection);
         console.log(`Colección excluida: ${collection}`);
-      }
+      });
+
+      // Esperar a que se completen todas las promesas antes de continuar
+      await Promise.all(excludePromises);
     }
   } catch (error) {
     console.log({error: error});

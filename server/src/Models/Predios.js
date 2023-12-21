@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const prediosSchema = new mongoose.Schema(
   {
     torreMz: String,
-    predio: Number,
+    predio: String,
     parqueadero: String,
     coeficiente: Number,
     idUsuario: {

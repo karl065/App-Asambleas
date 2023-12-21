@@ -4,6 +4,8 @@ import {cargarDBs, cargarUsuariosSuccess, crearDB, login} from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
 
+let socket;
+
 export const cargarUsuarios = () => async (dispatch) => {
   try {
     const {data} = await axios.get(`${server.api.baseURL}users`);
@@ -33,7 +35,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         dispatch(cargarDBs(response.data));
         navigate('/admin');
       }
-      const socket = io(server.api.baseURL);
+      socket = io(server.api.baseURL);
       socket.on('cargarUsuario', (data) => {
         dispatch(cargarUsuariosSuccess(data));
       });
@@ -68,7 +70,7 @@ export const reLogin = async (token, dispatch, navigate) => {
           });
           dispatch(cargarDBs(response.data));
         }
-        const socket = io(server.api.baseURL);
+        socket = io(server.api.baseURL);
         socket.on('cargarUsuario', (data) => {
           dispatch(cargarUsuariosSuccess(data));
         });
@@ -88,11 +90,14 @@ export const reLogin = async (token, dispatch, navigate) => {
 
 export const logout = async (dispatch, navigate, idUser) => {
   try {
-    await axios.put(`${server.api.baseURL}users/${idUser}`, {
-      userStatus: false,
-    });
-    const socket = io(server.api.baseURL);
-    socket.disconnect();
+    if (idUser) {
+      await axios.put(`${server.api.baseURL}users/${idUser}`, {
+        userStatus: false,
+      });
+    }
+    if (socket) {
+      socket.disconnect();
+    }
     localStorage.removeItem('token');
     dispatch(login([]));
     dispatch(cargarUsuariosSuccess([]));

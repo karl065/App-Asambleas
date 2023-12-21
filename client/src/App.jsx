@@ -10,13 +10,14 @@ import {
 } from './views';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {reLogin} from './redux/actions';
+import {logout, reLogin} from './redux/actions';
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   useEffect(() => {
+    if (!token) logout(dispatch, navigate);
     reLogin(token, dispatch, navigate);
   }, []);
   return (
