@@ -4,6 +4,7 @@ const appSlice = createSlice({
   name: 'asambleas',
   initialState: {
     usuarios: [],
+    predios: [],
     login: [],
     preguntas: [],
     repuestas: [],
@@ -22,9 +23,12 @@ const appSlice = createSlice({
     crearDB: (state, action) => {
       state.DBS = [...state.DBS, action.payload];
     },
+    cargarPredios: (state, action) => {
+      state.predios = action.payload;
+    },
   },
 });
 
-export const {cargarUsuariosSuccess, login, cargarDBs, crearDB} =
+export const {cargarUsuariosSuccess, login, cargarDBs, crearDB, cargarPredios} =
   appSlice.actions;
 export default appSlice.reducer;

@@ -21,6 +21,7 @@ const usuarioSchema = new mongoose.Schema(
         'Propietario',
         'Propietario-Empoderado',
         'Empoderado',
+        'Presidente',
       ],
       required: true,
     },

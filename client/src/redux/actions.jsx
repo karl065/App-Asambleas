@@ -1,6 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
-import {cargarDBs, cargarUsuariosSuccess, crearDB, login} from './appSlice';
+import {
+  cargarDBs,
+  cargarPredios,
+  cargarUsuariosSuccess,
+  crearDB,
+  login,
+} from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
 
@@ -122,12 +128,30 @@ export const crearDBs = async (token, dispatch, DB) => {
   }
 };
 
-export const crearUsuariosDBs = async (usuarios, predios) => {
+export const crearUsuariosDBs = async (usuarios, predios, dispatch) => {
   try {
     const response = await axios.post(`${server.api.baseURL}users`, usuarios);
+    dispatch(cargarUsuariosSuccess(response.data));
     console.log('Esto es response Carga de usuarios', response);
     const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
-    console.log('Esto es usuarios Predios, ', data);
+    dispatch(cargarPredios(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const conectarDB = async (DB, dispatch, token) => {
+  try {
+    const msg = await axios.post(`${server.api.baseURL}DB/conexion`, DB, {
+      headers: {
+        'x-auth-token': token,
+      },
+    });
+    const response = await axios.get(`${server.api.baseURL}users`);
+    dispatch(cargarUsuariosSuccess(response.data));
+    const {data} = await axios.get(`${server.api.baseURL}predios`);
+    dispatch(cargarPredios(data));
+    alert(msg.data.msg);
   } catch (error) {
     console.log(error);
   }

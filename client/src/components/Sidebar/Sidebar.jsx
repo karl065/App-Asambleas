@@ -89,6 +89,22 @@ const Sidebar = () => {
               )}
             </li>
             <hr className="my-2" />
+            <li
+              className={`flex w-full ${
+                location.pathname === '/CrearUsuario'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {location.pathname === '/CrearUsuario' ? (
+                <span className=" text-white flex-grow">Crear Usuario</span>
+              ) : (
+                <Link to="/CrearUsuario" className="text-white flex-grow">
+                  <span>Crear Usuario</span>
+                </Link>
+              )}
+            </li>
+            <hr className="my-2" />
             <li className="flex w-full">
               <button
                 type="submit"

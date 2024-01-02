@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 // import {useNavigate} from 'react-router-dom';
 import {crearDBs, crearUsuariosDBs} from '../../../../redux/actions';
 import ExcelUploader from '../../../../components/ExcelUploader/ExcelUploader';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Tabla from '../../../../components/Tabla/Tabla';
 import {FcCollapse, FcExpand} from 'react-icons/fc';
 
@@ -125,6 +125,11 @@ const CrearConjunto = () => {
   const handleCargarDatos = () => {
     crearUsuariosDBs(usuarios, predios);
   };
+
+  useEffect(() => {
+    setPredios([]);
+    setUsuarios([]);
+  }, [db]);
   return (
     <div className="flex p-2 ">
       <Sidebar />

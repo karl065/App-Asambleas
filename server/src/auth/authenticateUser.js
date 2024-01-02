@@ -85,18 +85,23 @@ const authenticateUser = async (documento, password) => {
     } else {
       await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
       const DBs = await GetControllerDB();
+      let user;
       for (let i = 1; i < DBs.length; i++) {
         await mongoose.disconnect();
         await conectarDB(DBs[i].nombre, ['DBsAdmin']);
-        const userVal = await Usuarios.findOne({documento});
-        console.log(userVal);
-        if (userVal) break;
+        user = await Usuarios.findOne({documento})
+          .populate('respuestas')
+          .populate('autorizador')
+          .populate('autorizados')
+          .populate('predios');
+        console.log(user);
+        if (user) break;
       }
-      const user = await Usuarios.findOne({documento})
-        .populate('respuestas')
-        .populate('autorizador')
-        .populate('autorizados')
-        .populate('predios');
+      // const user = await Usuarios.findOne({documento})
+      //   .populate('respuestas')
+      //   .populate('autorizador')
+      //   .populate('autorizados')
+      //   .populate('predios');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
 

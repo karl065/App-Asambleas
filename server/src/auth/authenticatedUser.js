@@ -20,8 +20,22 @@ const authenticatedUser = async ({id, role}) => {
 
       return user;
     } else {
-      conectarDB('DBAdmin');
-      const DBS = await GetControllerDB();
+      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
+      const DBs = await GetControllerDB();
+      let user;
+      for (let i = 1; i < DBs.length; i++) {
+        await mongoose.disconnect();
+        await conectarDB(DBs[i].nombre, ['DBsAdmin']);
+        user = await Usuarios.findById(id)
+          .select('-password')
+          .populate('respuestas')
+          .populate('autorizador')
+          .populate('autorizados')
+          .populate('predios');
+        console.log(user);
+        if (user) break;
+      }
+      return user;
     }
   } catch (error) {
     throw error;

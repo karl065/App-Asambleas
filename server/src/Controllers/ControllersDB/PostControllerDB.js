@@ -5,6 +5,7 @@ const {superUser} = require('../../Root/Root.js');
 
 const crearDB = async (DB) => {
   try {
+    await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
     const db = new DBsAdmin(DB);
     const newDB = await db.save();
     await mongoose.disconnect();
