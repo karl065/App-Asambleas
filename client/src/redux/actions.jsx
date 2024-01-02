@@ -130,11 +130,13 @@ export const crearDBs = async (token, dispatch, DB) => {
 
 export const crearUsuariosDBs = async (usuarios, predios, dispatch) => {
   try {
-    const response = await axios.post(`${server.api.baseURL}users`, usuarios);
-    dispatch(cargarUsuariosSuccess(response.data));
-    console.log('Esto es response Carga de usuarios', response);
-    const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
-    dispatch(cargarPredios(data));
+    const {data} = await axios.post(`${server.api.baseURL}users`, usuarios);
+
+    dispatch(cargarUsuariosSuccess(data));
+    if (predios) {
+      const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
+      dispatch(cargarPredios(data));
+    }
   } catch (error) {
     console.log(error);
   }
@@ -151,7 +153,7 @@ export const conectarDB = async (DB, dispatch, token) => {
     dispatch(cargarUsuariosSuccess(response.data));
     const {data} = await axios.get(`${server.api.baseURL}predios`);
     dispatch(cargarPredios(data));
-    alert(msg.data.msg);
+    return msg.data.msg;
   } catch (error) {
     console.log(error);
   }
