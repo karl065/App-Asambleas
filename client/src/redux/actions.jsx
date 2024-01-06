@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
 import {
+  actualizarUsuario,
   cargarDBs,
   cargarPredios,
   cargarUsuariosSuccess,
@@ -130,9 +131,10 @@ export const crearDBs = async (token, dispatch, DB) => {
 
 export const crearUsuariosDBs = async (usuarios, predios, dispatch) => {
   try {
-    const {data} = await axios.post(`${server.api.baseURL}users`, usuarios);
-
-    dispatch(cargarUsuariosSuccess(data));
+    if (usuarios) {
+      const {data} = await axios.post(`${server.api.baseURL}users`, usuarios);
+      dispatch(cargarUsuariosSuccess(data));
+    }
     if (predios) {
       const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
       dispatch(cargarPredios(data));
@@ -154,6 +156,18 @@ export const conectarDB = async (DB, dispatch, token) => {
     const {data} = await axios.get(`${server.api.baseURL}predios`);
     dispatch(cargarPredios(data));
     return msg.data.msg;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
+  try {
+    const {data} = await axios.put(
+      `${server.api.baseURL}users/${idUser}`,
+      dataUpdate
+    );
+    dispatch(actualizarUsuario({_id: idUser, data}));
   } catch (error) {
     console.log(error);
   }

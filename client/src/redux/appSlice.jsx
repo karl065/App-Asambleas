@@ -26,9 +26,27 @@ const appSlice = createSlice({
     cargarPredios: (state, action) => {
       state.predios = action.payload;
     },
+    actualizarUsuario: (state, action) => {
+      const {_id, data} = action.payload;
+
+      const index = state.usuarios.findIndex((usuario) => usuario._id === _id);
+
+      if (index !== -1) {
+        state.usuarios[index] = {
+          ...state.usuarios[index],
+          ...data,
+        };
+      }
+    },
   },
 });
 
-export const {cargarUsuariosSuccess, login, cargarDBs, crearDB, cargarPredios} =
-  appSlice.actions;
+export const {
+  cargarUsuariosSuccess,
+  login,
+  cargarDBs,
+  crearDB,
+  cargarPredios,
+  actualizarUsuario,
+} = appSlice.actions;
 export default appSlice.reducer;

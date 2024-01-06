@@ -3,6 +3,7 @@ import './App.css';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {
   CrearConjunto,
+  CrearPredios,
   CrearUsuarios,
   GestionarConjunto,
   IngresoAdmin,
@@ -29,6 +30,7 @@ function App() {
         <Route path="/CrearConjunto" element={<CrearConjunto />} />
         <Route path="/GestionarConjunto" element={<GestionarConjunto />} />
         <Route path="/CrearUsuario" element={<CrearUsuarios />} />
+        <Route path="/CrearPredio" element={<CrearPredios />} />
         <Route path="/usuario" element={<IngresoCliente />} />
       </Routes>
     </div>

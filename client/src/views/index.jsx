@@ -4,6 +4,7 @@ import IngresoCliente from './Paneles/PanelesClientes/IngresoCliente/IngresoClie
 import CrearConjunto from './Paneles/PanelesAdmin/CrearConjuntos/CrearConjunto.jsx';
 import GestionarConjunto from './Paneles/PanelesAdmin/GestionarConjuntos/GestionarConjunto.jsx';
 import CrearUsuarios from './Paneles/PanelesAdmin/CrearUsuarios/CrearUsuarios.jsx';
+import CrearPredios from './Paneles/PanelesAdmin/CrearPredios/CrearPredios.jsx';
 
 export {
   Login,
@@ -12,4 +13,5 @@ export {
   CrearConjunto,
   GestionarConjunto,
   CrearUsuarios,
+  CrearPredios,
 };
