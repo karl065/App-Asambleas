@@ -5,6 +5,7 @@ import CrearConjunto from './Paneles/PanelesAdmin/CrearConjuntos/CrearConjunto.j
 import GestionarConjunto from './Paneles/PanelesAdmin/GestionarConjuntos/GestionarConjunto.jsx';
 import CrearUsuarios from './Paneles/PanelesAdmin/CrearUsuarios/CrearUsuarios.jsx';
 import CrearPredios from './Paneles/PanelesAdmin/CrearPredios/CrearPredios.jsx';
+import ActualizarUsuarios from './Paneles/PanelesAdmin/ActualizarUsuarios/ActualizarUsuarios.jsx';
 
 export {
   Login,
@@ -14,4 +15,5 @@ export {
   GestionarConjunto,
   CrearUsuarios,
   CrearPredios,
+  ActualizarUsuarios,
 };

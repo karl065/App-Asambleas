@@ -47,7 +47,7 @@ const getControllerUsers = async (
         select: '-password', // Excluye el campo de contraseña
       })
       .populate({
-        path: 'autorizados',
+        path: 'autorizado',
         select: '-password', // Excluye el campo de contraseña
       })
       .populate({

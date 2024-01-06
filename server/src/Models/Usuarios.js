@@ -42,12 +42,10 @@ const usuarioSchema = new mongoose.Schema(
         ref: 'Usuarios',
       },
     ],
-    autorizados: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuarios',
-      },
-    ],
+    autorizado: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Usuarios',
+    },
     predios: [
       {
         type: mongoose.Schema.Types.ObjectId,

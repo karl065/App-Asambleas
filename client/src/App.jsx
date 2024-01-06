@@ -2,6 +2,7 @@
 import './App.css';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {
+  ActualizarUsuarios,
   CrearConjunto,
   CrearPredios,
   CrearUsuarios,
@@ -32,6 +33,7 @@ function App() {
         <Route path="/CrearUsuario" element={<CrearUsuarios />} />
         <Route path="/CrearPredio" element={<CrearPredios />} />
         <Route path="/usuario" element={<IngresoCliente />} />
+        <Route path="/actualizarUsuario" element={<ActualizarUsuarios />} />
       </Routes>
     </div>
   );

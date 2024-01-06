@@ -1,25 +1,13 @@
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import Swal from 'sweetalert2';
 import {useDispatch, useSelector} from 'react-redux';
 import {conectarDB} from '../../redux/actions';
+import {alertSuccess} from '../../helpers/Alertas';
 
 const ConectarDBs = () => {
   const dispatch = useDispatch();
   const DBS = useSelector((state) => state.asambleas.DBS);
   const token = localStorage.getItem('token');
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
 
   const validationSchema = Yup.object({
     nombre: Yup.string().required('Nombre de conjunto obligatorio'),
@@ -32,10 +20,7 @@ const ConectarDBs = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const msg = await conectarDB(values, dispatch, token);
-      Toast.fire({
-        icon: 'success',
-        title: msg,
-      });
+      alertSuccess(msg);
     },
   });
   return (

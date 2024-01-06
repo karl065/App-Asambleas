@@ -123,7 +123,7 @@ const CrearConjunto = () => {
   });
 
   const handleCargarDatos = () => {
-    crearUsuariosDBs(usuarios, predios);
+    crearUsuariosDBs(usuarios, predios, dispatch);
   };
 
   useEffect(() => {

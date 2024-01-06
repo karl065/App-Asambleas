@@ -20,7 +20,7 @@ const putControllerUser = async (updateUser, idUser) => {
 
       // Agrega el usuario autorizador a la lista de autorizadores del usuario autorizado
       usuarioAutorizado.autorizador.push(usuarioAutorizador);
-      usuarioAutorizador.autorizados.push(usuarioAutorizado);
+      usuarioAutorizador.autorizado = usuarioAutorizado;
 
       await usuarioAutorizador.save();
       await usuarioAutorizado.save();
@@ -42,7 +42,7 @@ const putControllerUser = async (updateUser, idUser) => {
         select: '-password',
       })
       .populate({
-        path: 'autorizados',
+        path: 'autorizado',
         select: '-password',
       });
 

@@ -10,16 +10,18 @@ import {PiNotePencilFill} from 'react-icons/pi';
 import {useDispatch, useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {actualizarUsuarios} from '../../../../redux/actions';
+import {useNavigate} from 'react-router-dom';
 
 const GestionarConjunto = () => {
   const predios = useSelector((state) => state.asambleas.predios);
   const usuarios = useSelector((state) => state.asambleas.usuarios);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [usuariosVisible, setUsuariosVisible] = useState(false);
   const [prediosVisible, setPrediosVisible] = useState(false);
 
-  const handleIconButton = () => {
-    alert('Funcionalidad en desarrollo');
+  const handleIconButton = (doc) => {
+    navigate(`/actualizarUsuario?doc=${doc}`);
   };
 
   const columnsUsers = [
@@ -55,9 +57,9 @@ const GestionarConjunto = () => {
     {
       Header: 'ACCIONES',
       accessor: 'icon',
-      Cell: () => (
-        <button onClick={handleIconButton}>
-          <PiNotePencilFill style={{color: 'yellow'}} size={24} />
+      Cell: ({row}) => (
+        <button onClick={() => handleIconButton(row.original.documento)}>
+          <PiNotePencilFill style={{color: 'blue'}} size={24} />
         </button>
       ),
     },

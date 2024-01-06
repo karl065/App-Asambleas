@@ -19,7 +19,7 @@ const authenticateUser = async (documento, password) => {
       const user = await Usuarios.findOne({documento})
         .populate('respuestas')
         .populate('autorizador')
-        .populate('autorizados');
+        .populate('autorizado');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
 
@@ -39,7 +39,7 @@ const authenticateUser = async (documento, password) => {
       const userLogin = await Usuarios.findOne({documento})
         .populate('respuestas')
         .populate('autorizador')
-        .populate('autorizados');
+        .populate('autorizado');
       const payload = {
         user: {
           id: userLogin._id,
@@ -76,7 +76,7 @@ const authenticateUser = async (documento, password) => {
               status: userLogin.userStatus,
               respuestas: userLogin.respuestas,
               autorizador: userLogin.autorizador,
-              autorizados: userLogin.autorizados,
+              autorizado: userLogin.autorizado,
             };
             resolve(auth);
           }
@@ -92,7 +92,7 @@ const authenticateUser = async (documento, password) => {
         user = await Usuarios.findOne({documento})
           .populate('respuestas')
           .populate('autorizador')
-          .populate('autorizados')
+          .populate('autorizado')
           .populate('predios');
         console.log(user);
         if (user) break;
@@ -100,7 +100,7 @@ const authenticateUser = async (documento, password) => {
       // const user = await Usuarios.findOne({documento})
       //   .populate('respuestas')
       //   .populate('autorizador')
-      //   .populate('autorizados')
+      //   .populate('autorizado')
       //   .populate('predios');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
@@ -121,7 +121,7 @@ const authenticateUser = async (documento, password) => {
       const userLogin = await Usuarios.findOne({documento})
         .populate('respuestas')
         .populate('autorizador')
-        .populate('autorizados');
+        .populate('autorizado');
       const payload = {
         user: {
           id: userLogin._id,
@@ -158,7 +158,7 @@ const authenticateUser = async (documento, password) => {
               status: userLogin.userStatus,
               respuestas: userLogin.respuestas,
               autorizador: userLogin.autorizador,
-              autorizados: userLogin.autorizados,
+              autorizado: userLogin.autorizado,
             };
             resolve(auth);
           }

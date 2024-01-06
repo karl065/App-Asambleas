@@ -14,7 +14,7 @@ const authenticatedUser = async ({id, role}) => {
         .select('-password')
         .populate('respuestas')
         .populate('autorizador')
-        .populate('autorizados');
+        .populate('autorizado');
 
       if (!user) throw new Error('User not found');
 
@@ -30,7 +30,7 @@ const authenticatedUser = async ({id, role}) => {
           .select('-password')
           .populate('respuestas')
           .populate('autorizador')
-          .populate('autorizados')
+          .populate('autorizado')
           .populate('predios');
         console.log(user);
         if (user) break;

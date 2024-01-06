@@ -5,6 +5,7 @@ const {
 const postHandlerUsers = async (req, res) => {
   try {
     const usuario = req.body;
+
     const dataUser = await crearUsuario(usuario);
     return res.status(201).json(dataUser);
   } catch (error) {

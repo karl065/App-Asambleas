@@ -10,6 +10,7 @@ import {
 } from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
+import {alertSuccess} from '../helpers/Alertas';
 
 let socket;
 
@@ -124,6 +125,7 @@ export const crearDBs = async (token, dispatch, DB) => {
     });
 
     dispatch(crearDB(data));
+    alertSuccess('Conjunto Creado correctamente');
   } catch (error) {
     console.log({error: error.message});
   }
@@ -133,12 +135,14 @@ export const crearUsuariosDBs = async (usuarios, predios, dispatch) => {
   try {
     if (usuarios) {
       const {data} = await axios.post(`${server.api.baseURL}users`, usuarios);
+
       dispatch(cargarUsuariosSuccess(data));
     }
     if (predios) {
       const {data} = await axios.post(`${server.api.baseURL}predios`, predios);
       dispatch(cargarPredios(data));
     }
+    alertSuccess('Conjunto cargado correctamente');
   } catch (error) {
     console.log(error);
   }
@@ -167,6 +171,7 @@ export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
       `${server.api.baseURL}users/${idUser}`,
       dataUpdate
     );
+    console.log('Esto es Data Actions ', data);
     dispatch(actualizarUsuario({_id: idUser, data}));
   } catch (error) {
     console.log(error);

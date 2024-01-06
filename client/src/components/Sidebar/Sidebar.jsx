@@ -107,6 +107,24 @@ const Sidebar = () => {
             <hr className="my-2" />
             <li
               className={`flex w-full ${
+                location.pathname === '/actualizarUsuario'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {location.pathname === '/actualizarUsuario' ? (
+                <span className=" text-white flex-grow">
+                  Actualizar Usuario
+                </span>
+              ) : (
+                <Link to="/actualizarUsuario" className="text-white flex-grow">
+                  <span>Actualizar Usuario</span>
+                </Link>
+              )}
+            </li>
+            <hr className="my-2" />
+            <li
+              className={`flex w-full ${
                 location.pathname === '/CrearPredio'
                   ? 'opacity-60 cursor-not-allowed'
                   : ''
