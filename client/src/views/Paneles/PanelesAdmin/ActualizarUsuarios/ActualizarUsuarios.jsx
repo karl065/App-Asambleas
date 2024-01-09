@@ -16,7 +16,7 @@ const ActualizarUsuarios = () => {
   const doc = params.get('doc');
   const usuarios = useSelector((state) => state.asambleas.usuarios);
   const [documentoBuscado, setDocumentoBuscado] = useState('');
-  const role = ['Admin', 'Propietario', 'Empoderado', 'Presidente'];
+  const role = useSelector((state) => state.asambleas.roles);
   const [idUser, setIdUser] = useState('');
   const dispatch = useDispatch();
   const [usuario, setUsuario] = useState({
@@ -315,7 +315,8 @@ const ActualizarUsuarios = () => {
                           : ''
                       }`}
                     >
-                      {role.map((rol, index) => (
+                      <option value="">Seleccionar un Rol</option>
+                      {role.slice(1).map((rol, index) => (
                         <option value={rol} key={index}>
                           {rol}
                         </option>

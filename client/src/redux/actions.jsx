@@ -4,6 +4,8 @@ import {
   actualizarUsuario,
   cargarDBs,
   cargarPredios,
+  cargarPreguntas,
+  cargarRoles,
   cargarUsuariosSuccess,
   crearDB,
   login,
@@ -14,12 +16,27 @@ import {alertSuccess} from '../helpers/Alertas';
 
 let socket;
 
-export const cargarUsuarios = () => async (dispatch) => {
+export const cargarUsuarios = async (dispatch) => {
   try {
     const {data} = await axios.get(`${server.api.baseURL}users`);
     dispatch(cargarUsuariosSuccess(data));
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const filtroUsuarios = async (dataFilter, dispatch) => {
+  try {
+    const queryString = Object.keys(dataFilter)
+      .map(
+        (key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(dataFilter[key])}`
+      )
+      .join('&');
+    const {data} = await axios.get(`${server.api.baseURL}users?${queryString}`);
+    if (dataFilter.obtenerEnum) dispatch(cargarRoles(data));
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -84,6 +101,7 @@ export const reLogin = async (token, dispatch, navigate) => {
         });
       }
       dispatch(login(data));
+      filtroUsuarios({obtenerEnum: true}, dispatch);
     }
   } catch (error) {
     const {msg} = error.response.data;
@@ -156,6 +174,7 @@ export const conectarDB = async (DB, dispatch, token) => {
       },
     });
     const response = await axios.get(`${server.api.baseURL}users`);
+    getPreguntas(dispatch);
     dispatch(cargarUsuariosSuccess(response.data));
     const {data} = await axios.get(`${server.api.baseURL}predios`);
     dispatch(cargarPredios(data));
@@ -173,6 +192,32 @@ export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
     );
     console.log('Esto es Data Actions ', data);
     dispatch(actualizarUsuario({_id: idUser, data}));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const crearPreguntas = async (pregunta, dispatch) => {
+  try {
+    const {respuestas} = pregunta;
+    const {data} = await axios.post(`${server.api.baseURL}preguntas`, {
+      pregunta: pregunta.pregunta,
+    });
+    respuestas.map(async (respuesta) => {
+      respuesta.idPregunta = data._id;
+      await axios.post(`${server.api.baseURL}respuestas`, respuesta);
+    });
+    const response = await axios.get(`${server.api.baseURL}preguntas`);
+    dispatch(cargarPreguntas(response.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPreguntas = async (dispatch) => {
+  try {
+    const {data} = await axios.get(`${server.api.baseURL}preguntas`);
+    dispatch(cargarPreguntas(data));
   } catch (error) {
     console.log(error);
   }

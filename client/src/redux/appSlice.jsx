@@ -9,6 +9,7 @@ const appSlice = createSlice({
     preguntas: [],
     repuestas: [],
     DBS: [],
+    roles: [],
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
@@ -38,6 +39,12 @@ const appSlice = createSlice({
         };
       }
     },
+    cargarRoles: (state, action) => {
+      state.roles = action.payload;
+    },
+    cargarPreguntas: (state, action) => {
+      state.preguntas = action.payload;
+    },
   },
 });
 
@@ -48,5 +55,7 @@ export const {
   crearDB,
   cargarPredios,
   actualizarUsuario,
+  cargarRoles,
+  cargarPreguntas,
 } = appSlice.actions;
 export default appSlice.reducer;

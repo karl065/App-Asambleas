@@ -156,7 +156,9 @@ const CrearPredios = () => {
                         )
                         .map((usuario) => (
                           <option value={usuario._id} key={usuario._id}>
-                            {usuario.primerNombre}
+                            {usuario.primerNombre +
+                              ' ' +
+                              usuario.primerApellido}
                           </option>
                         ))}
                     </select>

@@ -1,12 +1,12 @@
 import {useFormik} from 'formik';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import Sidebar from '../../../../components/Sidebar/Sidebar';
 import {crearUsuariosDBs} from '../../../../redux/actions';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 
 const CrearUsuarios = () => {
-  const role = ['Admin', 'Propietario', 'Empoderado', 'Presidente'];
+  const role = useSelector((state) => state.asambleas.roles);
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
@@ -248,7 +248,8 @@ const CrearUsuarios = () => {
                           : ''
                       }`}
                     >
-                      {role.map((rol, index) => (
+                      <option value="">Seleccionar un Rol</option>
+                      {role.slice(1).map((rol, index) => (
                         <option value={rol} key={index}>
                           {rol}
                         </option>

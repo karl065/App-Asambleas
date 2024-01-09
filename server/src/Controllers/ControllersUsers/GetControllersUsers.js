@@ -13,9 +13,15 @@ const getControllerUsers = async (
   parqueadero,
   coeficiente,
   role,
-  userStatus
+  userStatus,
+  obtenerEnum
 ) => {
   try {
+    if (obtenerEnum) {
+      const rolesEnum = Usuarios.schema.path('role').enumValues;
+      return rolesEnum;
+    }
+
     const whereConditions = {
       ...(documento && {documento: new RegExp(documento, 'i')}),
       ...(primerNombre && {primerNombre: new RegExp(primerNombre, 'i')}),

@@ -8,7 +8,6 @@ const {conectarDB} = require('../config/DB.js');
 const authenticatedUser = async ({id, role}) => {
   try {
     if (role === 'SuperAdmin') {
-      await mongoose.disconnect();
       await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
       const user = await Usuarios.findById(id)
         .select('-password')
@@ -24,7 +23,6 @@ const authenticatedUser = async ({id, role}) => {
       const DBs = await GetControllerDB();
       let user;
       for (let i = 1; i < DBs.length; i++) {
-        await mongoose.disconnect();
         await conectarDB(DBs[i].nombre, ['DBsAdmin']);
         user = await Usuarios.findById(id)
           .select('-password')

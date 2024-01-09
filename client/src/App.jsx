@@ -5,6 +5,7 @@ import {
   ActualizarUsuarios,
   CrearConjunto,
   CrearPredios,
+  CrearPreguntas,
   CrearUsuarios,
   GestionarConjunto,
   IngresoAdmin,
@@ -34,6 +35,7 @@ function App() {
         <Route path="/CrearPredio" element={<CrearPredios />} />
         <Route path="/usuario" element={<IngresoCliente />} />
         <Route path="/actualizarUsuario" element={<ActualizarUsuarios />} />
+        <Route path="/CrearPreguntas" element={<CrearPreguntas />} />
       </Routes>
     </div>
   );

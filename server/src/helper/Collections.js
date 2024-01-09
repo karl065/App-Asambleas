@@ -7,11 +7,20 @@ const waitForCollectionsExists = async (
   let collectionExists = false;
 
   while (!collectionExists && attempts < maxAttempts) {
-    collectionExists = await connection.connection.db
-      .listCollections({name: collection})
-      .hasNext();
+    try {
+      collectionExists = await connection.connection.db
+        .listCollections({name: collection})
+        .hasNext();
+    } catch (error) {
+      console.error(
+        'Error al verificar la existencia de la colección:',
+        error.message
+      );
+      break;
+    }
 
     attempts++;
+
     if (!collectionExists) {
       // Esperar 1 segundo antes de volver a intentar
       await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import * as Yup from 'yup';
-import {loginSuccess} from '../../redux/actions';
+import {filtroUsuarios, loginSuccess} from '../../redux/actions';
 import {useNavigate} from 'react-router-dom';
 
 const LoginForm = () => {
@@ -20,6 +20,7 @@ const LoginForm = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       loginSuccess(values, dispatch, navigate);
+      filtroUsuarios({obtenerEnum: true}, dispatch);
     },
   });
 

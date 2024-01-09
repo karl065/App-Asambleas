@@ -8,13 +8,16 @@ const {DB_MONGODB} = process.env;
 
 const conectarDB = async (DB, excludeModels = []) => {
   try {
+    await mongoose.disconnect();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    let connection;
     if (DB === 'DBAdmin') {
-      await mongoose.disconnect();
-      const connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
+      connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
+      connection.connection.set('poolSize', 10);
       console.log(`MongoDB Conectado en: ${DB}`);
       const DBS = await GetControllerDB();
-
-      const dbExists = DBS.some((db) => db.nombre === DB);
+      let dbExists;
+      if (Array.isArray(DBS)) dbExists = DBS.some((db) => db.nombre === DB);
 
       // Obtener una lista de todos los modelos registrados
       const allModels = Object.keys(connection.connection.models);
@@ -68,9 +71,9 @@ const conectarDB = async (DB, excludeModels = []) => {
         await superUser(DB);
       }
     } else {
-      await mongoose.disconnect();
       DB = DB.replace(/\s/g, '_');
-      const connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
+      connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
+      connection.connection.set('poolSize', 10);
       console.log(`MongoDB Conectado en: ${DB}`);
 
       // Obtener una lista de todos los modelos registrados
@@ -96,8 +99,7 @@ const conectarDB = async (DB, excludeModels = []) => {
       await Promise.all(excludePromises);
     }
   } catch (error) {
-    console.log({error: error});
-    process.exit(1);
+    console.log({error: error.message});
   }
 };
 
