@@ -2,12 +2,14 @@
 import './App.css';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {
+  ActualizarPreguntas,
   ActualizarUsuarios,
   CrearConjunto,
   CrearPredios,
   CrearPreguntas,
   CrearUsuarios,
   GestionarConjunto,
+  GestionarPreguntas,
   IngresoAdmin,
   IngresoCliente,
   Login,
@@ -36,6 +38,8 @@ function App() {
         <Route path="/usuario" element={<IngresoCliente />} />
         <Route path="/actualizarUsuario" element={<ActualizarUsuarios />} />
         <Route path="/CrearPreguntas" element={<CrearPreguntas />} />
+        <Route path="/GestionarPreguntas" element={<GestionarPreguntas />} />
+        <Route path="/ActualizarPreguntas" element={<ActualizarPreguntas />} />
       </Routes>
     </div>
   );

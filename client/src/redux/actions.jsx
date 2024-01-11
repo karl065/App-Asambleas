@@ -203,11 +203,15 @@ export const crearPreguntas = async (pregunta, dispatch) => {
     const {data} = await axios.post(`${server.api.baseURL}preguntas`, {
       pregunta: pregunta.pregunta,
     });
-    respuestas.map(async (respuesta) => {
+    const promises = respuestas.map(async (respuesta) => {
       respuesta.idPregunta = data._id;
       await axios.post(`${server.api.baseURL}respuestas`, respuesta);
     });
+
+    await Promise.all(promises);
+
     const response = await axios.get(`${server.api.baseURL}preguntas`);
+    console.log(response.data);
     dispatch(cargarPreguntas(response.data));
   } catch (error) {
     console.log(error);

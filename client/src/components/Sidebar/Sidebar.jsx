@@ -155,6 +155,45 @@ const Sidebar = () => {
               )}
             </li>
             <hr className="my-2" />
+            <li
+              className={`flex w-full ${
+                location.pathname === '/GestionarPreguntas'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {location.pathname === '/GestionarPreguntas' ? (
+                <span className=" text-white flex-grow">
+                  Gestionar Preguntas
+                </span>
+              ) : (
+                <Link to="/GestionarPreguntas" className="text-white flex-grow">
+                  <span>Gestionar Preguntas</span>
+                </Link>
+              )}
+            </li>
+            <hr className="my-2" />
+            <li
+              className={`flex w-full ${
+                location.pathname === '/ActualizarPreguntas'
+                  ? 'opacity-60 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {location.pathname === '/ActualizarPreguntas' ? (
+                <span className=" text-white flex-grow">
+                  Actualizar Preguntas
+                </span>
+              ) : (
+                <Link
+                  to="/ActualizarPreguntas"
+                  className="text-white flex-grow"
+                >
+                  <span>Actualizar Preguntas</span>
+                </Link>
+              )}
+            </li>
+            <hr className="my-2" />
             <li className="flex w-full">
               <button
                 type="submit"
