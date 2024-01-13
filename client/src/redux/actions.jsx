@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
 import {
+  actualizarPregunta,
   actualizarUsuario,
   cargarDBs,
   cargarPredios,
@@ -12,7 +13,7 @@ import {
 } from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
-import {alertSuccess} from '../helpers/Alertas';
+import {alertInfo, alertSuccess} from '../helpers/Alertas';
 
 let socket;
 
@@ -107,7 +108,7 @@ export const reLogin = async (token, dispatch, navigate) => {
     const {msg} = error.response.data;
     if (msg === 'Token no valido') {
       localStorage.removeItem('token');
-      alert('Tu sesión ha expirado');
+      alertInfo('Tu sesión ha expirado');
       navigate('/');
     }
     if (msg === 'No hay token') navigate('/');
@@ -190,29 +191,42 @@ export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
       `${server.api.baseURL}users/${idUser}`,
       dataUpdate
     );
-    console.log('Esto es Data Actions ', data);
+
     dispatch(actualizarUsuario({_id: idUser, data}));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const crearPreguntas = async (pregunta, dispatch) => {
+export const crearPreguntas = async (pregunta, dispatch, idPregunta) => {
   try {
-    const {respuestas} = pregunta;
-    const {data} = await axios.post(`${server.api.baseURL}preguntas`, {
-      pregunta: pregunta.pregunta,
-    });
-    const promises = respuestas.map(async (respuesta) => {
-      respuesta.idPregunta = data._id;
-      await axios.post(`${server.api.baseURL}respuestas`, respuesta);
-    });
+    if (idPregunta) {
+      const promises = pregunta.map(async (respuesta) => {
+        respuesta.idPregunta = idPregunta;
+        await axios.post(`${server.api.baseURL}respuestas`, respuesta);
+      });
 
-    await Promise.all(promises);
+      await Promise.all(promises);
 
-    const response = await axios.get(`${server.api.baseURL}preguntas`);
-    console.log(response.data);
-    dispatch(cargarPreguntas(response.data));
+      const response = await axios.get(`${server.api.baseURL}preguntas`);
+
+      dispatch(cargarPreguntas(response.data));
+    } else {
+      const {respuestas} = pregunta;
+      const {data} = await axios.post(`${server.api.baseURL}preguntas`, {
+        pregunta: pregunta.pregunta,
+      });
+      const promises = respuestas.map(async (respuesta) => {
+        respuesta.idPregunta = data._id;
+        await axios.post(`${server.api.baseURL}respuestas`, respuesta);
+      });
+
+      await Promise.all(promises);
+
+      const response = await axios.get(`${server.api.baseURL}preguntas`);
+
+      dispatch(cargarPreguntas(response.data));
+    }
   } catch (error) {
     console.log(error);
   }
@@ -224,5 +238,41 @@ export const getPreguntas = async (dispatch) => {
     dispatch(cargarPreguntas(data));
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const actualizarPreguntas = async (
+  idPreguntas,
+  dataUpdate,
+  dispatch
+) => {
+  try {
+    const {data} = await axios.put(
+      `${server.api.baseURL}preguntas/${idPreguntas}`,
+      dataUpdate
+    );
+    dispatch(actualizarPregunta({idPregunta: idPreguntas, data}));
+    alertSuccess('Pregunta Actualizada con exito');
+  } catch (error) {
+    console.log({error: error.message});
+  }
+};
+
+export const actualizarRespuestas = async (
+  idRespuesta,
+  dataUpdate,
+  dispatch
+) => {
+  try {
+    const response = await axios.put(
+      `${server.api.baseURL}respuestas/${idRespuesta}`,
+      dataUpdate
+    );
+    const {data} = await axios.get(
+      `${server.api.baseURL}preguntas?id=${response.data.idPregunta}`
+    );
+    dispatch(actualizarPregunta({idPregunta: data._id, data}));
+  } catch (error) {
+    console.log({error: error.message});
   }
 };

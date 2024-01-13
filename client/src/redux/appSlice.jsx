@@ -45,6 +45,20 @@ const appSlice = createSlice({
     cargarPreguntas: (state, action) => {
       state.preguntas = action.payload;
     },
+    actualizarPregunta: (state, action) => {
+      const {idPregunta, data} = action.payload;
+
+      const index = state.preguntas.findIndex(
+        (pregunta) => pregunta._id === idPregunta
+      );
+
+      if (index !== -1) {
+        state.preguntas[index] = {
+          ...state.preguntas[index],
+          ...data,
+        };
+      }
+    },
   },
 });
 
@@ -57,5 +71,6 @@ export const {
   actualizarUsuario,
   cargarRoles,
   cargarPreguntas,
+  actualizarPregunta,
 } = appSlice.actions;
 export default appSlice.reducer;
