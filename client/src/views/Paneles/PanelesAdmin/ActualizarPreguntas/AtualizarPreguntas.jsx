@@ -25,6 +25,8 @@ const ActualizarPreguntas = () => {
   const [cantRespuestas, setCantRespuestas] = useState('');
   const [selectedPregunta, setSelectedPregunta] = useState('');
   const [preguntaId, setPreguntaId] = useState('');
+  const [currentRespuestas, setCurrentRespuestas] = useState([]);
+  const [currentCantRespuestas, setCurrentCantRespuestas] = useState('');
   const idRespuestaEliminada = [];
 
   const validationSchema = Yup.object({
@@ -55,7 +57,6 @@ const ActualizarPreguntas = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       if (selectedPregunta.respuestas.length !== values.respuestas.length) {
         const respuestasNuevas = values.respuestas.slice(
           selectedPregunta.respuestas.length
@@ -63,7 +64,6 @@ const ActualizarPreguntas = () => {
         await crearPreguntas(respuestasNuevas, dispatch, preguntaId);
       }
       const preguntaCambiada = selectedPregunta.pregunta;
-      console.log('Esto es nueva pregunta cambiada ', selectedPregunta);
 
       const respuestasCambiadas = getRespuestasCambiadas(
         selectedPregunta.respuestas,
@@ -202,10 +202,9 @@ const ActualizarPreguntas = () => {
   };
 
   const handleCantidadRespuestasChange = (e) => {
-    const newValue = e.target.value;
-    const currentRespuestas = formik.values.respuestas;
-
-    if (newValue > currentRespuestas.length) {
+    const newValue = parseInt(e.target.value);
+    setCurrentRespuestas(formik.values.respuestas);
+    if (newValue > currentCantRespuestas) {
       // Aumentar la cantidad de respuestas
       const nuevasRespuestas = Array.from(
         {length: newValue - currentRespuestas.length},
@@ -219,6 +218,8 @@ const ActualizarPreguntas = () => {
         ...currentRespuestas,
         ...nuevasRespuestas,
       ]);
+    } else if (newValue === currentCantRespuestas) {
+      handleResetPregunta();
     } else {
       // Disminuir la cantidad de respuestas
       formik.setFieldValue('respuestas', currentRespuestas.slice(0, newValue));
@@ -236,9 +237,13 @@ const ActualizarPreguntas = () => {
   };
 
   const handleResetPregunta = () => {
-    setSelectedPregunta(
-      preguntas.find((pregunta) => pregunta._id === preguntaId)
-    );
+    if (preguntaId) {
+      const restoredPregunta = preguntas.find(
+        (pregunta) => pregunta._id === preguntaId
+      );
+
+      setSelectedPregunta({...restoredPregunta});
+    }
   };
 
   useEffect(() => {
@@ -253,6 +258,7 @@ const ActualizarPreguntas = () => {
 
   useEffect(() => {
     if (selectedPregunta) {
+      setCurrentCantRespuestas(selectedPregunta.respuestas.length);
       formik.setValues({
         pregunta: selectedPregunta.pregunta,
         cantidadRespuestas: selectedPregunta.respuestas.length,
@@ -269,7 +275,7 @@ const ActualizarPreguntas = () => {
     <div className="flex p-2 ">
       <Sidebar />
       <div className="bg-black opacity-70 w-full ml-2 rounded-lg p-5 space-y-5 overflow-y-auto">
-        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+        <div className="h-full max-h-[calc(100vh-2rem)] overflow-y-auto  bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Actualizar Pregunta

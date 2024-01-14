@@ -241,17 +241,13 @@ export const getPreguntas = async (dispatch) => {
   }
 };
 
-export const actualizarPreguntas = async (
-  idPreguntas,
-  dataUpdate,
-  dispatch
-) => {
+export const actualizarPreguntas = async (idPregunta, dataUpdate, dispatch) => {
   try {
     const {data} = await axios.put(
-      `${server.api.baseURL}preguntas/${idPreguntas}`,
+      `${server.api.baseURL}preguntas/${idPregunta}`,
       dataUpdate
     );
-    dispatch(actualizarPregunta({idPregunta: idPreguntas, data}));
+    dispatch(actualizarPregunta({idPregunta: idPregunta, data}));
     alertSuccess('Pregunta Actualizada con exito');
   } catch (error) {
     console.log({error: error.message});
