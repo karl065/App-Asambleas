@@ -131,42 +131,45 @@ const ActualizarPreguntas = () => {
     for (let i = 0; i < formik.values.cantidadRespuestas; i++) {
       const respuesta = formik.values.respuestas[i] || {}; // Acceder de manera segura
       respuestasInputs.push(
-        <div key={i} className="flex justify-center items-center space-x-2">
-          <div>
-            <label
-              className="text-white"
-              htmlFor={`respuestas.${i}.opcion`}
-            >{`Opcion ${respuesta.opcion || ''}.`}</label>
-            <input
-              type="text"
-              id={`respuestas.${i}.respuesta`}
-              name={`respuestas.${i}.respuesta`}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={respuesta.respuesta || ''}
-              className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                formik.touched.respuestas?.[i]?.respuesta &&
-                formik.errors.respuestas?.[i]?.respuesta
-                  ? 'border-red-500'
-                  : ''
-              }`}
-              placeholder={`Respuesta ${respuesta.opcion || ''}`}
-            />
-            {formik.touched.respuestas?.[i]?.respuesta &&
-              formik.errors.respuestas?.[i]?.respuesta && (
-                <div className="text-red-500 text-xs">
-                  {formik.errors.respuestas[i].respuesta}
-                </div>
-              )}
-          </div>
-          <div>
-            <button
-              type="button"
-              className="text-red-500"
-              onClick={() => handleEliminarRespuestas(i)}
-            >
-              <BiX />
-            </button>
+        <div key={i} className="justify-center items-center space-x-2">
+          <hr />
+          <div className="flex w-full">
+            <div>
+              <label
+                className="text-white"
+                htmlFor={`respuestas.${i}.opcion`}
+              >{`Opcion ${respuesta.opcion || ''}.`}</label>
+              <input
+                type="text"
+                id={`respuestas.${i}.respuesta`}
+                name={`respuestas.${i}.respuesta`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={respuesta.respuesta || ''}
+                className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                  formik.touched.respuestas?.[i]?.respuesta &&
+                  formik.errors.respuestas?.[i]?.respuesta
+                    ? 'border-red-500'
+                    : ''
+                }`}
+                placeholder={`Respuesta ${respuesta.opcion || ''}`}
+              />
+              {formik.touched.respuestas?.[i]?.respuesta &&
+                formik.errors.respuestas?.[i]?.respuesta && (
+                  <div className="text-red-500 text-xs">
+                    {formik.errors.respuestas[i].respuesta}
+                  </div>
+                )}
+            </div>
+            <div className="flex p-4 w-full  justify-center ">
+              <button
+                type="button"
+                className="text-red-500 bg-blue-700 uppercase sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:placeholder-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                onClick={() => handleEliminarRespuestas(i)}
+              >
+                <BiX size={24} />
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -296,49 +299,51 @@ const ActualizarPreguntas = () => {
             <form className="space-x-2" onSubmit={formik.handleSubmit}>
               <div className="flex">
                 <div className="justify-center items-center p-2 space-y-2">
-                  <div>
-                    <input
-                      type="text"
-                      name="pregunta"
-                      id="pregunta"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.pregunta}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                        formik.touched.pregunta && formik.errors.pregunta
-                          ? 'border-red-500'
-                          : ''
-                      }`}
-                      placeholder="Pregunta"
-                    />
-                    {formik.touched.pregunta && formik.errors.pregunta ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.pregunta}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div>
-                    <input
-                      type="number"
-                      name="cantidadRespuestas"
-                      id="cantidadRespuestas"
-                      onChange={handleCantidadRespuestasChange}
-                      onBlur={formik.handleBlur}
-                      value={cantRespuestas}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                        formik.touched.cantidadRespuestas &&
-                        formik.errors.cantidadRespuestas
-                          ? 'border-red-500'
-                          : ''
-                      }`}
-                      placeholder="Cant. de respuestas"
-                    />
-                    {formik.touched.cantidadRespuestas &&
-                    formik.errors.cantidadRespuestas ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.cantidadRespuestas}
-                      </div>
-                    ) : null}
+                  <div className="flex space-x-2">
+                    <div>
+                      <input
+                        type="text"
+                        name="pregunta"
+                        id="pregunta"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.pregunta}
+                        className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                          formik.touched.pregunta && formik.errors.pregunta
+                            ? 'border-red-500'
+                            : ''
+                        }`}
+                        placeholder="Pregunta"
+                      />
+                      {formik.touched.pregunta && formik.errors.pregunta ? (
+                        <div className="text-red-500 text-xs">
+                          {formik.errors.pregunta}
+                        </div>
+                      ) : null}
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        name="cantidadRespuestas"
+                        id="cantidadRespuestas"
+                        onChange={handleCantidadRespuestasChange}
+                        onBlur={formik.handleBlur}
+                        value={cantRespuestas}
+                        className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                          formik.touched.cantidadRespuestas &&
+                          formik.errors.cantidadRespuestas
+                            ? 'border-red-500'
+                            : ''
+                        }`}
+                        placeholder="Cant. de respuestas"
+                      />
+                      {formik.touched.cantidadRespuestas &&
+                      formik.errors.cantidadRespuestas ? (
+                        <div className="text-red-500 text-xs">
+                          {formik.errors.cantidadRespuestas}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                   {renderRespuestasInputs()}
                   <div>
