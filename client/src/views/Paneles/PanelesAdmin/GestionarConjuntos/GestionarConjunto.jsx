@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-case-declarations */
-import Sidebar from '../../../../components/Sidebar/Sidebar';
+
 import {useState} from 'react';
 import Tabla from '../../../../components/Tabla/Tabla';
 import {FcCollapse} from 'react-icons/fc';
@@ -85,33 +85,40 @@ const GestionarConjunto = () => {
 
   return (
     <div className="flex p-2 ">
-      <Sidebar />
-      <div className="bg-black opacity-70 w-full m-2 rounded-lg p-5 space-y-5 overflow-y-auto">
-        <ConectarDBs />
-        <div>
-          <button onClick={handleTablaUsuario}>
-            {usuariosVisible ? <FcCollapse /> : <FcExpand />}
-          </button>
-          <label className="text-white uppercase"> Usuarios</label>
-          <div>
-            {usuariosVisible && (
-              <Tabla columns={columnsUsers} data={data} className="max-h-96" />
-            )}
-          </div>
-        </div>
-        <div>
-          <button onClick={handleTablaPredio}>
-            {prediosVisible ? <FcCollapse /> : <FcExpand />}
-          </button>
-          <label className="text-white uppercase"> predios</label>
-          <div>
-            {prediosVisible && (
-              <Tabla
-                columns={columnsPredios}
-                data={predios}
-                className="max-h-96"
-              />
-            )}
+      <div className="bg-black opacity-70 w-full  rounded-lg p-5 space-y-5 overflow-y-auto">
+        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+          <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
+            <ConectarDBs />
+            <div>
+              <button onClick={handleTablaUsuario}>
+                {usuariosVisible ? <FcCollapse /> : <FcExpand />}
+              </button>
+              <label className="text-white uppercase"> Usuarios</label>
+              <div>
+                {usuariosVisible && (
+                  <Tabla
+                    columns={columnsUsers}
+                    data={data}
+                    className="max-h-96"
+                  />
+                )}
+              </div>
+            </div>
+            <div>
+              <button onClick={handleTablaPredio}>
+                {prediosVisible ? <FcCollapse /> : <FcExpand />}
+              </button>
+              <label className="text-white uppercase"> predios</label>
+              <div>
+                {prediosVisible && (
+                  <Tabla
+                    columns={columnsPredios}
+                    data={predios}
+                    className="max-h-96"
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

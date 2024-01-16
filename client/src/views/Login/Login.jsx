@@ -25,8 +25,8 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 border-2 border-black rounded-lg flex flex-col items-center justify-center px-6 py-8 mx-auto md:p-10 lg:p-10 dark:bg-opacity-50 bg-opacity-50">
-      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-max h-max bg-gray-50 dark:bg-gray-900 border-2 border-black rounded-lg flex items-center justify-center md:p-10 lg:p-10 dark:bg-opacity-50 bg-opacity-50">
+      <div className=" bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Iniciar Sesión

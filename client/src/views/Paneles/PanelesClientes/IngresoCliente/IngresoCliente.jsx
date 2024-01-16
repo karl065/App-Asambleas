@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
-import Sidebar from '../../../../components/Sidebar/Sidebar';
 
 const IngresoCliente = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
@@ -27,7 +26,6 @@ const IngresoCliente = () => {
   }, [totalCoeficiente]);
   return (
     <div className="flex p-2 ">
-      <Sidebar />
       <h1>Soy ingreso</h1>
     </div>
   );

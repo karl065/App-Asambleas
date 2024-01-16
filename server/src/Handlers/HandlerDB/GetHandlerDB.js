@@ -1,5 +1,5 @@
 const {
-  default: GetControllerDB,
+  GetControllerDB,
 } = require('../../Controllers/ControllersDB/GetControllerDB');
 
 const getHandlerDB = async (req, res) => {

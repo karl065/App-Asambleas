@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {superUser} = require('../Root/Root');
 const {
-  default: GetControllerDB,
+  GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB');
 const {waitForCollectionsExists} = require('../helper/Collections');
 const {DB_MONGODB} = process.env;

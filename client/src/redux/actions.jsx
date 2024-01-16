@@ -8,12 +8,14 @@ import {
   cargarPreguntas,
   cargarRoles,
   cargarUsuariosSuccess,
+  connectedDB,
   crearDB,
   login,
 } from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
 import {alertInfo, alertSuccess} from '../helpers/Alertas';
+import {isTokenExpired} from '../helpers/Verificacion';
 
 let socket;
 
@@ -46,6 +48,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
     const {data} = await axios.post(`${server.api.baseURL}auth`, userLogin);
     if (data) {
       localStorage.setItem('token', data.token);
+      localStorage.setItem('connect', data.connectedDB);
       if (
         data.role === 'Propietario' ||
         data.role === 'Propietario-Empoderado' ||
@@ -66,6 +69,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         dispatch(cargarUsuariosSuccess(data));
       });
     }
+    dispatch(connectedDB(data.connectedDB));
     dispatch(login(data));
   } catch (error) {
     console.log({error: error.message});
@@ -75,34 +79,45 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
 export const reLogin = async (token, dispatch, navigate) => {
   try {
     if (token) {
-      const {data} = await axios.get(`${server.api.baseURL}auth`, {
-        headers: {
-          'x-auth-token': token,
-        },
-      });
-      if (data) {
-        if (
-          data.role === 'Propietario' ||
-          data.role === 'Propietario-Empoderado' ||
-          data.role === 'Empoderado'
-        ) {
-          navigate('/usuario');
-        } else {
-          navigate('/admin');
-          const response = await axios.get(`${server.api.baseURL}DB`, {
-            headers: {
-              'x-auth-token': token,
-            },
-          });
-          dispatch(cargarDBs(response.data));
-        }
-        socket = io(server.api.baseURL);
-        socket.on('cargarUsuario', (data) => {
-          dispatch(cargarUsuariosSuccess(data));
+      const expirado = isTokenExpired(token);
+
+      if (expirado.expired || expirado === true) {
+        alertInfo('Sesion expirada');
+        const {user} = expirado;
+        user ? logout(dispatch, navigate, user.id) : logout(dispatch, navigate);
+      } else {
+        const {data} = await axios.get(`${server.api.baseURL}auth`, {
+          headers: {
+            'x-auth-token': token,
+          },
         });
+        if (data) {
+          if (
+            data.role === 'Propietario' ||
+            data.role === 'Propietario-Empoderado' ||
+            data.role === 'Empoderado'
+          ) {
+            navigate('/usuario');
+          } else {
+            navigate('/admin');
+            const response = await axios.get(`${server.api.baseURL}DB`, {
+              headers: {
+                'x-auth-token': token,
+              },
+            });
+            dispatch(cargarDBs(response.data));
+
+            alertSuccess(`Bienvenido de nuevo ${data.primerNombre}`);
+          }
+          socket = io(server.api.baseURL);
+          socket.on('cargarUsuario', (data) => {
+            dispatch(cargarUsuariosSuccess(data));
+          });
+        }
+        dispatch(connectedDB(data.connectedDB));
+        dispatch(login(data));
+        filtroUsuarios({obtenerEnum: true}, dispatch);
       }
-      dispatch(login(data));
-      filtroUsuarios({obtenerEnum: true}, dispatch);
     }
   } catch (error) {
     const {msg} = error.response.data;
@@ -126,6 +141,7 @@ export const logout = async (dispatch, navigate, idUser) => {
       socket.disconnect();
     }
     localStorage.removeItem('token');
+    localStorage.removeItem('connect');
     dispatch(login([]));
     dispatch(cargarUsuariosSuccess([]));
     dispatch(cargarDBs([]));

@@ -9,4 +9,4 @@ const GetControllerDB = async () => {
   }
 };
 
-export default GetControllerDB;
+module.exports = {GetControllerDB};

@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {conectarDB} from '../../redux/actions';
 import {alertSuccess} from '../../helpers/Alertas';
+import {connectedDB} from '../../redux/appSlice';
 
 const ConectarDBs = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const ConectarDBs = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const msg = await conectarDB(values, dispatch, token);
+      localStorage.setItem('connect', values.nombre);
+      dispatch(connectedDB(values.nombre));
       alertSuccess(msg);
     },
   });

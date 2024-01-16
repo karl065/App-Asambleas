@@ -5,10 +5,11 @@ const {
   putControllerUser,
 } = require('../Controllers/ControllersUsers/PutControllerUsers');
 const {conectarDB} = require('../config/DB');
-const {
-  default: GetControllerDB,
-} = require('../Controllers/ControllersDB/GetControllerDB');
+
 const {default: mongoose} = require('mongoose');
+const {
+  GetControllerDB,
+} = require('../Controllers/ControllersDB/GetControllerDB');
 const {SECRETA} = process.env;
 
 const authenticateUser = async (documento, password) => {
@@ -77,6 +78,7 @@ const authenticateUser = async (documento, password) => {
               respuestas: userLogin.respuestas,
               autorizador: userLogin.autorizador,
               autorizado: userLogin.autorizado,
+              connectedDB: 'DBAdmin',
             };
             resolve(auth);
           }
@@ -86,6 +88,8 @@ const authenticateUser = async (documento, password) => {
       await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
       const DBs = await GetControllerDB();
       let user;
+      let connectedDB;
+
       for (let i = 1; i < DBs.length; i++) {
         await mongoose.disconnect();
         await conectarDB(DBs[i].nombre, ['DBsAdmin']);
@@ -94,14 +98,12 @@ const authenticateUser = async (documento, password) => {
           .populate('autorizador')
           .populate('autorizado')
           .populate('predios');
-        console.log(user);
-        if (user) break;
+
+        if (user) {
+          connectedDB = DBs[i].nombre;
+          break;
+        }
       }
-      // const user = await Usuarios.findOne({documento})
-      //   .populate('respuestas')
-      //   .populate('autorizador')
-      //   .populate('autorizado')
-      //   .populate('predios');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
 
@@ -159,6 +161,7 @@ const authenticateUser = async (documento, password) => {
               respuestas: userLogin.respuestas,
               autorizador: userLogin.autorizador,
               autorizado: userLogin.autorizado,
+              connectedDB: connectedDB,
             };
             resolve(auth);
           }
@@ -166,6 +169,7 @@ const authenticateUser = async (documento, password) => {
       });
     }
   } catch (error) {
+    console.log({error: error.message});
     throw error;
   }
 };

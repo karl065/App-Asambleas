@@ -1,11 +1,12 @@
 import {useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import * as Yup from 'yup';
-import Sidebar from '../../../../components/Sidebar/Sidebar';
+
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {useState} from 'react';
 import {crearPreguntas} from '../../../../redux/actions';
 import {alertSuccess} from '../../../../helpers/Alertas';
+import RespuestasInputs from '../../../../components/CatnRespuestas/CantRespuestas';
 
 const CrearPreguntas = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const CrearPreguntas = () => {
         {length: parseInt(cantRespuestas) || 0},
         (_, index) => ({
           opcion: String.fromCharCode(65 + index),
-          respuesta: `Respuesta ${index + 1}`,
+          respuesta: ``,
         })
       ),
     },
@@ -46,45 +47,6 @@ const CrearPreguntas = () => {
     },
   });
 
-  // Función para habilitar los campos de respuesta según la cantidad seleccionada
-  const renderRespuestasInputs = () => {
-    const respuestasInputs = [];
-    for (let i = 0; i < formik.values.cantidadRespuestas; i++) {
-      const respuesta = formik.values.respuestas[i] || {}; // Acceder de manera segura
-      respuestasInputs.push(
-        <div key={i} className="space-y-2">
-          <label
-            className="text-white"
-            htmlFor={`respuestas.${i}.opcion`}
-          >{`Opcion ${respuesta.opcion || ''}.`}</label>
-          <input
-            type="text"
-            id={`respuestas.${i}.respuesta`}
-            name={`respuestas.${i}.respuesta`}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={respuesta.respuesta || ''}
-            className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-              formik.touched.respuestas?.[i]?.respuesta &&
-              formik.errors.respuestas?.[i]?.respuesta
-                ? 'border-red-500'
-                : ''
-            }`}
-            placeholder={`Respuesta ${respuesta.opcion || ''}`}
-          />
-          {formik.touched.respuestas?.[i]?.respuesta &&
-            formik.errors.respuestas?.[i]?.respuesta && (
-              <div className="text-red-500 text-xs">
-                {formik.errors.respuestas[i].respuesta}
-              </div>
-            )}
-        </div>
-      );
-    }
-
-    return respuestasInputs;
-  };
-
   const handleCantidadRespuestasChange = (e) => {
     const newValue = e.target.value;
     setCantRespuestas(newValue);
@@ -93,15 +55,14 @@ const CrearPreguntas = () => {
       'respuestas',
       Array.from({length: parseInt(newValue) || 0}, (_, index) => ({
         opcion: String.fromCharCode(65 + index),
-        respuesta: `Respuesta ${index + 1}`,
+        respuesta: ``,
       }))
     );
   };
 
   return (
     <div className="flex p-2 ">
-      <Sidebar />
-      <div className="bg-black opacity-70 w-full ml-2 rounded-lg p-5 space-y-5 overflow-y-auto">
+      <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5 overflow-y-auto">
         <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -155,7 +116,13 @@ const CrearPreguntas = () => {
                       </div>
                     ) : null}
                   </div>
-                  {renderRespuestasInputs()}
+                  <RespuestasInputs
+                    values={formik.values.respuestas}
+                    touched={formik.touched.respuestas}
+                    errors={formik.errors}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
                   <div>
                     <button
                       type="submit"

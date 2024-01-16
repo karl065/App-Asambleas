@@ -1,6 +1,6 @@
 const {default: mongoose} = require('mongoose');
 const {
-  default: GetControllerDB,
+  GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB.js');
 const Usuarios = require('../Models/Usuarios.js');
 const {conectarDB} = require('../config/DB.js');
@@ -16,8 +16,11 @@ const authenticatedUser = async ({id, role}) => {
         .populate('autorizado');
 
       if (!user) throw new Error('User not found');
+      const userObject = user.toObject();
 
-      return user;
+      userObject.connectedDB = 'DBAdmin';
+
+      return userObject;
     } else {
       await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
       const DBs = await GetControllerDB();
@@ -30,8 +33,10 @@ const authenticatedUser = async ({id, role}) => {
           .populate('autorizador')
           .populate('autorizado')
           .populate('predios');
-        console.log(user);
-        if (user) break;
+        if (user) {
+          user.connectedDB = DBs[i].nombre;
+          break;
+        }
       }
       return user;
     }

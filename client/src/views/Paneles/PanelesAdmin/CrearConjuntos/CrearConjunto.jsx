@@ -1,4 +1,3 @@
-import Sidebar from '../../../../components/Sidebar/Sidebar';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
@@ -132,8 +131,7 @@ const CrearConjunto = () => {
   }, [db]);
   return (
     <div className="flex p-2 ">
-      <Sidebar />
-      <div className="bg-black opacity-70 w-full m-2 rounded-lg p-5 space-y-5">
+      <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5">
         <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
           <div>
             <input

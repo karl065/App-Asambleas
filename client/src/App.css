@@ -11,8 +11,6 @@ body,
 
 #root {
   display: flex;
-  align-items: center;
-  justify-content: center;
   background-image: url("https://res.cloudinary.com/dpjeltekx/image/upload/v1700513237/asambleas/app/cor033-p0rx9wxdjqomx5p3zagnjmxt8p9rq3u5vkm64ws774_omnhyo.jpg");
   background-size: cover;
   background-position: center;
