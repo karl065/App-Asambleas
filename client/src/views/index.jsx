@@ -8,7 +8,8 @@ import CrearPredios from './Paneles/PanelesAdmin/CrearPredios/CrearPredios.jsx';
 import ActualizarUsuarios from './Paneles/PanelesAdmin/ActualizarUsuarios/ActualizarUsuarios.jsx';
 import CrearPreguntas from './Paneles/PanelesAdmin/CrearPreguntas/CrearPreguntas.jsx';
 import GestionarPreguntas from './Paneles/PanelesAdmin/GestionarPreguntas/GestionarPreguntas.jsx';
-import ActualizarPreguntas from './Paneles/PanelesAdmin/ActualizarPreguntas/AtualizarPreguntas.jsx';
+import ActualizarPreguntas from './Paneles/PanelesAdmin/ActualizarPreguntas/ActualizarPreguntas.jsx';
+import ControlAsamblea from './Paneles/PanelesAdmin/ControlAsamblea/ControlAsamblea.jsx';
 
 export {
   Login,
@@ -22,4 +23,5 @@ export {
   CrearPreguntas,
   GestionarPreguntas,
   ActualizarPreguntas,
+  ControlAsamblea,
 };

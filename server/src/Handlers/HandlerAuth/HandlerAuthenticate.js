@@ -9,6 +9,7 @@ const handlerAuthenticate = async (req, res) => {
     // console.log(token);
     return res.status(200).json(token);
   } catch (error) {
+    console.log(error);
     return res.status(401).json(error);
   }
 };

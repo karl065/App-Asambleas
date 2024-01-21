@@ -11,10 +11,11 @@ import {
   connectedDB,
   crearDB,
   login,
+  setLoading,
 } from './appSlice';
 import server from '../conexiones/conexiones';
 import io from 'socket.io-client';
-import {alertInfo, alertSuccess} from '../helpers/Alertas';
+import {alertInfo, alertSuccess, alertWarning} from '../helpers/Alertas';
 import {isTokenExpired} from '../helpers/Verificacion';
 
 let socket;
@@ -69,10 +70,13 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         dispatch(cargarUsuariosSuccess(data));
       });
     }
+    dispatch(setLoading(false));
     dispatch(connectedDB(data.connectedDB));
     dispatch(login(data));
   } catch (error) {
-    console.log({error: error.message});
+    const {data} = error.response;
+    alertWarning(data);
+    dispatch(setLoading(false));
   }
 };
 
@@ -100,6 +104,8 @@ export const reLogin = async (token, dispatch, navigate) => {
             navigate('/usuario');
           } else {
             navigate('/admin');
+            localStorage.setItem('connect', 'DBAdmin');
+            dispatch(connectedDB('DBAdmin'));
             const response = await axios.get(`${server.api.baseURL}DB`, {
               headers: {
                 'x-auth-token': token,
@@ -136,18 +142,23 @@ export const logout = async (dispatch, navigate, idUser) => {
       await axios.put(`${server.api.baseURL}users/${idUser}`, {
         userStatus: false,
       });
-    }
-    if (socket) {
-      socket.disconnect();
+      socket.emit('logoutUsuario', (usuariosActualizados) => {
+        // Manejar la respuesta del servidor y actualizar el estado
+        dispatch(cargarUsuariosSuccess(usuariosActualizados));
+      });
+
+      if (socket) {
+        socket.disconnect();
+      }
     }
     localStorage.removeItem('token');
     localStorage.removeItem('connect');
     dispatch(login([]));
     dispatch(cargarUsuariosSuccess([]));
     dispatch(cargarDBs([]));
-    navigate('/');
+    navigate && navigate('/');
   } catch (error) {
-    console.log({error: error.message});
+    console.log({error: error});
   }
 };
 

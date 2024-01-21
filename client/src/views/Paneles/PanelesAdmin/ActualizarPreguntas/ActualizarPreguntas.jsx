@@ -7,12 +7,12 @@ import * as Yup from 'yup';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
+import {crearPreguntas} from '../../../../redux/actions';
+import RespuestasInputs from '../../../../components/CantRespuestas/CantRespuestas';
 import {
-  actualizarPreguntas,
-  actualizarRespuestas,
-  crearPreguntas,
-} from '../../../../redux/actions';
-import RespuestasInputs from '../../../../components/CatnRespuestas/CantRespuestas';
+  actualizarPreguntaYRespuestas,
+  getRespuestasCambiadas,
+} from '../../../../helpers/HelpersPreguntas';
 
 const ActualizarPreguntas = () => {
   const dispatch = useDispatch();
@@ -76,6 +76,7 @@ const ActualizarPreguntas = () => {
       ) {
         // Pregunta ha cambiado o hay respuestas modificadas
         await actualizarPreguntaYRespuestas(
+          selectedPregunta,
           selectedPregunta._id,
           values,
           respuestasCambiadas,
@@ -84,46 +85,6 @@ const ActualizarPreguntas = () => {
       }
     },
   });
-
-  // Función para obtener las respuestas que han cambiado
-  const getRespuestasCambiadas = (respuestasOriginales, respuestasNuevas) => {
-    return respuestasNuevas
-      .map((respuestaNueva, index) => {
-        const respuestaOriginal = respuestasOriginales[index] || {};
-
-        if (respuestaOriginal.respuesta !== respuestaNueva.respuesta) {
-          return {
-            idRespuesta: respuestaOriginal._id,
-            dataUpdate: {respuesta: respuestaNueva.respuesta},
-          };
-        }
-
-        return null;
-      })
-      .filter(Boolean);
-  };
-
-  // Función para actualizar la pregunta y respuestas
-  const actualizarPreguntaYRespuestas = async (
-    idPregunta,
-    values,
-    respuestasCambiadas,
-    dispatch
-  ) => {
-    // Actualizar la pregunta si ha cambiado
-    if (selectedPregunta.pregunta !== values.pregunta) {
-      await actualizarPreguntas(
-        idPregunta,
-        {pregunta: values.pregunta},
-        dispatch
-      );
-    }
-
-    // Actualizar las respuestas cambiadas
-    respuestasCambiadas.forEach(async ({idRespuesta, dataUpdate}) => {
-      await actualizarRespuestas(idRespuesta, dataUpdate, dispatch);
-    });
-  };
 
   const handleEliminarRespuestas = (index) => {
     const idRespuesta = selectedPregunta.respuestas[index]?._id;
@@ -221,7 +182,7 @@ const ActualizarPreguntas = () => {
   }, [selectedPregunta]);
 
   return (
-    <div className="flex p-2 border ">
+    <div className="flex">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5 overflow-y-auto">
         <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">

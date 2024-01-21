@@ -169,8 +169,7 @@ const authenticateUser = async (documento, password) => {
       });
     }
   } catch (error) {
-    console.log({error: error.message});
-    throw error;
+    throw error.message;
   }
 };
 

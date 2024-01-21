@@ -4,6 +4,7 @@ import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import {
   ActualizarPreguntas,
   ActualizarUsuarios,
+  ControlAsamblea,
   CrearConjunto,
   CrearPredios,
   CrearPreguntas,
@@ -23,8 +24,9 @@ import NavBar from './components/NavBar/NavBar';
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  const {pathname} = useLocation();
   const token = localStorage.getItem('token');
+
   useEffect(() => {
     if (!token) {
       logout(dispatch, navigate);
@@ -34,15 +36,15 @@ function App() {
   }, []);
 
   return (
-    <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2">
-      {location.pathname !== '/' && <Sidebar />}
+    <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2 space-x-2">
+      {pathname !== '/' ? <Sidebar /> : ''}
       <div
-        className={`w-full h-full ${
-          location.pathname === '/' && 'flex justify-center items-center '
+        className={`w-full h-full space-y-2 ${
+          pathname === '/' ? 'flex items-center justify-center' : ''
         }`}
       >
-        {location.pathname !== '/' && <NavBar />}
-        <div className="flex-1 overflow-y-auto">
+        {pathname !== '/' ? <NavBar /> : ''}
+        <div className={pathname !== '/' ? 'flex-1 overflow-y-auto' : ''}>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<IngresoAdmin />} />
@@ -61,6 +63,7 @@ function App() {
               path="/ActualizarPreguntas"
               element={<ActualizarPreguntas />}
             />
+            <Route path="/ControlAsambleas" element={<ControlAsamblea />} />
           </Routes>
         </div>
       </div>

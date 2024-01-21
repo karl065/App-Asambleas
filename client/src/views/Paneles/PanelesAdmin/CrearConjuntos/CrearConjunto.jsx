@@ -130,7 +130,7 @@ const CrearConjunto = () => {
     setUsuarios([]);
   }, [db]);
   return (
-    <div className="flex p-2 ">
+    <div className="flex">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5">
         <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
           <div>

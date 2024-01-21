@@ -14,6 +14,11 @@ const Sidebar = () => {
   const handleLogout = useCallback(
     (e) => {
       e.preventDefault();
+      if (login.autorizador.length > 0) {
+        login.autorizador.map((propietario) => {
+          logout(dispatch, null, propietario._id);
+        });
+      }
       logout(dispatch, navigate, login.id);
     },
     [dispatch, navigate, login.id]
@@ -205,6 +210,27 @@ const Sidebar = () => {
                       className="text-white flex-grow"
                     >
                       <span>Actualizar Preguntas</span>
+                    </Link>
+                  )}
+                </li>
+                <hr className="my-2" />
+                <li
+                  className={`flex w-full ${
+                    location.pathname === '/ControlAsambleas'
+                      ? 'opacity-60 cursor-not-allowed'
+                      : ''
+                  }`}
+                >
+                  {location.pathname === '/ControlAsambleas' ? (
+                    <span className=" text-white flex-grow">
+                      Monitoreo Asambleas
+                    </span>
+                  ) : (
+                    <Link
+                      to="/ControlAsambleas"
+                      className="text-white flex-grow"
+                    >
+                      <span>Monitoreo Asambleas</span>
                     </Link>
                   )}
                 </li>
