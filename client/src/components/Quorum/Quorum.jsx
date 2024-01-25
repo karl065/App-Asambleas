@@ -7,10 +7,9 @@ import {setActivos} from '../../redux/appSlice';
 
 const Quorum = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
-
   const dispatch = useDispatch();
 
-  const [data, setData] = useState([]);
+  const [percent, setPercent] = useState(0);
   const [porcentajeUsuarios, setPorcentajeUsuarios] = useState(0);
   const [sumaCoeficientes, setSumaCoeficientes] = useState(0);
   const [usuariosEnTrue, setUsuariosEnTrue] = useState('');
@@ -45,10 +44,11 @@ const Quorum = () => {
 
         setUsuariosEnTrue(usuariosQuorum.length);
 
-        setData([
-          {x: 'Quórum', y: porcentaje},
-          {x: 'Faltante', y: 100 - porcentaje},
-        ]);
+        setPercent(porcentaje);
+
+        if (porcentaje > 51) {
+          alertSuccess('Quorum Alcanzado');
+        }
       }
     };
 
@@ -59,19 +59,47 @@ const Quorum = () => {
     dispatch(setActivos(usuariosEnTrue));
   }, [usuariosEnTrue]);
 
-  useEffect(() => {
-    if (porcentajeUsuarios > 51) alertSuccess('Quorum Alcanzado');
-  }, [porcentajeUsuarios]);
-
   return (
-    <div className="flex items-center space-x-4 uppercase">
-      <div>
-        <VictoryPie
-          data={data}
-          colorScale={['green', 'red']}
-          labels={({datum}) => `${datum.x}: ${datum.y.toFixed(0)}%`}
-          labelComponent={<VictoryLabel style={{fill: 'white'}} />}
-        />
+    <div className="flex items-center justify-center space-x-10 uppercase">
+      <div className="border-2 rounded-lg">
+        <svg viewBox="0 0 400 400" width="100%" height="100%">
+          <VictoryPie
+            standalone={false}
+            animate={{duration: 1000}}
+            width={400}
+            height={400}
+            data={[
+              {x: 'Quórum', y: percent},
+              {x: 'Faltante', y: 100 - percent},
+            ]}
+            innerRadius={120}
+            cornerRadius={25}
+            labels={() => null}
+            style={{
+              data: {
+                fill: ({datum}) =>
+                  datum.x === 'Quórum'
+                    ? porcentajeUsuarios > 50
+                      ? 'green'
+                      : 'red'
+                    : 'transparent',
+              },
+            }}
+          />
+          <VictoryLabel
+            textAnchor="middle"
+            verticalAnchor="middle"
+            x={200}
+            y={200}
+            text={`${Math.round(percent)}%`}
+            style={{
+              fontSize: 45,
+              fontWeight: 'bold',
+              stroke: 'white',
+              fill: porcentajeUsuarios > 50 ? 'green' : 'red',
+            }}
+          />
+        </svg>
       </div>
       <div className="bg-black opacity-70 rounded-lg p-5 space-y-5 overflow-y-auto font-extrabold text-white">
         <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">

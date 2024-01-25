@@ -1,46 +1,32 @@
 const {default: mongoose} = require('mongoose');
-const {
-  GetControllerDB,
-} = require('../Controllers/ControllersDB/GetControllerDB.js');
 const Usuarios = require('../Models/Usuarios.js');
 const {conectarDB} = require('../config/DB.js');
 
-const authenticatedUser = async ({id, role}) => {
+const authenticatedUser = async ({id, role, connectedDB}) => {
   try {
-    if (role === 'SuperAdmin') {
-      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
-      const user = await Usuarios.findById(id)
-        .select('-password')
-        .populate('respuestas')
-        .populate('autorizador')
-        .populate('autorizado');
+    await conectarDB(
+      connectedDB,
+      role === 'SuperAdmin'
+        ? ['Preguntas', 'Respuestas', 'Predios']
+        : ['DBsAdmin']
+    );
 
-      if (!user) throw new Error('User not found');
-      const userObject = user.toObject();
-
-      userObject.connectedDB = 'DBAdmin';
-
-      return userObject;
-    } else {
-      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
-      const DBs = await GetControllerDB();
-      let user;
-      for (let i = 1; i < DBs.length; i++) {
-        await conectarDB(DBs[i].nombre, ['DBsAdmin']);
-        user = await Usuarios.findById(id)
-          .select('-password')
-          .populate('respuestas')
-          .populate('autorizador')
-          .populate('autorizado')
-          .populate('predios');
-        if (user) {
-          user.connectedDB = DBs[i].nombre;
-          break;
-        }
-      }
-      return user;
+    let user = await Usuarios.findById(id)
+      .select('-password')
+      .populate('respuestas')
+      .populate('autorizador')
+      .populate('autorizado');
+    if (role !== 'SuperAdmin') {
+      // Si no es SuperAdmin, también se deben cargar las poblaciones adicionales
+      user = await user.populate('predios');
     }
+
+    const userObject = user.toObject();
+
+    userObject.connectedDB = connectedDB;
+    return userObject;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

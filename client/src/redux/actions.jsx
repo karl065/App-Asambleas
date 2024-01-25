@@ -62,6 +62,8 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
             'x-auth-token': data.token,
           },
         });
+
+        console.log(response.data);
         dispatch(cargarDBs(response.data));
         navigate('/admin');
       }
@@ -104,8 +106,8 @@ export const reLogin = async (token, dispatch, navigate) => {
             navigate('/usuario');
           } else {
             navigate('/admin');
-            localStorage.setItem('connect', 'DBAdmin');
-            dispatch(connectedDB('DBAdmin'));
+            localStorage.setItem('connect', data.connectedDB);
+            dispatch(connectedDB(data.connectedDB));
             const response = await axios.get(`${server.api.baseURL}DB`, {
               headers: {
                 'x-auth-token': token,
@@ -120,6 +122,7 @@ export const reLogin = async (token, dispatch, navigate) => {
             dispatch(cargarUsuariosSuccess(data));
           });
         }
+
         dispatch(connectedDB(data.connectedDB));
         dispatch(login(data));
         filtroUsuarios({obtenerEnum: true}, dispatch);
@@ -150,13 +153,20 @@ export const logout = async (dispatch, navigate, idUser) => {
       if (socket) {
         socket.disconnect();
       }
+      localStorage.removeItem('token');
+      localStorage.removeItem('connect');
+      dispatch(login([]));
+      dispatch(cargarUsuariosSuccess([]));
+      dispatch(cargarDBs([]));
+      navigate && navigate('/');
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('connect');
+      dispatch(login([]));
+      dispatch(cargarUsuariosSuccess([]));
+      dispatch(cargarDBs([]));
+      navigate && navigate('/');
     }
-    localStorage.removeItem('token');
-    localStorage.removeItem('connect');
-    dispatch(login([]));
-    dispatch(cargarUsuariosSuccess([]));
-    dispatch(cargarDBs([]));
-    navigate && navigate('/');
   } catch (error) {
     console.log({error: error});
   }

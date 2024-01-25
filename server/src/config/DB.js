@@ -73,7 +73,7 @@ const conectarDB = async (DB, excludeModels = []) => {
     } else {
       DB = DB.replace(/\s/g, '_');
       connection = await mongoose.connect(`${DB_MONGODB}${DB}`);
-      connection.connection.set('poolSize', 10);
+      connection.connection.set('maxPoolSize', 10);
       console.log(`MongoDB Conectado en: ${DB}`);
 
       // Obtener una lista de todos los modelos registrados

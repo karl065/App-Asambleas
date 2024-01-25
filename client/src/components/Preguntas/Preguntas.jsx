@@ -23,7 +23,7 @@ const Preguntas = ({pregunta}) => {
     }));
     setDataPreguntas(respuestas);
   };
-  console.log(dataPreguntas);
+
   useEffect(() => {
     transformPreguntas();
   }, [pregunta]);

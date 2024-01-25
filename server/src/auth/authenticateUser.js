@@ -14,10 +14,13 @@ const {SECRETA} = process.env;
 
 const authenticateUser = async (documento, password) => {
   try {
+    await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
+    let user;
+    let connectedDB;
+    let usuarioLogin;
+    const DBs = await GetControllerDB();
     if (documento === 'SuperAdmin') {
-      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
-
-      const user = await Usuarios.findOne({documento})
+      user = await Usuarios.findOne({documento})
         .populate('respuestas')
         .populate('autorizador')
         .populate('autorizado');
@@ -28,15 +31,6 @@ const authenticateUser = async (documento, password) => {
         throw new Error('Usuario o email incorrectos');
       }
 
-      let usuarioLogin;
-      if (user.autorizador.length !== 0) {
-        user.autorizador.map((usuario) => {
-          putControllerUser({userStatus: true}, usuario._id);
-        });
-        usuarioLogin = putControllerUser({userStatus: true}, user._id);
-      } else {
-        usuarioLogin = putControllerUser({userStatus: true}, user._id);
-      }
       const userLogin = await Usuarios.findOne({documento})
         .populate('respuestas')
         .populate('autorizador')
@@ -45,6 +39,7 @@ const authenticateUser = async (documento, password) => {
         user: {
           id: userLogin._id,
           role: userLogin.role,
+          connectedDB: 'DBAdmin',
         },
       };
 
@@ -85,14 +80,8 @@ const authenticateUser = async (documento, password) => {
         );
       });
     } else {
-      await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
-      const DBs = await GetControllerDB();
-      let user;
-      let connectedDB;
-
-      for (let i = 1; i < DBs.length; i++) {
-        await mongoose.disconnect();
-        await conectarDB(DBs[i].nombre, ['DBsAdmin']);
+      for (const db of DBs.slice(1)) {
+        await conectarDB(db.nombre, ['DBsAdmin']);
         user = await Usuarios.findOne({documento})
           .populate('respuestas')
           .populate('autorizador')
@@ -100,18 +89,17 @@ const authenticateUser = async (documento, password) => {
           .populate('predios');
 
         if (user) {
-          connectedDB = DBs[i].nombre;
+          connectedDB = db.nombre;
           break;
         }
       }
-
+      if (user.userStatus) throw new Error('El usuario ya esta en asamblea');
       const passwordValid = await bcryptjs.compare(password, user.password);
 
       if (!user || !passwordValid) {
         throw new Error('Usuario o email incorrectos');
       }
 
-      let usuarioLogin;
       if (user.autorizador.length !== 0) {
         user.autorizador.map((usuario) => {
           putControllerUser({userStatus: true}, usuario._id);
@@ -128,6 +116,7 @@ const authenticateUser = async (documento, password) => {
         user: {
           id: userLogin._id,
           role: userLogin.role,
+          connectedDB: connectedDB,
         },
       };
 

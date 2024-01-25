@@ -14,7 +14,7 @@ const Sidebar = () => {
   const handleLogout = useCallback(
     (e) => {
       e.preventDefault();
-      if (login.autorizador.length > 0) {
+      if (login && login.autorizador && login.autorizador.length > 0) {
         login.autorizador.map((propietario) => {
           logout(dispatch, null, propietario._id);
         });
