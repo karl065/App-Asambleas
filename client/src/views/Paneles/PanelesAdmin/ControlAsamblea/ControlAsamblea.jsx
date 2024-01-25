@@ -1,9 +1,11 @@
 import {useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import Quorum from '../../../../components/Quorum/Quorum';
+import Preguntas from '../../../../components/Preguntas/Preguntas';
 
 const ControlAsamblea = () => {
   const dbConnected = useSelector((state) => state.asambleas.DBConectada);
+  const preguntas = useSelector((state) => state.asambleas.preguntas);
   return (
     <div className="flex">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5 overflow-y-auto">
@@ -14,9 +16,18 @@ const ControlAsamblea = () => {
             </h1>
             <ConectarDBs />
             {dbConnected !== 'DBAdmin' && (
-              <div>
-                <Quorum />
-              </div>
+              <>
+                <div>
+                  <Quorum />
+                </div>
+                <div className="flex space-x-2">
+                  {preguntas.map((pregunta) => (
+                    <div key={pregunta._id}>
+                      <Preguntas pregunta={pregunta} />
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>

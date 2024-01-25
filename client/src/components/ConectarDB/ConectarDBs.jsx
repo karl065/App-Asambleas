@@ -3,11 +3,13 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {conectarDB} from '../../redux/actions';
 import {alertSuccess} from '../../helpers/Alertas';
-import {connectedDB} from '../../redux/appSlice';
+import {connectedDB, setLoading} from '../../redux/appSlice';
+import {InfinitySpin} from 'react-loader-spinner';
 
 const ConectarDBs = () => {
   const dispatch = useDispatch();
   const DBS = useSelector((state) => state.asambleas.DBS);
+  const loading = useSelector((state) => state.asambleas.loading);
   const token = localStorage.getItem('token');
 
   const validationSchema = Yup.object({
@@ -20,9 +22,11 @@ const ConectarDBs = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      dispatch(setLoading(true));
       const msg = await conectarDB(values, dispatch, token);
       localStorage.setItem('connect', values.nombre);
       dispatch(connectedDB(values.nombre));
+      dispatch(setLoading(false));
       alertSuccess(msg);
     },
   });
@@ -54,6 +58,18 @@ const ConectarDBs = () => {
               <div className="text-red-500 text-xs">{formik.errors.nombre}</div>
             )}
           </div>
+          {loading ? (
+            <div>
+              <InfinitySpin
+                visible={true}
+                width="100"
+                color="blue"
+                ariaLabel="infinity-spin-loading"
+              />
+            </div>
+          ) : (
+            ''
+          )}
           <div className="flex-1  flex justify-center items-center">
             <button
               type="submit"

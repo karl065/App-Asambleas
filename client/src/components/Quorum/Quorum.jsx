@@ -1,20 +1,36 @@
-import {useSelector} from 'react-redux';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useDispatch, useSelector} from 'react-redux';
 import {VictoryLabel, VictoryPie} from 'victory';
 import {useState, useEffect} from 'react';
 import {alertSuccess} from '../../helpers/Alertas';
+import {setActivos} from '../../redux/appSlice';
 
 const Quorum = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
+
+  const dispatch = useDispatch();
+
   const [data, setData] = useState([]);
   const [porcentajeUsuarios, setPorcentajeUsuarios] = useState(0);
   const [sumaCoeficientes, setSumaCoeficientes] = useState(0);
   const [usuariosEnTrue, setUsuariosEnTrue] = useState('');
   const db = useSelector((state) => state.asambleas.DBConectada);
 
+  const propietarios = usuarios.filter(
+    (usuario) =>
+      usuario.role === 'Propietario' ||
+      usuario.role === 'Propietario-Empoderado'
+  );
+
   useEffect(() => {
     const fetchData = () => {
       if (db !== 'DBAdmin' && usuarios) {
-        const usuariosQuorum = usuarios.filter((usuario) => usuario.userStatus);
+        const usuariosQuorum = usuarios.filter(
+          (usuario) =>
+            usuario.userStatus &&
+            (usuario.role === 'Propietario' ||
+              usuario.role === 'Propietario-Empoderado')
+        );
 
         setSumaCoeficientes(
           usuariosQuorum.reduce(
@@ -23,7 +39,7 @@ const Quorum = () => {
           )
         );
 
-        const porcentaje = (usuariosQuorum.length / usuarios.length) * 100;
+        const porcentaje = (usuariosQuorum.length / propietarios.length) * 100;
 
         setPorcentajeUsuarios(porcentaje);
 
@@ -38,6 +54,10 @@ const Quorum = () => {
 
     fetchData();
   }, [db, usuarios]);
+
+  useEffect(() => {
+    dispatch(setActivos(usuariosEnTrue));
+  }, [usuariosEnTrue]);
 
   useEffect(() => {
     if (porcentajeUsuarios > 51) alertSuccess('Quorum Alcanzado');
@@ -70,11 +90,11 @@ const Quorum = () => {
             </div>
             <p>
               <br />
-              Total de Propietarios: {usuarios.length}
+              Total de Propietarios: {propietarios.length}
               <br />
               Propietarios Conectados: {usuariosEnTrue}
               <br />
-              Propietarios Desconectados: {usuarios.length - usuariosEnTrue}
+              Propietarios Desconectados: {propietarios.length - usuariosEnTrue}
             </p>
           </div>
         </div>
