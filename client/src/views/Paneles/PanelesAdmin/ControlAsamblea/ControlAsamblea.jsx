@@ -28,8 +28,7 @@ const ControlAsamblea = () => {
             </h1>
             <ConectarDBs />
             <div className="w-full space-y-2">
-              {/* {dbConnected !== 'DBAdmin' && (
-                <div> */}
+              {' '}
               <div className="w-full flex-col space-y-2">
                 <div>
                   <button
@@ -76,8 +75,6 @@ const ControlAsamblea = () => {
                   </div>
                 )}
               </div>
-              {/* </div>
-              )} */}
             </div>
           </div>
         </div>
