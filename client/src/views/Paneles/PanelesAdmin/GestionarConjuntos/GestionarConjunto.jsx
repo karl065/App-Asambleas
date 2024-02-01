@@ -5,7 +5,7 @@ import {useState} from 'react';
 import Tabla from '../../../../components/Tabla/Tabla';
 import {FcCollapse} from 'react-icons/fc';
 import {FcExpand} from 'react-icons/fc';
-import Switch from '@material-ui/core/Switch';
+import Switch from '@mui/material/Switch';
 import {PiNotePencilFill} from 'react-icons/pi';
 import {useDispatch, useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
