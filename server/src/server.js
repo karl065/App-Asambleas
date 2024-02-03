@@ -10,7 +10,7 @@ const server = express();
 const httpServer = http.createServer(server); // Crea un servidor HTTP
 const io = socketIO(httpServer, {
   cors: {
-    origin: 'http://localhost:5173', // Ajusta según tu configuración de React
+    origin: '*', // Ajusta según tu configuración de React
     methods: ['GET', 'POST'],
   },
 }); // Crea una instancia de Socket.io
