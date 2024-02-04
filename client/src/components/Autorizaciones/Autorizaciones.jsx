@@ -21,7 +21,7 @@ const Autorizaciones = ({idUser}) => {
   };
 
   return (
-    <div>
+    <div className="space-y-2">
       <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem] space-x-2">
         <input
           className={`rounded-xl ${

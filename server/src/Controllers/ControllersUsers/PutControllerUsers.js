@@ -9,10 +9,13 @@ const putControllerUser = async (updateUser, idUser) => {
     // Verifica si se proporcionó un idEmpoderado
     if (autorizado) {
       // Cambia el rol del usuario B a 'Propietario-Empoderado'
-      await Usuarios.updateOne(
-        {_id: autorizado},
-        {role: 'Propietario-Empoderado'}
-      );
+      const usuario = await Usuarios.findById(autorizado);
+      if (usuario.role === 'Propietario') {
+        await Usuarios.updateOne(
+          {_id: autorizado},
+          {role: 'Propietario-Empoderado'}
+        );
+      }
 
       // Asocia el usuario B con el usuario A (autorizador) sin borrar los anteriores
       const usuarioAutorizador = await Usuarios.findById(idUser);

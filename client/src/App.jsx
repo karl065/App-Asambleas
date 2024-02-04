@@ -2,10 +2,12 @@
 import './App.css';
 import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import {
+  ActualizarDatos,
   ActualizarPreguntas,
   ActualizarUsuarios,
   ControlAsamblea,
   CrearConjunto,
+  CrearEmpoderado,
   CrearPredios,
   CrearPreguntas,
   CrearUsuarios,
@@ -16,14 +18,16 @@ import {
   Login,
 } from './views';
 import {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logout, reLogin} from './redux/actions';
 import Sidebar from './components/Sidebar/Sidebar';
 import NavBar from './components/NavBar/NavBar';
+import SidebarUsuario from './components/Sidebar/SidebarUsuario';
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const login = useSelector((state) => state.asambleas.login);
   const {pathname} = useLocation();
   const token = localStorage.getItem('token');
 
@@ -37,7 +41,15 @@ function App() {
 
   return (
     <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2 space-x-2">
-      {pathname !== '/' ? <Sidebar /> : ''}
+      {pathname !== '/' ? (
+        login.role !== 'SuperAdmin' && login.role !== 'Admin' ? (
+          <SidebarUsuario />
+        ) : (
+          <Sidebar />
+        )
+      ) : (
+        ''
+      )}
       <div
         className={`w-full h-full space-y-2 ${
           pathname === '/' ? 'flex items-center justify-center' : ''
@@ -64,6 +76,8 @@ function App() {
               element={<ActualizarPreguntas />}
             />
             <Route path="/ControlAsambleas" element={<ControlAsamblea />} />
+            <Route path="/ActualizarDatos" element={<ActualizarDatos />} />
+            <Route path="/CrearEmpoderado" element={<CrearEmpoderado />} />
           </Routes>
         </div>
       </div>
