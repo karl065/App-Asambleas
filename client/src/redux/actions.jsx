@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {
   actualizarPregunta,
-  actualizarUsuario,
+  // actualizarUsuario,
   cargarDBs,
   cargarPredios,
   cargarPreguntas,
@@ -65,8 +65,11 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         navigate('/admin');
       }
 
-      socket.emit('login', (usuariosActualizados) => {
-        dispatch(cargarUsuariosSuccess(usuariosActualizados));
+      await new Promise((resolve) => {
+        socket.emit('login', (usuariosActualizados) => {
+          dispatch(cargarUsuariosSuccess(usuariosActualizados));
+          resolve();
+        });
       });
     }
     dispatch(setLoading(false));
@@ -146,9 +149,6 @@ export const logout = async (dispatch, navigate, idUser) => {
         // Manejar la respuesta del servidor y actualizar el estado
         dispatch(cargarUsuariosSuccess(usuariosActualizados));
       });
-      // if (socket) {
-      //   socket.disconnect();
-      // }
       localStorage.removeItem('token');
       localStorage.removeItem('connect');
       dispatch(login([]));
@@ -221,12 +221,13 @@ export const conectarDB = async (DB, dispatch, token) => {
 
 export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
   try {
-    const {data} = await axios.put(
-      `${server.api.baseURL}users/${idUser}`,
-      dataUpdate
-    );
+    // const { data } =
+    await axios.put(`${server.api.baseURL}users/${idUser}`, dataUpdate);
+    socket.emit('login', (usuariosActualizados) => {
+      dispatch(cargarUsuariosSuccess(usuariosActualizados));
+    });
 
-    dispatch(actualizarUsuario({_id: idUser, data}));
+    // dispatch(actualizarUsuario({_id: idUser, data}));
   } catch (error) {
     console.log(error);
   }
@@ -257,10 +258,13 @@ export const crearPreguntas = async (pregunta, dispatch, idPregunta) => {
 
       await Promise.all(promises);
 
-      const response = await axios.get(`${server.api.baseURL}preguntas`);
+      // const response = await axios.get(`${server.api.baseURL}preguntas`);
 
-      dispatch(cargarPreguntas(response.data));
+      // // dispatch(cargarPreguntas(response.data));
     }
+    socket.emit('crearPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
   } catch (error) {
     console.log(error);
   }

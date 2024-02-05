@@ -6,41 +6,29 @@ const {
 } = require('../Controllers/ControllersUsers/GetControllersUsers.js');
 
 const socket = (io) => {
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     console.log(`Un cliente se ha conectado. ID: ${socket.id}`);
 
-    const cargarUsuarios = async () => {
-      const usuarios = await getControllerUsers();
-      io.emit('cargarUsuario', usuarios);
-      return usuarios;
-    };
-
     socket.on('login', async (callback) => {
-      const usuariosActualizados = await cargarUsuarios();
-      io.emit('cargarUsuario', usuariosActualizados);
-      callback(usuariosActualizados);
+      const usuarios = await getControllerUsers();
+      io.emit('login', usuarios);
+      callback(usuarios);
     });
 
-    const cargarPreguntas = async () => {
-      const preguntas = await getControllerPreguntas(null);
-      io.emit('cargarPreguntas', preguntas);
-      return preguntas;
-    };
-
     socket.on('crearPreguntas', async (callback) => {
-      const preguntasActualizadas = await cargarPreguntas();
-      io.emit('cargarPreguntas', preguntasActualizadas);
-      callback(preguntasActualizadas);
+      const preguntas = await getControllerPreguntas();
+      io.emit('crearPreguntas', preguntas);
+      callback(preguntas);
     });
 
     // Manejar evento 'logoutUsuario'
     socket.on('logoutUsuario', async (callback) => {
       // Realizar la actualización de usuarios aquí
-      const usuariosActualizados = await cargarUsuarios();
+      const usuarios = await getControllerUsers();
       // Emitir el evento 'cargarUsuario' después de actualizar
-      io.emit('cargarUsuario', usuariosActualizados);
+      io.emit('logoutUsuario', usuarios);
       // Llamar al callback con los usuarios actualizados
-      callback(usuariosActualizados);
+      callback(usuarios);
     });
 
     // Manejar desconexiones

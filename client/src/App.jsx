@@ -24,6 +24,8 @@ import {logout, reLogin} from './redux/actions';
 import Sidebar from './components/Sidebar/Sidebar';
 import NavBar from './components/NavBar/NavBar';
 import SidebarUsuario from './components/Sidebar/SidebarUsuario';
+import {socket} from './helpers/Socket';
+import {cargarPreguntas, cargarUsuariosSuccess} from './redux/appSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +40,20 @@ function App() {
     } else {
       reLogin(token, dispatch, navigate);
     }
+    socket.on('login', (data) => {
+      dispatch(cargarUsuariosSuccess(data));
+    });
+    socket.on('logoutUsuario', (data) => {
+      dispatch(cargarUsuariosSuccess(data));
+    });
+    socket.on('crearPreguntas', (data) => {
+      dispatch(cargarPreguntas(data));
+    });
+    return () => {
+      socket.off('login');
+      socket.off('logoutUsuario');
+      socket.off('crearPreguntas');
+    };
   }, []);
 
   return (
