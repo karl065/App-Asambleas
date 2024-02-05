@@ -5,14 +5,9 @@ const {
   getControllerUsers,
 } = require('../Controllers/ControllersUsers/GetControllersUsers.js');
 
-const connectedSockets = {}; // Objeto para almacenar los sockets conectados
-
 const socket = (io) => {
   io.on('connection', (socket) => {
     console.log(`Un cliente se ha conectado. ID: ${socket.id}`);
-
-    // Almacenar el ID del socket en el objeto connectedSockets
-    connectedSockets[socket.id] = socket;
 
     const cargarUsuarios = async () => {
       const usuarios = await getControllerUsers();
@@ -51,20 +46,8 @@ const socket = (io) => {
     // Manejar desconexiones
     socket.on('disconnect', () => {
       console.log(`El cliente ${socket.id} se ha desconectado.`);
-
-      // Eliminar el ID del socket del objeto connectedSockets al desconectarse
-      delete connectedSockets[socket.id];
     });
   });
-
-  // Función para obtener los IDs de sockets conectados
-  const getConnectedSocketIds = () => {
-    console.log('IDs de Sockets Conectados:', Object.keys(connectedSockets));
-    return Object.keys(connectedSockets);
-  };
-
-  // Agregar la función getConnectedSocketIds al objeto io para que pueda ser llamada desde fuera
-  io.getConnectedSocketIds = getConnectedSocketIds;
 };
 
 module.exports = {socket};

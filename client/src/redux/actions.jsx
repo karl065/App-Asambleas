@@ -146,9 +146,9 @@ export const logout = async (dispatch, navigate, idUser) => {
         // Manejar la respuesta del servidor y actualizar el estado
         dispatch(cargarUsuariosSuccess(usuariosActualizados));
       });
-      if (socket) {
-        socket.disconnect();
-      }
+      // if (socket) {
+      //   socket.disconnect();
+      // }
       localStorage.removeItem('token');
       localStorage.removeItem('connect');
       dispatch(login([]));
