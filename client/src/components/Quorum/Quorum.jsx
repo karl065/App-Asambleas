@@ -101,16 +101,16 @@ const Quorum = () => {
           />
         </svg>
       </div>
-      <div className="bg-black opacity-70 rounded-lg p-5 space-y-5 overflow-y-auto font-extrabold text-white">
-        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
+      <div className="p-5 space-y-5 overflow-y-auto font-extrabold text-white bg-black rounded-lg opacity-70">
+        <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+          <div className="border-2 border-black rounded-lg md:space-y-6 sm:p-8">
             <div
               className={`bg-white rounded-lg p-1 ${
                 porcentajeUsuarios > 51 ? 'text-green-800' : 'text-red-700'
               }`}
             >
-              <div className="bg-black rounded-lg p-1 ">
-                <div className="bg-white rounded-lg p-1">
+              <div className="p-1 bg-black rounded-lg ">
+                <div className="p-1 bg-white rounded-lg">
                   <h1>Quórum: {porcentajeUsuarios.toFixed(0)}%</h1>
                   <h1>Coeficiente Total: {sumaCoeficientes}</h1>
                 </div>

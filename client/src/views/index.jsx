@@ -12,6 +12,7 @@ import ActualizarPreguntas from './Paneles/PanelesAdmin/ActualizarPreguntas/Actu
 import ControlAsamblea from './Paneles/PanelesAdmin/ControlAsamblea/ControlAsamblea.jsx';
 import ActualizarDatos from './Paneles/PanelesClientes/ActualizarDatos/ActualizarDatos.jsx';
 import CrearEmpoderado from './Paneles/PanelesClientes/CrearEmpoderado/CrearEmpoderado.jsx';
+import ResponderPreguntas from './Paneles/PanelesClientes/ResponderPreguntas/ResponderPreguntas.jsx';
 
 export {
   Login,
@@ -28,4 +29,5 @@ export {
   ControlAsamblea,
   ActualizarDatos,
   CrearEmpoderado,
+  ResponderPreguntas,
 };

@@ -19,9 +19,9 @@ const Sidebar = () => {
           logout(dispatch, null, propietario._id);
         });
       }
-      logout(dispatch, navigate, login.id);
+      logout(dispatch, navigate, login._id);
     },
-    [dispatch, navigate, login.id]
+    [dispatch, navigate, login._id]
   );
 
   useEffect(() => {

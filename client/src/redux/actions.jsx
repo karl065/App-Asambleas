@@ -14,11 +14,9 @@ import {
   setLoading,
 } from './appSlice';
 import server from '../conexiones/conexiones';
-import io from 'socket.io-client';
 import {alertInfo, alertSuccess, alertWarning} from '../helpers/Alertas';
 import {isTokenExpired} from '../helpers/Verificacion';
-
-let socket;
+import {socket} from '../helpers/Socket';
 
 export const cargarUsuarios = async (dispatch) => {
   try {
@@ -63,13 +61,12 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
           },
         });
 
-        console.log(response.data);
         dispatch(cargarDBs(response.data));
         navigate('/admin');
       }
-      socket = io(server.api.baseURL);
-      socket.on('cargarUsuario', (data) => {
-        dispatch(cargarUsuariosSuccess(data));
+
+      socket.emit('login', (usuariosActualizados) => {
+        dispatch(cargarUsuariosSuccess(usuariosActualizados));
       });
     }
     dispatch(setLoading(false));
@@ -117,9 +114,9 @@ export const reLogin = async (token, dispatch, navigate) => {
 
             alertSuccess(`Bienvenido de nuevo ${data.primerNombre}`);
           }
-          socket = io(server.api.baseURL);
-          socket.on('cargarUsuario', (data) => {
-            dispatch(cargarUsuariosSuccess(data));
+
+          socket.emit('login', (usuariosActualizados) => {
+            dispatch(cargarUsuariosSuccess(usuariosActualizados));
           });
         }
 
@@ -149,7 +146,6 @@ export const logout = async (dispatch, navigate, idUser) => {
         // Manejar la respuesta del servidor y actualizar el estado
         dispatch(cargarUsuariosSuccess(usuariosActualizados));
       });
-
       if (socket) {
         socket.disconnect();
       }
@@ -213,6 +209,7 @@ export const conectarDB = async (DB, dispatch, token) => {
     });
     const response = await axios.get(`${server.api.baseURL}users`);
     getPreguntas(dispatch);
+
     dispatch(cargarUsuariosSuccess(response.data));
     const {data} = await axios.get(`${server.api.baseURL}predios`);
     dispatch(cargarPredios(data));

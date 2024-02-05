@@ -28,7 +28,7 @@ const authenticateUser = async (documento, password) => {
       const passwordValid = await bcryptjs.compare(password, user.password);
 
       if (!user || !passwordValid) {
-        throw new Error('Usuario o email incorrectos');
+        throw new Error('Usuario o Contraseña incorrectos');
       }
 
       const userLogin = await Usuarios.findOne({documento})
@@ -56,7 +56,7 @@ const authenticateUser = async (documento, password) => {
             }
             const auth = {
               token,
-              id: userLogin._id,
+              _id: userLogin._id,
               documento: userLogin.documento,
               primerNombre: userLogin.primerNombre,
               segundoNombre: userLogin.segundoNombre,
@@ -97,7 +97,7 @@ const authenticateUser = async (documento, password) => {
       const passwordValid = await bcryptjs.compare(password, user.password);
 
       if (!user || !passwordValid) {
-        throw new Error('Usuario o email incorrectos');
+        throw new Error('Documento o Contraseña incorrectos');
       }
 
       if (user.autorizador.length !== 0) {
@@ -133,7 +133,7 @@ const authenticateUser = async (documento, password) => {
             }
             const auth = {
               token,
-              id: userLogin._id,
+              _id: userLogin._id,
               documento: userLogin.documento,
               primerNombre: userLogin.primerNombre,
               segundoNombre: userLogin.segundoNombre,

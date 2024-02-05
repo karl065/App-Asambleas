@@ -18,18 +18,18 @@ const SidebarUsuario = () => {
           logout(dispatch, null, propietario._id);
         });
       }
-      logout(dispatch, navigate, login.id);
+      logout(dispatch, navigate, login._id);
     },
-    [dispatch, navigate, login.id]
+    [dispatch, navigate, login._id]
   );
 
   return (
     <div>
-      <nav className=" bg-black opacity-70 rounded-lg p-2 ">
-        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-2 border-2 border-black rounded-lg justify-center flex">
+      <nav className="p-2 bg-black rounded-lg  opacity-70">
+        <div className="bg-white rounded-lg shadow  dark:border dark:bg-gray-800 dark:border-gray-700">
+          <div className="flex justify-center p-2 border-2 border-black rounded-lg">
             <div className="p-2">
-              <div className="text-white font-bold uppercase">
+              <div className="font-bold text-white uppercase">
                 <span>
                   {login.role} {login.primerNombre} {login.primerApellido}
                 </span>
@@ -44,9 +44,9 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/usuario' ? (
-                    <span className=" text-white flex-grow ">Inicio</span>
+                    <span className="flex-grow text-white ">Inicio</span>
                   ) : (
-                    <Link to="/usuario" className="text-white flex-grow">
+                    <Link to="/usuario" className="flex-grow text-white">
                       <span>Inicio</span>
                     </Link>
                   )}
@@ -60,13 +60,13 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/ActualizarDatos' ? (
-                    <span className=" text-white flex-grow ">
+                    <span className="flex-grow text-white ">
                       Actualizar Datos / Dar Poder
                     </span>
                   ) : (
                     <Link
                       to="/ActualizarDatos"
-                      className="text-white flex-grow"
+                      className="flex-grow text-white"
                     >
                       <span>Actualizar Datos / Dar Poder</span>
                     </Link>
@@ -81,15 +81,36 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/CrearEmpoderado' ? (
-                    <span className=" text-white flex-grow ">
+                    <span className="flex-grow text-white ">
                       Crear Empoderado
                     </span>
                   ) : (
                     <Link
                       to="/CrearEmpoderado"
-                      className="text-white flex-grow"
+                      className="flex-grow text-white"
                     >
                       <span>Crear Empoderado</span>
+                    </Link>
+                  )}
+                </li>
+                <hr className="my-2" />
+                <li
+                  className={`flex w-full ${
+                    location.pathname === '/ResponderPreguntas'
+                      ? 'opacity-60 cursor-not-allowed'
+                      : ''
+                  } `}
+                >
+                  {location.pathname === '/ResponderPreguntas' ? (
+                    <span className="flex-grow text-white ">
+                      Responder Preguntas
+                    </span>
+                  ) : (
+                    <Link
+                      to="/ResponderPreguntas"
+                      className="flex-grow text-white"
+                    >
+                      <span>Responder Preguntas</span>
                     </Link>
                   )}
                 </li>
@@ -98,7 +119,7 @@ const SidebarUsuario = () => {
                   <button
                     type="submit"
                     onClick={(e) => handleLogout(e)}
-                    className="text-white flex-grow"
+                    className="flex-grow text-white"
                   >
                     <Link to="/">
                       <span>Salir</span>

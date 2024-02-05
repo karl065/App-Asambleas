@@ -16,6 +16,7 @@ import {
   IngresoAdmin,
   IngresoCliente,
   Login,
+  ResponderPreguntas,
 } from './views';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -78,6 +79,10 @@ function App() {
             <Route path="/ControlAsambleas" element={<ControlAsamblea />} />
             <Route path="/ActualizarDatos" element={<ActualizarDatos />} />
             <Route path="/CrearEmpoderado" element={<CrearEmpoderado />} />
+            <Route
+              path="/ResponderPreguntas"
+              element={<ResponderPreguntas />}
+            />
           </Routes>
         </div>
       </div>
