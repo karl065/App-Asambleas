@@ -8,7 +8,7 @@ const putHandlerVotaciones = async (req, res) => {
     const respuesta = await putControllerVotaciones(idUser, idRespuesta);
     return res.status(200).json(respuesta);
   } catch (error) {
-    return res.status(400).json({error: error.message});
+    return res.status(400).json(error);
   }
 };
 

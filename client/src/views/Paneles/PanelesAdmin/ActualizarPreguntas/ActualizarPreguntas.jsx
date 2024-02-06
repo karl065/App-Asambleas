@@ -6,20 +6,19 @@ import * as Yup from 'yup';
 
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
-import {crearPreguntas} from '../../../../redux/actions';
+
+import {crearPreguntas, eliminarRespuestas} from '../../../../redux/actions';
 import RespuestasInputs from '../../../../components/CantRespuestas/CantRespuestas';
 import {
   actualizarPreguntaYRespuestas,
   getRespuestasCambiadas,
 } from '../../../../helpers/HelpersPreguntas';
+import {paramsLocations} from '../../../../helpers/Params';
 
 const ActualizarPreguntas = () => {
   const dispatch = useDispatch();
 
-  const {search} = useLocation();
-  const params = new URLSearchParams(search);
-  const id = params.get('id');
+  const id = paramsLocations('id');
 
   const preguntas = useSelector((state) => state.asambleas.preguntas);
   const [cantRespuestas, setCantRespuestas] = useState('');
@@ -27,7 +26,6 @@ const ActualizarPreguntas = () => {
   const [preguntaId, setPreguntaId] = useState('');
   const [currentRespuestas, setCurrentRespuestas] = useState([]);
   const [currentCantRespuestas, setCurrentCantRespuestas] = useState('');
-  const idRespuestaEliminada = [];
 
   const validationSchema = Yup.object({
     pregunta: Yup.string().required('Campo obligatorio'),
@@ -86,11 +84,9 @@ const ActualizarPreguntas = () => {
     },
   });
 
-  const handleEliminarRespuestas = (index) => {
+  const handleEliminarRespuestas = async (index) => {
     const idRespuesta = selectedPregunta.respuestas[index]?._id;
 
-    // Guardar el ID de la respuesta eliminada en el estado
-    idRespuestaEliminada.push(idRespuesta);
     setCantRespuestas(cantRespuestas - 1);
 
     // Eliminar la respuesta del estado de formik.values.respuestas
@@ -107,22 +103,22 @@ const ActualizarPreguntas = () => {
       ...selectedPregunta,
       respuestas: nuevasRespuestasPregunta,
     });
+    if (idRespuesta) {
+      await eliminarRespuestas(dispatch, idRespuesta);
+    }
   };
 
   const handleCantidadRespuestasChange = (e) => {
     let newValue = parseInt(e.target.value);
     setCurrentRespuestas(formik.values.respuestas);
-    while (newValue) newValue = parseInt(e.target.value);
 
     if (newValue > currentCantRespuestas) {
       // Aumentar la cantidad de respuestas
-      const nuevasRespuestas = Array.from(
-        {length: newValue - currentRespuestas.length},
-        (_, index) => ({
-          opcion: String.fromCharCode(65 + currentRespuestas.length + index),
-          respuesta: ``,
-        })
-      );
+      const diff = newValue - currentRespuestas.length;
+      const nuevasRespuestas = Array.from({length: diff}, (_, index) => ({
+        opcion: String.fromCharCode(65 + currentRespuestas.length + index),
+        respuesta: ``,
+      }));
 
       formik.setFieldValue('respuestas', [
         ...currentRespuestas,
@@ -159,12 +155,10 @@ const ActualizarPreguntas = () => {
   useEffect(() => {
     if (id) setPreguntaId(id);
 
-    if (preguntaId) {
-      setSelectedPregunta(
-        preguntas.find((pregunta) => pregunta._id === preguntaId)
-      );
+    if (id) {
+      setSelectedPregunta(preguntas.find((pregunta) => pregunta._id === id));
     }
-  }, [id, preguntas]);
+  }, []);
 
   useEffect(() => {
     if (selectedPregunta) {

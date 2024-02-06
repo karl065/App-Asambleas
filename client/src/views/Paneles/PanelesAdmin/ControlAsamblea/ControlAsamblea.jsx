@@ -65,10 +65,11 @@ const ControlAsamblea = () => {
                   {preguntasView ? <FcCollapse /> : <FcExpand />}
                 </button>
                 <label className="text-white uppercase"> Preguntas</label>
+
                 {preguntasView && (
-                  <div className="flex space-x-2">
+                  <div className="flex mt-0  space-x-2 space-y-2 flex-wrap">
                     {preguntas.map((pregunta) => (
-                      <div key={pregunta._id}>
+                      <div key={pregunta._id} className="w-1/4">
                         <Preguntas pregunta={pregunta} />
                       </div>
                     ))}

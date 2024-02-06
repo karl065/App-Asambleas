@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import CardsPreguntas from '../../../../components/CardsPreguntas/CardsPreguntas';
 import {useEffect} from 'react';
 import {getPreguntas} from '../../../../redux/actions';
+import {Link} from 'react-router-dom';
 
 const ResponderPreguntas = () => {
   const preguntas = useSelector((state) => state.asambleas.preguntas);
@@ -24,7 +25,9 @@ const ResponderPreguntas = () => {
                 Array.isArray(preguntas) &&
                 preguntas.map((pregunta) => (
                   <div key={pregunta._id} className="w-1/4">
-                    <CardsPreguntas preguntas={pregunta} />
+                    <Link to={`/Voto?id=${pregunta._id}`}>
+                      <CardsPreguntas preguntas={pregunta} />
+                    </Link>
                   </div>
                 ))}
             </div>

@@ -21,6 +21,12 @@ const socket = (io) => {
       callback(preguntas);
     });
 
+    socket.on('actualizarPreguntas', async (callback) => {
+      const preguntas = await getControllerPreguntas();
+      io.emit('actualizarPreguntas', preguntas);
+      callback(preguntas);
+    });
+
     // Manejar evento 'logoutUsuario'
     socket.on('logoutUsuario', async (callback) => {
       // Realizar la actualización de usuarios aquí

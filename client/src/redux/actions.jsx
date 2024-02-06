@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
 import {
-  actualizarPregunta,
-  // actualizarUsuario,
   cargarDBs,
   cargarPredios,
   cargarPreguntas,
@@ -221,13 +219,10 @@ export const conectarDB = async (DB, dispatch, token) => {
 
 export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
   try {
-    // const { data } =
     await axios.put(`${server.api.baseURL}users/${idUser}`, dataUpdate);
     socket.emit('login', (usuariosActualizados) => {
       dispatch(cargarUsuariosSuccess(usuariosActualizados));
     });
-
-    // dispatch(actualizarUsuario({_id: idUser, data}));
   } catch (error) {
     console.log(error);
   }
@@ -257,10 +252,6 @@ export const crearPreguntas = async (pregunta, dispatch, idPregunta) => {
       });
 
       await Promise.all(promises);
-
-      // const response = await axios.get(`${server.api.baseURL}preguntas`);
-
-      // // dispatch(cargarPreguntas(response.data));
     }
     socket.emit('crearPreguntas', (preguntas) => {
       dispatch(cargarPreguntas(preguntas));
@@ -281,12 +272,10 @@ export const getPreguntas = async (dispatch) => {
 
 export const actualizarPreguntas = async (idPregunta, dataUpdate, dispatch) => {
   try {
-    const {data} = await axios.put(
-      `${server.api.baseURL}preguntas/${idPregunta}`,
-      dataUpdate
-    );
-    dispatch(actualizarPregunta({idPregunta: idPregunta, data}));
-    alertSuccess('Pregunta Actualizada con exito');
+    await axios.put(`${server.api.baseURL}preguntas/${idPregunta}`, dataUpdate);
+    socket.emit('actualizarPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
   } catch (error) {
     console.log({error: error.message});
   }
@@ -298,15 +287,52 @@ export const actualizarRespuestas = async (
   dispatch
 ) => {
   try {
-    const response = await axios.put(
+    await axios.put(
       `${server.api.baseURL}respuestas/${idRespuesta}`,
       dataUpdate
     );
-    const {data} = await axios.get(
-      `${server.api.baseURL}preguntas?id=${response.data.idPregunta}`
-    );
-    dispatch(actualizarPregunta({idPregunta: data._id, data}));
+    socket.emit('actualizarPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
   } catch (error) {
     console.log({error: error.message});
+  }
+};
+
+export const eliminarRespuestas = async (dispatch, idRespuesta) => {
+  try {
+    await axios.delete(`${server.api.baseURL}respuestas/${idRespuesta}`);
+
+    socket.emit('crearPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const eliminarPreguntas = async (dispatch, idPregunta) => {
+  try {
+    await axios.delete(`${server.api.baseURL}preguntas/${idPregunta}`);
+
+    socket.emit('crearPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const votar = async (dispatch, idUser, idRespuesta) => {
+  try {
+    const {data} = await axios.put(
+      `${server.api.baseURL}votaciones?idUser=${idUser}&idRespuesta=${idRespuesta}`
+    );
+    alertSuccess(data.message);
+    socket.emit('actualizarPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
+  } catch (error) {
+    const {data} = error.response;
+    alertWarning(data);
   }
 };

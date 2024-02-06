@@ -17,6 +17,7 @@ import {
   IngresoCliente,
   Login,
   ResponderPreguntas,
+  Voto,
 } from './views';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,10 +50,14 @@ function App() {
     socket.on('crearPreguntas', (data) => {
       dispatch(cargarPreguntas(data));
     });
+    socket.on('actualizarPreguntas', (preguntas) => {
+      dispatch(cargarPreguntas(preguntas));
+    });
     return () => {
       socket.off('login');
       socket.off('logoutUsuario');
       socket.off('crearPreguntas');
+      socket.off('actualizarPreguntas');
     };
   }, []);
 
@@ -99,6 +104,7 @@ function App() {
               path="/ResponderPreguntas"
               element={<ResponderPreguntas />}
             />
+            <Route path="/Voto" element={<Voto />} />
           </Routes>
         </div>
       </div>

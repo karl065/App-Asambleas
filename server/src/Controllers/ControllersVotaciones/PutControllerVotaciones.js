@@ -14,7 +14,7 @@ const putControllerVotaciones = async (idUser, idRespuesta) => {
     );
 
     if (usuarioHaRespondido) {
-      return {message: 'No se puede responder dos veces la misma pregunta'};
+      throw new Error('No se puede responder dos veces la misma pregunta');
     }
 
     if (
@@ -37,7 +37,7 @@ const putControllerVotaciones = async (idUser, idRespuesta) => {
 
     return {message: 'Respuesta elegida Exitosamente'};
   } catch (error) {
-    return error;
+    throw error.message;
   }
 };
 
