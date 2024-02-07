@@ -9,6 +9,7 @@ const CardsPreguntas = ({preguntas}) => {
   const dispatch = useDispatch();
 
   const login = useSelector((state) => state.asambleas.login);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   // Ordenar las respuestas por la propiedad "opcion"
   const respuestasOrdenadas = preguntas.respuestas.slice().sort((a, b) => {
@@ -17,7 +18,7 @@ const CardsPreguntas = ({preguntas}) => {
   });
 
   const handleEliminarPregunta = async () => {
-    await eliminarPreguntas(dispatch, preguntas._id);
+    await eliminarPreguntas(dispatch, preguntas._id, DBConectada);
   };
 
   return (

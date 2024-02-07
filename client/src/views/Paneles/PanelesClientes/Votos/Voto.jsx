@@ -14,13 +14,14 @@ const Voto = () => {
   const login = useSelector((state) => state.asambleas.login);
   const [pregunta, setPregunta] = useState('');
   const [voto, setVoto] = useState('');
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const handleVotar = () => {
     if (!voto) {
       alertWarning('Selecciones una respuesta');
       return;
     }
-    votar(dispatch, login._id, voto);
+    votar(dispatch, login._id, voto, DBConectada);
     navigate('/ResponderPreguntas');
   };
 

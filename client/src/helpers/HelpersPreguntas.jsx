@@ -27,19 +27,21 @@ export const actualizarPreguntaYRespuestas = async (
   idPregunta,
   values,
   respuestasCambiadas,
-  dispatch
+  dispatch,
+  DBConectada
 ) => {
   // Actualizar la pregunta si ha cambiado
   if (selectedPregunta.pregunta !== values.pregunta) {
     await actualizarPreguntas(
       idPregunta,
       {pregunta: values.pregunta},
-      dispatch
+      dispatch,
+      DBConectada
     );
   }
 
   // Actualizar las respuestas cambiadas
   respuestasCambiadas.forEach(async ({idRespuesta, dataUpdate}) => {
-    await actualizarRespuestas(idRespuesta, dataUpdate, dispatch);
+    await actualizarRespuestas(idRespuesta, dataUpdate, dispatch, DBConectada);
   });
 };

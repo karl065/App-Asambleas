@@ -15,10 +15,10 @@ const SidebarUsuario = () => {
       e.preventDefault();
       if (login && login.autorizador && login.autorizador.length > 0) {
         login.autorizador.map((propietario) => {
-          logout(dispatch, null, propietario._id);
+          logout(dispatch, null, propietario._id, login.connectedDB);
         });
       }
-      logout(dispatch, navigate, login._id);
+      logout(dispatch, navigate, login._id, login.connectedDB);
     },
     [dispatch, navigate, login._id]
   );

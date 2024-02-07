@@ -17,6 +17,7 @@ import {paramsLocations} from '../../../../helpers/Params';
 
 const ActualizarPreguntas = () => {
   const dispatch = useDispatch();
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const id = paramsLocations('id');
 
@@ -59,7 +60,12 @@ const ActualizarPreguntas = () => {
         const respuestasNuevas = values.respuestas.slice(
           selectedPregunta.respuestas.length
         );
-        await crearPreguntas(respuestasNuevas, dispatch, preguntaId);
+        await crearPreguntas(
+          respuestasNuevas,
+          dispatch,
+          preguntaId,
+          DBConectada
+        );
       }
       const preguntaCambiada = selectedPregunta.pregunta;
 
@@ -78,7 +84,8 @@ const ActualizarPreguntas = () => {
           selectedPregunta._id,
           values,
           respuestasCambiadas,
-          dispatch
+          dispatch,
+          DBConectada
         );
       }
     },
@@ -104,7 +111,7 @@ const ActualizarPreguntas = () => {
       respuestas: nuevasRespuestasPregunta,
     });
     if (idRespuesta) {
-      await eliminarRespuestas(dispatch, idRespuesta);
+      await eliminarRespuestas(dispatch, idRespuesta, DBConectada);
     }
   };
 

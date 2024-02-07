@@ -41,6 +41,7 @@ function App() {
     } else {
       reLogin(token, dispatch, navigate);
     }
+    socket.emit('joinRoom', login.connectedDB);
     socket.on('login', (data) => {
       dispatch(cargarUsuariosSuccess(data));
     });
@@ -50,14 +51,11 @@ function App() {
     socket.on('crearPreguntas', (data) => {
       dispatch(cargarPreguntas(data));
     });
-    socket.on('actualizarPreguntas', (preguntas) => {
-      dispatch(cargarPreguntas(preguntas));
-    });
+
     return () => {
       socket.off('login');
       socket.off('logoutUsuario');
       socket.off('crearPreguntas');
-      socket.off('actualizarPreguntas');
     };
   }, []);
 

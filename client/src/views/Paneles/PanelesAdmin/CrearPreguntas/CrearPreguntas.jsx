@@ -1,7 +1,6 @@
 import {useFormik} from 'formik';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
-
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {useState} from 'react';
 import {crearPreguntas} from '../../../../redux/actions';
@@ -11,6 +10,7 @@ import RespuestasInputs from '../../../../components/CantRespuestas/CantRespuest
 const CrearPreguntas = () => {
   const dispatch = useDispatch();
   const [cantRespuestas, setCantRespuestas] = useState('');
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const validationSchema = Yup.object({
     pregunta: Yup.string().required('Campo obligatorio'),
@@ -40,7 +40,7 @@ const CrearPreguntas = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, {resetForm}) => {
-      await crearPreguntas(values, dispatch);
+      await crearPreguntas(values, dispatch, null, DBConectada);
       alertSuccess('Pregunta Creada con Exito');
       setCantRespuestas('');
       resetForm();

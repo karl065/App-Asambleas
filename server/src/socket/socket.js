@@ -9,32 +9,36 @@ const socket = (io) => {
   io.on('connection', async (socket) => {
     console.log(`Un cliente se ha conectado. ID: ${socket.id}`);
 
-    socket.on('login', async (callback) => {
+    socket.on('joinRoom', async (room) => {
+      // Unirse a la sala correspondiente
+      socket.join(room);
+      console.log(
+        `El cliente con ID: ${socket.id} se ha conectado a la sala ${room}. `
+      );
+    });
+
+    socket.on('login', async (DBConectada) => {
       const usuarios = await getControllerUsers();
-      io.emit('login', usuarios);
-      callback(usuarios);
+      io.to(DBConectada).emit('login', usuarios);
     });
 
-    socket.on('crearPreguntas', async (callback) => {
+    socket.on('crearPreguntas', async (DBConectada) => {
+      // Emitir el evento solo a los clientes en la sala correspondiente
       const preguntas = await getControllerPreguntas();
-      io.emit('crearPreguntas', preguntas);
-      callback(preguntas);
+      io.to(DBConectada).emit('crearPreguntas', preguntas);
     });
 
-    socket.on('actualizarPreguntas', async (callback) => {
+    socket.on('actualizarPreguntas', async (DBConectada) => {
+      // Emitir el evento solo a los clientes en la sala correspondiente
       const preguntas = await getControllerPreguntas();
-      io.emit('actualizarPreguntas', preguntas);
-      callback(preguntas);
+      io.to(DBConectada).emit('actualizarPreguntas', preguntas);
     });
 
-    // Manejar evento 'logoutUsuario'
-    socket.on('logoutUsuario', async (callback) => {
+    socket.on('logoutUsuario', async (DBConectada) => {
       // Realizar la actualización de usuarios aquí
       const usuarios = await getControllerUsers();
       // Emitir el evento 'cargarUsuario' después de actualizar
-      io.emit('logoutUsuario', usuarios);
-      // Llamar al callback con los usuarios actualizados
-      callback(usuarios);
+      io.to(DBConectada).emit('logoutUsuario', usuarios);
     });
 
     // Manejar desconexiones
