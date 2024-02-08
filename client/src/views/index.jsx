@@ -14,6 +14,7 @@ import ActualizarDatos from './Paneles/PanelesClientes/ActualizarDatos/Actualiza
 import CrearEmpoderado from './Paneles/PanelesClientes/CrearEmpoderado/CrearEmpoderado.jsx';
 import ResponderPreguntas from './Paneles/PanelesClientes/ResponderPreguntas/ResponderPreguntas.jsx';
 import Voto from './Paneles/PanelesClientes/Votos/Voto.jsx';
+import IngresoView from './Paneles/PanelesView/IngresoView.jsx';
 
 export {
   Login,
@@ -32,4 +33,5 @@ export {
   CrearEmpoderado,
   ResponderPreguntas,
   Voto,
+  IngresoView,
 };

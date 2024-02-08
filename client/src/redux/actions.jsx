@@ -58,9 +58,13 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
             'x-auth-token': data.token,
           },
         });
-
-        dispatch(cargarDBs(response.data));
-        navigate('/admin');
+        if (data.role === 'View') {
+          dispatch(cargarDBs(response.data));
+          navigate('/view');
+        } else {
+          dispatch(cargarDBs(response.data));
+          navigate('/admin');
+        }
       }
 
       socket.emit('joinRoom', data.connectedDB);
@@ -103,7 +107,6 @@ export const reLogin = async (token, dispatch, navigate) => {
           ) {
             navigate('/usuario');
           } else {
-            navigate('/admin');
             localStorage.setItem('connect', data.connectedDB);
             dispatch(connectedDB(data.connectedDB));
             const response = await axios.get(`${server.api.baseURL}DB`, {
@@ -112,6 +115,11 @@ export const reLogin = async (token, dispatch, navigate) => {
               },
             });
             dispatch(cargarDBs(response.data));
+            if (data.role === 'View') {
+              navigate('/view');
+            } else {
+              navigate('/admin');
+            }
 
             alertSuccess(`Bienvenido de nuevo ${data.primerNombre}`);
           }

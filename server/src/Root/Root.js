@@ -1,7 +1,7 @@
 const Usuarios = require('../Models/Usuarios.js');
 const DBsAdmin = require('../Models/DBs.js');
 const bcryptjs = require('bcryptjs');
-const {PSWROOT} = process.env;
+const {PSWROOT, PSWVIEW} = process.env;
 
 const superUser = async (DB) => {
   try {
@@ -33,5 +33,29 @@ const superUser = async (DB) => {
     return error;
   }
 };
+const viewUser = async () => {
+  try {
+    const userView = await Usuarios.findOne({documento: 'View'});
+    const password = await bcryptjs.hash(PSWVIEW, 10);
+    if (!userView) {
+      const ViewUser = {
+        documento: 'View',
+        primerNombre: 'View',
+        password: password,
+        role: 'View',
+        userStatus: false,
+      };
 
-module.exports = {superUser};
+      const usuario = new Usuarios(ViewUser);
+
+      const viewUser = await usuario.save();
+
+      return viewUser;
+    }
+    return userView;
+  } catch (error) {
+    return error;
+  }
+};
+
+module.exports = {superUser, viewUser};

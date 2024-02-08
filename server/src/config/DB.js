@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {superUser} = require('../Root/Root');
+const {superUser, viewUser} = require('../Root/Root');
 const {
   GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB');
@@ -69,6 +69,7 @@ const conectarDB = async (DB, excludeModels = []) => {
       }
       if (dbExists === false) {
         await superUser(DB);
+        await viewUser();
       }
     } else {
       DB = DB.replace(/\s/g, '_');

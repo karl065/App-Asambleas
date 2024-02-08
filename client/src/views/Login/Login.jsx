@@ -31,12 +31,12 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="w-max h-max bg-gray-50 uppercase dark:bg-gray-900 border-2 border-black rounded-lg flex items-center justify-center md:p-10 lg:p-10 dark:bg-opacity-50 bg-opacity-50">
-      <div className=" bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div className="p-6 space-y-4 md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
+    <div className="flex items-center justify-center uppercase bg-opacity-50 border-2 border-black rounded-lg w-max h-max bg-gray-50 dark:bg-gray-900 md:p-10 lg:p-10 dark:bg-opacity-50">
+      <div className="bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-6 space-y-4 border-2 border-black rounded-lg md:space-y-6 sm:p-8">
           {loading ? (
             <>
-              <div className=" flex justify-center items-center">
+              <div className="flex items-center justify-center ">
                 <CirclesWithBar
                   color="blue"
                   barColor="white"
@@ -44,7 +44,7 @@ const LoginForm = () => {
                 />
               </div>
               <div className="flex items-center">
-                <h1 className="text-xl  font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Iniciando Sesión
                 </h1>
                 <FallingLines
@@ -72,7 +72,7 @@ const LoginForm = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.documento}
-                    className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                    className={`bg-blue-700 border-4 font-bold border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
                       formik.touched.documento && formik.errors.documento
                         ? 'border-red-500'
                         : ''
@@ -80,7 +80,7 @@ const LoginForm = () => {
                     placeholder="Documento"
                   />
                   {formik.touched.documento && formik.errors.documento ? (
-                    <div className="text-red-500 text-xs">
+                    <div className="text-xs text-red-500">
                       {formik.errors.documento}
                     </div>
                   ) : null}
@@ -101,7 +101,7 @@ const LoginForm = () => {
                     }`}
                   />
                   {formik.touched.password && formik.errors.password ? (
-                    <div className="text-red-500 text-xs">
+                    <div className="text-xs text-red-500">
                       {formik.errors.password}
                     </div>
                   ) : null}

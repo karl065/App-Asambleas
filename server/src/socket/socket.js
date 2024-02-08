@@ -1,4 +1,10 @@
 const {
+  ControllerConexionDB,
+} = require('../Controllers/ControllersDB/ControllerConexionDB.js');
+const {
+  GetControllerDB,
+} = require('../Controllers/ControllersDB/GetControllerDB.js');
+const {
   getControllerPreguntas,
 } = require('../Controllers/ControllersPreguntas/GetControllerPreguntas.js');
 const {

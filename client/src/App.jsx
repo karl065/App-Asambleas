@@ -15,6 +15,7 @@ import {
   GestionarPreguntas,
   IngresoAdmin,
   IngresoCliente,
+  IngresoView,
   Login,
   ResponderPreguntas,
   Voto,
@@ -63,7 +64,11 @@ function App() {
     <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2 space-x-2">
       {pathname !== '/' ? (
         login.role !== 'SuperAdmin' && login.role !== 'Admin' ? (
-          <SidebarUsuario />
+          login.role !== 'View' ? (
+            <SidebarUsuario />
+          ) : (
+            ''
+          )
         ) : (
           <Sidebar />
         )
@@ -103,6 +108,7 @@ function App() {
               element={<ResponderPreguntas />}
             />
             <Route path="/Voto" element={<Voto />} />
+            <Route path="/view" element={<IngresoView />} />
           </Routes>
         </div>
       </div>
