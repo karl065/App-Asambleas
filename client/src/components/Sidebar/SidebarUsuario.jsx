@@ -26,7 +26,7 @@ const SidebarUsuario = () => {
   return (
     <div>
       <nav className="p-2 bg-black rounded-lg  opacity-70">
-        <div className="bg-white rounded-lg shadow  dark:border dark:bg-gray-800 dark:border-gray-700">
+        <div className="rounded-lg shadow  border bg-gray-800 border-gray-700">
           <div className="flex justify-center p-2 border-2 border-black rounded-lg">
             <div className="p-2">
               <div className="font-bold text-white uppercase">
@@ -119,7 +119,7 @@ const SidebarUsuario = () => {
                   <button
                     type="submit"
                     onClick={(e) => handleLogout(e)}
-                    className="flex-grow text-white"
+                    className="w-full text-white bg-red-600 hover:bg-red-700 py-2 rounded-lg"
                   >
                     <Link to="/">
                       <span>Salir</span>

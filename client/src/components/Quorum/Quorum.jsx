@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useDispatch, useSelector} from 'react-redux';
-import {VictoryLabel, VictoryPie} from 'victory';
 import {useState, useEffect} from 'react';
 import {alertSuccess} from '../../helpers/Alertas';
 import {setActivos} from '../../redux/appSlice';
+import Pie from '../Pie/Pie';
 
 const Quorum = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
   const dispatch = useDispatch();
 
-  const [percent, setPercent] = useState(0);
   const [porcentajeUsuarios, setPorcentajeUsuarios] = useState(0);
   const [sumaCoeficientes, setSumaCoeficientes] = useState(0);
   const [usuariosEnTrue, setUsuariosEnTrue] = useState('');
@@ -44,9 +43,7 @@ const Quorum = () => {
 
         setUsuariosEnTrue(usuariosQuorum.length);
 
-        setPercent(porcentaje);
-
-        if (porcentaje > 51) {
+        if (porcentajeUsuarios > 51) {
           alertSuccess('Quorum Alcanzado');
         }
       }
@@ -62,44 +59,7 @@ const Quorum = () => {
   return (
     <div className="flex items-center justify-center space-x-10 uppercase">
       <div className="border-2 rounded-lg">
-        <svg viewBox="0 0 400 400" width="100%" height="100%">
-          <VictoryPie
-            standalone={false}
-            animate={{duration: 1000}}
-            width={400}
-            height={400}
-            data={[
-              {x: 'Quórum', y: percent},
-              {x: 'Faltante', y: 100 - percent},
-            ]}
-            innerRadius={120}
-            cornerRadius={25}
-            labels={() => null}
-            style={{
-              data: {
-                fill: ({datum}) =>
-                  datum.x === 'Quórum'
-                    ? porcentajeUsuarios > 50
-                      ? 'green'
-                      : 'red'
-                    : 'transparent',
-              },
-            }}
-          />
-          <VictoryLabel
-            textAnchor="middle"
-            verticalAnchor="middle"
-            x={200}
-            y={200}
-            text={`${Math.round(percent)}%`}
-            style={{
-              fontSize: 45,
-              fontWeight: 'bold',
-              stroke: 'white',
-              fill: porcentajeUsuarios > 50 ? 'green' : 'red',
-            }}
-          />
-        </svg>
+        <Pie percent={porcentajeUsuarios} porcentajeData={porcentajeUsuarios} />
       </div>
       <div className="p-5 space-y-5 overflow-y-auto font-extrabold text-white bg-black rounded-lg opacity-70">
         <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">

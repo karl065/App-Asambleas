@@ -17,6 +17,7 @@ const authenticateUser = async (documento, password) => {
     await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
     let user;
     let connectedDB;
+    let usuarioLogin;
     const DBs = await GetControllerDB();
     if (documento === 'SuperAdmin' || documento === 'View') {
       user = await Usuarios.findOne({documento})

@@ -10,7 +10,7 @@ const IngresoCliente = () => {
     <div className="flex ">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5">
         <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
+          <div className="border-2 border-black rounded-lg">
             {usuarios.length > 0 ? <Quorum /> : null}
           </div>
         </div>

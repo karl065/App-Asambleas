@@ -15,6 +15,7 @@ import {useNavigate} from 'react-router-dom';
 const GestionarConjunto = () => {
   const predios = useSelector((state) => state.asambleas.predios);
   const usuarios = useSelector((state) => state.asambleas.usuarios);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [usuariosVisible, setUsuariosVisible] = useState(false);
@@ -44,7 +45,8 @@ const GestionarConjunto = () => {
                 {
                   userStatus: !row.original.userStatus,
                 },
-                dispatch
+                dispatch,
+                DBConectada
               )
             }
             inputProps={{'aria-label': 'controlled'}}

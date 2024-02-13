@@ -18,6 +18,7 @@ import {
   IngresoView,
   Login,
   ResponderPreguntas,
+  ViewRespuestas,
   Voto,
 } from './views';
 import {useEffect} from 'react';
@@ -109,6 +110,7 @@ function App() {
             />
             <Route path="/Voto" element={<Voto />} />
             <Route path="/view" element={<IngresoView />} />
+            <Route path="/viewRespuestas" element={<ViewRespuestas />} />
           </Routes>
         </div>
       </div>

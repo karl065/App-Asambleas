@@ -239,7 +239,7 @@ const Sidebar = () => {
                   <button
                     type="submit"
                     onClick={(e) => handleLogout(e)}
-                    className="text-white flex-grow"
+                    className="w-full text-white bg-red-600 hover:bg-red-700 py-2 rounded-lg"
                   >
                     <Link to="/">
                       <span>Salir</span>

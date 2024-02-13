@@ -65,6 +65,7 @@ const Preguntas = ({pregunta}) => {
                     fontWeight: 'bold',
                     stroke: 'blue',
                     fontSize: 30,
+                    fontFamily: 'Arial',
                   }}
                 />
               }
@@ -81,6 +82,7 @@ const Preguntas = ({pregunta}) => {
                     fontWeight: 'bold',
                     stroke: 'blue',
                     fontSize: 20,
+                    fontFamily: 'Arial',
                   }}
                 />
               }
@@ -96,6 +98,7 @@ const Preguntas = ({pregunta}) => {
                     fontWeight: 'bold',
                     stroke: 'blue',
                     fontSize: 15,
+                    fontFamily: 'Arial',
                   }}
                 />
               }
@@ -106,6 +109,7 @@ const Preguntas = ({pregunta}) => {
                     fontWeight: 'bold',
                     stroke: 'blue',
                     fontSize: 20,
+                    fontFamily: 'Arial',
                   }}
                 />
               }

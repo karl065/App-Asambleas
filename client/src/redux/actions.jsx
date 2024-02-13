@@ -228,12 +228,15 @@ export const conectarDB = async (DB, dispatch, token) => {
   }
 };
 
-export const actualizarUsuarios = async (idUser, dataUpdate, dispatch) => {
+export const actualizarUsuarios = async (
+  idUser,
+  dataUpdate,
+  dispatch,
+  DBConectada
+) => {
   try {
     await axios.put(`${server.api.baseURL}users/${idUser}`, dataUpdate);
-    socket.emit('login', (usuariosActualizados) => {
-      dispatch(cargarUsuariosSuccess(usuariosActualizados));
-    });
+    socket.emit('logoutUsuario', DBConectada);
   } catch (error) {
     console.log(error);
   }

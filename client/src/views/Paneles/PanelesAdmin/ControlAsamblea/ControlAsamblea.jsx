@@ -67,9 +67,9 @@ const ControlAsamblea = () => {
                 <label className="text-white uppercase"> Preguntas</label>
 
                 {preguntasView && (
-                  <div className="flex mt-0  space-x-2 space-y-2 flex-wrap">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {preguntas.map((pregunta) => (
-                      <div key={pregunta._id} className="w-1/4">
+                      <div key={pregunta._id}>
                         <Preguntas pregunta={pregunta} />
                       </div>
                     ))}

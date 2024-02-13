@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 
 const ResponderPreguntas = () => {
   const preguntas = useSelector((state) => state.asambleas.preguntas);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,11 +21,11 @@ const ResponderPreguntas = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Responder Preguntas
             </h1>
-            <div className="flex mt-0 flex-wrap space-x-2 space-y-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {preguntas &&
                 Array.isArray(preguntas) &&
                 preguntas.map((pregunta) => (
-                  <div key={pregunta._id} className="w-1/4">
+                  <div key={pregunta._id}>
                     <Link to={`/Voto?id=${pregunta._id}`}>
                       <CardsPreguntas preguntas={pregunta} />
                     </Link>
