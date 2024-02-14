@@ -13,6 +13,7 @@ const appSlice = createSlice({
     DBConectada: [],
     loading: false,
     usuariosActivos: 0,
+    time: 0,
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
@@ -71,6 +72,9 @@ const appSlice = createSlice({
     setActivos: (state, action) => {
       state.usuariosActivos = action.payload;
     },
+    setTime: (state, action) => {
+      state.time = action.payload;
+    },
   },
 });
 
@@ -87,5 +91,6 @@ export const {
   connectedDB,
   setLoading,
   setActivos,
+  setTime,
 } = appSlice.actions;
 export default appSlice.reducer;

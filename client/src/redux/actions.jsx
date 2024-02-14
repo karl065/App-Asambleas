@@ -372,3 +372,11 @@ export const votar = async (dispatch, idUser, idRespuesta, DBConectada) => {
     alertWarning(data);
   }
 };
+
+export const setTimer = async (time, DBConectada) => {
+  try {
+    socket.emit('timer', {time, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,11 +1,16 @@
 import {useSelector} from 'react-redux';
 import {paramsLocations} from '../../../../helpers/Params';
 import Preguntas from '../../../../components/Preguntas/Preguntas';
+import {useEffect, useState} from 'react';
 
 const ViewRespuestas = () => {
+  const [pregunta, setPregunta] = useState([]);
   const id = paramsLocations('id');
   const preguntas = useSelector((state) => state.asambleas.preguntas);
-  const pregunta = preguntas.find((pregunta) => pregunta._id === id);
+
+  useEffect(() => {
+    setPregunta(preguntas.find((pregunta) => pregunta._id === id));
+  }, [id, preguntas]);
 
   return (
     <div className="w-full h-full p-5 space-y-5 overflow-y-auto bg-black rounded-lg opacity-70">

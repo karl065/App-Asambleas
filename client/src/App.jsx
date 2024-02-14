@@ -28,7 +28,11 @@ import Sidebar from './components/Sidebar/Sidebar';
 import NavBar from './components/NavBar/NavBar';
 import SidebarUsuario from './components/Sidebar/SidebarUsuario';
 import {socket} from './helpers/Socket';
-import {cargarPreguntas, cargarUsuariosSuccess} from './redux/appSlice';
+import {
+  cargarPreguntas,
+  cargarUsuariosSuccess,
+  setTime,
+} from './redux/appSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -54,10 +58,15 @@ function App() {
       dispatch(cargarPreguntas(data));
     });
 
+    socket.on('timer', (data) => {
+      dispatch(setTime(data));
+    });
+
     return () => {
       socket.off('login');
       socket.off('logoutUsuario');
       socket.off('crearPreguntas');
+      socket.off('timer');
     };
   }, []);
 

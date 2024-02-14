@@ -4,6 +4,7 @@ import Quorum from '../../../../components/Quorum/Quorum';
 import Preguntas from '../../../../components/Preguntas/Preguntas';
 import {useState} from 'react';
 import {FcCollapse, FcExpand} from 'react-icons/fc';
+import Timer from '../../../../components/Timer/Timer';
 
 const ControlAsamblea = () => {
   const dbConnected = useSelector((state) => state.asambleas.DBConectada);
@@ -48,6 +49,7 @@ const ControlAsamblea = () => {
                   <div className="uppercase bg-white p-2 rounded-lg shadow-md inline-block ">
                     <div className="border-2 border-black p-2 w-full h-full rounded-lg bg-black text-white space-y-2">
                       <Quorum />
+                      <Timer />
                     </div>
                   </div>
                 )}

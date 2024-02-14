@@ -28,6 +28,10 @@ const socket = (io) => {
       io.to(DBConectada).emit('login', usuarios);
     });
 
+    socket.on('timer', async (data) => {
+      io.to(data.DBConectada).emit('timer', data.time);
+    });
+
     socket.on('crearPreguntas', async (DBConectada) => {
       // Emitir el evento solo a los clientes en la sala correspondiente
       const preguntas = await getControllerPreguntas();

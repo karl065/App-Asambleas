@@ -3,6 +3,7 @@ import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import Quorum from '../../../../components/Quorum/Quorum';
 import Preguntas from '../../../../components/Preguntas/Preguntas';
 import {Link} from 'react-router-dom';
+import Timer from '../../../../components/Timer/Timer';
 
 const IngresoView = () => {
   const DBConectada = useSelector((state) => state.asambleas.DBConectada);
@@ -18,6 +19,9 @@ const IngresoView = () => {
             <div className="space-y-2">
               <div>
                 <Quorum />
+              </div>
+              <div>
+                <Timer />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {preguntas.map((pregunta) => (
