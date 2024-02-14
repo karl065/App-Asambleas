@@ -66,12 +66,13 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
           navigate('/admin');
         }
       }
-
-      socket.emit('joinRoom', data.connectedDB);
-      socket.emit('login', data.connectedDB);
-      socket.on('login', (data) => {
-        dispatch(cargarUsuariosSuccess(data));
-      });
+      if (userLogin.documento !== 'View') {
+        socket.emit('joinRoom', data.connectedDB);
+        socket.emit('login', data.connectedDB);
+        socket.on('login', (data) => {
+          dispatch(cargarUsuariosSuccess(data));
+        });
+      }
     }
 
     dispatch(setLoading(false));
@@ -123,11 +124,13 @@ export const reLogin = async (token, dispatch, navigate) => {
 
             alertSuccess(`Bienvenido de nuevo ${data.primerNombre}`);
           }
-          socket.emit('joinRoom', data.connectedDB);
-          socket.emit('login', data.connectedDB);
-          socket.on('login', (data) => {
-            dispatch(cargarUsuariosSuccess(data));
-          });
+          if (data.documento !== 'View') {
+            socket.emit('joinRoom', data.connectedDB);
+            socket.emit('login', data.connectedDB);
+            socket.on('login', (data) => {
+              dispatch(cargarUsuariosSuccess(data));
+            });
+          }
         }
 
         dispatch(connectedDB(data.connectedDB));

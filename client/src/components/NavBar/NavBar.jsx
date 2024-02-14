@@ -58,6 +58,11 @@ const NavBar = () => {
                 </button>
               </div>
             )}
+            {login.role === 'Propietario' ||
+            login.role === 'Propietario-Empoderado' ||
+            login.role === 'Empoderado' ? (
+              <button className="w-20 text-4xl">✋</button>
+            ) : null}
           </div>
         </div>
       </div>

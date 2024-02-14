@@ -1,19 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useLocation} from 'react-router-dom';
 import {VictoryLabel, VictoryPie} from 'victory';
 import {setTimer} from '../../redux/actions';
 import * as Yup from 'yup';
 import Sound from 'react-sound';
 import {useFormik} from 'formik';
+import {setTime} from '../../redux/appSlice';
+import {FaCaretSquareRight} from 'react-icons/fa';
 
 const Timer = () => {
   const location = useLocation();
   const [timeLeft, setTimeLeft] = useState(0);
+  const dispatch = useDispatch();
   const time = useSelector((state) => state.asambleas.time);
   const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const [playBip, setPlayBip] = useState(false);
   const [playEndSound, setPlayEndSound] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const validationSchema = Yup.object({
     tiempo: Yup.number().required('Campo obligatorio'),
@@ -53,6 +58,15 @@ const Timer = () => {
     setTimeLeft(time);
   }, [time]);
 
+  useEffect(() => {
+    if (loaded) {
+      setPlayBip(false);
+      setPlayEndSound(false);
+    } else {
+      setLoaded(true);
+    }
+  }, [loaded]);
+
   const handleBipEnd = () => {
     setPlayBip(false);
   };
@@ -60,15 +74,15 @@ const Timer = () => {
   const handleEndSoundEnd = () => {
     setPlayEndSound(false);
   };
+  useEffect(() => {
+    if (timeLeft === 0) dispatch(setTime(timeLeft));
+  }, [timeLeft]);
 
   return (
     <div>
       {location.pathname === '/ControlAsambleas' && (
         <div>
-          <form
-            className="space-y-4 md:space-y-6"
-            onSubmit={formik.handleSubmit}
-          >
+          <form className="flex space-x-2" onSubmit={formik.handleSubmit}>
             <div>
               <input
                 type="number"
@@ -90,7 +104,9 @@ const Timer = () => {
                 </div>
               ) : null}
             </div>
-            <button type="submit">Setear Timer</button>
+            <button type="submit">
+              <FaCaretSquareRight />
+            </button>
           </form>
         </div>
       )}
@@ -135,19 +151,23 @@ const Timer = () => {
           />
         </svg>
       </div>
-      {playBip && (
-        <Sound
-          url="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
-          playStatus={Sound.status.PLAYING}
-          onFinishedPlaying={handleBipEnd}
-        />
-      )}
-      {playEndSound && (
-        <Sound
-          url="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
-          playStatus={Sound.status.PLAYING}
-          onFinishedPlaying={handleEndSoundEnd}
-        />
+      {location.pathname === '/view' && (
+        <div>
+          {playBip && (
+            <Sound
+              url="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
+              playStatus={Sound.status.PLAYING}
+              onFinishedPlaying={handleBipEnd}
+            />
+          )}
+          {playEndSound && (
+            <Sound
+              url="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
+              playStatus={Sound.status.PLAYING}
+              onFinishedPlaying={handleEndSoundEnd}
+            />
+          )}
+        </div>
       )}
     </div>
   );
