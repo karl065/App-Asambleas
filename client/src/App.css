@@ -1,16 +1,19 @@
-html,
-body,
-#root {
-  width: 100%;
-  height: 100%;
+html {
+  height: 100vh;
+}
+
+body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #root {
-  display: flex;
+  flex: 1 1 100vh;
+  /* Establece una altura mínima de 100vh (altura de la ventana) */
+  min-height: 100vh;
   background-image: url("https://res.cloudinary.com/dpjeltekx/image/upload/v1700513237/asambleas/app/cor033-p0rx9wxdjqomx5p3zagnjmxt8p9rq3u5vkm64ws774_omnhyo.jpg");
   background-size: cover;
   background-position: center;

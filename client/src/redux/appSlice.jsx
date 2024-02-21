@@ -14,12 +14,13 @@ const appSlice = createSlice({
     loading: false,
     usuariosActivos: 0,
     time: 0,
+    mano: [],
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
       state.usuarios = action.payload;
     },
-    login: (state, action) => {
+    setLogin: (state, action) => {
       state.login = action.payload;
     },
     cargarDBs: (state, action) => {
@@ -75,12 +76,15 @@ const appSlice = createSlice({
     setTime: (state, action) => {
       state.time = action.payload;
     },
+    cargarMano: (state, action) => {
+      state.mano = [...state.mano, action.payload];
+    },
   },
 });
 
 export const {
   cargarUsuariosSuccess,
-  login,
+  setLogin,
   cargarDBs,
   crearDB,
   cargarPredios,
@@ -92,5 +96,6 @@ export const {
   setLoading,
   setActivos,
   setTime,
+  cargarMano,
 } = appSlice.actions;
 export default appSlice.reducer;

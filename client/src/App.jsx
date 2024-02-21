@@ -29,10 +29,12 @@ import NavBar from './components/NavBar/NavBar';
 import SidebarUsuario from './components/Sidebar/SidebarUsuario';
 import {socket} from './helpers/Socket';
 import {
+  cargarMano,
   cargarPreguntas,
   cargarUsuariosSuccess,
   setTime,
 } from './redux/appSlice';
+import {alertInfo} from './helpers/Alertas';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +44,7 @@ function App() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    console.log(login);
     if (!token) {
       logout(dispatch, navigate);
     } else {
@@ -67,8 +70,23 @@ function App() {
       socket.off('logoutUsuario');
       socket.off('crearPreguntas');
       socket.off('timer');
+      socket.off('mano');
     };
   }, []);
+
+  useEffect(() => {
+    socket.on('mano', (data) => {
+      dispatch(cargarMano(data));
+      const user = data.split(' ');
+      if (user[0] !== login.primerNombre) {
+        alertInfo(data);
+      }
+    });
+
+    return () => {
+      socket.off('mano');
+    };
+  }, [login]);
 
   return (
     <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2 space-x-2">

@@ -1,7 +1,8 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {logout} from '../../redux/actions';
+import {cargarManos, logout} from '../../redux/actions';
 import {GoMoveToStart} from 'react-icons/go';
+import {alertInfo} from '../../helpers/Alertas';
 
 const NavBar = () => {
   const connectedDB = useSelector((state) => state.asambleas.DBConectada);
@@ -11,6 +12,16 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLevantarMano = () => {
+    cargarManos(
+      `${login.primerNombre} ${login.primerApellido} ✋`,
+      connectedDB,
+      dispatch
+    );
+    alertInfo('¡Levantaste la mano, espera tu turno!');
+  };
+
   const handleLogOut = (e) => {
     e.preventDefault();
     logout(dispatch, navigate, login._id, connectedDB);
@@ -18,7 +29,7 @@ const NavBar = () => {
 
   return (
     <div className="flex">
-      <div className="flex bg-black opacity-70 rounded-lg p-2 w-full justify-center">
+      <div className="flex bg-black opacity-70 rounded-lg p-2 sm:w-full xl:w-full justify-center">
         <div className=" bg-white rounded-lg shadow w-full dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-2 border-2 border-black rounded-lg justify-center flex">
             <div
@@ -61,7 +72,9 @@ const NavBar = () => {
             {login.role === 'Propietario' ||
             login.role === 'Propietario-Empoderado' ||
             login.role === 'Empoderado' ? (
-              <button className="w-20 text-4xl">✋</button>
+              <button className="w-20 text-4xl" onClick={handleLevantarMano}>
+                ✋
+              </button>
             ) : null}
           </div>
         </div>

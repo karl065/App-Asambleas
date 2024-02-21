@@ -17,12 +17,15 @@ const IngresoView = () => {
             <ConectarDBs />
           ) : (
             <div className="space-y-2">
+              <hr className="border-4 rounded-2xl" />
               <div>
                 <Quorum />
               </div>
-              <div>
+              <hr className="border-4 rounded-2xl" />
+              <div className="flex p-2 justify-center">
                 <Timer />
               </div>
+              <hr className="border-4 rounded-2xl" />
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {preguntas.map((pregunta) => (
                   <div key={pregunta._id}>
@@ -32,6 +35,7 @@ const IngresoView = () => {
                   </div>
                 ))}
               </div>
+              <hr className="border-4 rounded-2xl" />
             </div>
           )}
         </div>

@@ -15,7 +15,6 @@ const CrearConjunto = () => {
   const [usuariosVisible, setUsuariosVisible] = useState(false);
   const [prediosVisible, setPrediosVisible] = useState(false);
 
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const DBS = useSelector((state) => state.asambleas.DBS);
   const token = localStorage.getItem('token');

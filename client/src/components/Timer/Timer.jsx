@@ -79,7 +79,7 @@ const Timer = () => {
   }, [timeLeft]);
 
   return (
-    <div>
+    <div className="space-y-2">
       {location.pathname === '/ControlAsambleas' && (
         <div>
           <form className="flex space-x-2" onSubmit={formik.handleSubmit}>
@@ -105,12 +105,15 @@ const Timer = () => {
               ) : null}
             </div>
             <button type="submit">
-              <FaCaretSquareRight />
+              <FaCaretSquareRight size={24} style={{color: 'blue'}} />
             </button>
           </form>
         </div>
       )}
-      <div className="border border-white inline-block rounded-full overflow-hidden">
+      {location.pathname === '/ControlAsambleas' && (
+        <hr className="border-4 rounded-2xl" />
+      )}
+      <div className="border-2 border-black inline-block rounded-full overflow-hidden">
         <svg viewBox="0 0 400 400" width="100%" height="100%">
           <VictoryPie
             standalone={false}
@@ -168,6 +171,9 @@ const Timer = () => {
             />
           )}
         </div>
+      )}
+      {location.pathname === '/ControlAsambleas' && (
+        <hr className="border-4 rounded-2xl" />
       )}
     </div>
   );

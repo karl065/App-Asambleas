@@ -54,7 +54,10 @@ const usuarioSchema = new mongoose.Schema(
       },
     ],
   },
-  {timestamps: false}
+  {
+    timestamps: false,
+    autoCreate: false,
+  }
 );
 
 const UsuarioModel = mongoose.model('Usuarios', usuarioSchema);

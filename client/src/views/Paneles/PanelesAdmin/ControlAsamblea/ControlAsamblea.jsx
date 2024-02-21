@@ -47,9 +47,15 @@ const ControlAsamblea = () => {
                 </div>
                 {quorumView && (
                   <div className="uppercase bg-white p-2 rounded-lg shadow-md inline-block ">
-                    <div className="border-2 border-black p-2 w-full h-full rounded-lg bg-black text-white space-y-2">
+                    <div className="border-2 flex justify-center border-black p-2 w-full h-full rounded-lg bg-black text-white space-y-2">
                       <Quorum />
-                      <Timer />
+                      <div className="p-5 space-y-5 overflow-y-auto font-extrabold text-white bg-black rounded-lg opacity-70">
+                        <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+                          <div className="border-2 border-black rounded-lg md:space-y-6 sm:p-8">
+                            <Timer />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

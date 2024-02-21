@@ -8,8 +8,8 @@ import {
   cargarUsuariosSuccess,
   connectedDB,
   crearDB,
-  login,
   setLoading,
+  setLogin,
 } from './appSlice';
 import server from '../conexiones/conexiones';
 import {alertInfo, alertSuccess, alertWarning} from '../helpers/Alertas';
@@ -77,7 +77,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
 
     dispatch(setLoading(false));
     dispatch(connectedDB(data.connectedDB));
-    dispatch(login(data));
+    dispatch(setLogin(data));
   } catch (error) {
     const {data} = error.response;
     alertWarning(data);
@@ -134,7 +134,7 @@ export const reLogin = async (token, dispatch, navigate) => {
         }
 
         dispatch(connectedDB(data.connectedDB));
-        dispatch(login(data));
+        dispatch(setLogin(data));
         filtroUsuarios({obtenerEnum: true}, dispatch);
       }
     }
@@ -161,14 +161,14 @@ export const logout = async (dispatch, navigate, idUser, DBConectada) => {
       });
       localStorage.removeItem('token');
       localStorage.removeItem('connect');
-      dispatch(login([]));
+      dispatch(setLogin([]));
       dispatch(cargarUsuariosSuccess([]));
       dispatch(cargarDBs([]));
       navigate && navigate('/');
     } else {
       localStorage.removeItem('token');
       localStorage.removeItem('connect');
-      dispatch(login([]));
+      dispatch(setLogin([]));
       dispatch(cargarUsuariosSuccess([]));
       dispatch(cargarDBs([]));
       navigate && navigate('/');
@@ -188,6 +188,7 @@ export const crearDBs = async (token, dispatch, DB) => {
 
     dispatch(crearDB(data));
     alertSuccess('Conjunto Creado correctamente');
+    dispatch(connectedDB(DB.nombre));
   } catch (error) {
     console.log({error: error.message});
   }
@@ -379,6 +380,19 @@ export const votar = async (dispatch, idUser, idRespuesta, DBConectada) => {
 export const setTimer = async (time, DBConectada) => {
   try {
     socket.emit('timer', {time, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cargarManos = async (data, DBConectada) => {
+  try {
+    socket.emit('mano', {data, DBConectada});
+    // socket.on('mano', (data) => {
+    //   dispatch(cargarMano(data));
+    //   alertInfo(data);
+    // });
+    // socket.off('mano');
   } catch (error) {
     console.log(error);
   }

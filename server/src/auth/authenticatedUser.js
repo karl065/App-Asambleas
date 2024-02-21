@@ -11,18 +11,9 @@ const authenticatedUser = async ({id, role, connectedDB}) => {
         : ['DBsAdmin']
     );
 
-    let user = await Usuarios.findById(id)
-      .select('-password')
-      .populate('respuestas')
-      .populate('autorizador')
-      .populate('autorizado');
-    if (role !== 'SuperAdmin') {
-      // Si no es SuperAdmin, también se deben cargar las poblaciones adicionales
-      user = await user.populate('predios');
-    }
+    let user = await Usuarios.findById(id).select('-password');
 
     const userObject = user.toObject();
-
     userObject.connectedDB = connectedDB;
     return userObject;
   } catch (error) {

@@ -20,10 +20,10 @@ const authenticateUser = async (documento, password) => {
     let usuarioLogin;
     const DBs = await GetControllerDB();
     if (documento === 'SuperAdmin' || documento === 'View') {
-      user = await Usuarios.findOne({documento})
-        .populate('respuestas')
-        .populate('autorizador')
-        .populate('autorizado');
+      user = await Usuarios.findOne({documento});
+      // .populate('respuestas')
+      // .populate('autorizador')
+      // .populate('autorizado');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
 
@@ -31,10 +31,10 @@ const authenticateUser = async (documento, password) => {
         throw new Error('Usuario o Contraseña incorrectos');
       }
 
-      const userLogin = await Usuarios.findOne({documento})
-        .populate('respuestas')
-        .populate('autorizador')
-        .populate('autorizado');
+      const userLogin = await Usuarios.findOne({documento});
+      // .populate('respuestas')
+      // .populate('autorizador')
+      // .populate('autorizado');
       const payload = {
         user: {
           id: userLogin._id,
@@ -70,9 +70,9 @@ const authenticateUser = async (documento, password) => {
               coeficiente: userLogin.coeficiente,
               role: userLogin.role,
               status: userLogin.userStatus,
-              respuestas: userLogin.respuestas,
-              autorizador: userLogin.autorizador,
-              autorizado: userLogin.autorizado,
+              // respuestas: userLogin.respuestas,
+              // autorizador: userLogin.autorizador,
+              // autorizado: userLogin.autorizado,
               connectedDB: 'DBAdmin',
             };
             resolve(auth);

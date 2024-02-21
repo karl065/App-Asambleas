@@ -12,7 +12,10 @@ const prediosSchema = new mongoose.Schema(
       required: true,
     },
   },
-  {timestamps: false}
+  {
+    timestamps: false,
+    autoCreate: false,
+  }
 );
 
 const PrediosModel = mongoose.model('Predios', prediosSchema);

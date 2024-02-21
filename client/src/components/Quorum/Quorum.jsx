@@ -76,14 +76,21 @@ const Quorum = () => {
                 </div>
               </div>
             </div>
-            <p>
-              <br />
-              Total de Propietarios: {propietarios.length}
-              <br />
-              Propietarios Conectados: {usuariosEnTrue}
-              <br />
-              Propietarios Desconectados: {propietarios.length - usuariosEnTrue}
-            </p>
+
+            <div>
+              <hr className="border-4 rounded-2xl" />
+              <h1>Total de Propietarios: {propietarios.length}</h1>
+
+              <hr className=" border-4 rounded-2xl" />
+              <h1>Propietarios Conectados: {usuariosEnTrue}</h1>
+
+              <hr className="border-4 rounded-2xl" />
+              <h1>
+                Propietarios Desconectados:{' '}
+                {propietarios.length - usuariosEnTrue}
+              </h1>
+              <hr className="border-4 rounded-2xl" />
+            </div>
           </div>
         </div>
       </div>
