@@ -79,9 +79,6 @@ const Timer = () => {
     if (timeLeft === 0) dispatch(setTime(timeLeft));
   }, [timeLeft]);
 
-  // Ruta base de los archivos de audio
-  const audioBasePath = '/audios/';
-
   return (
     <div className="space-y-2">
       {location.pathname === '/ControlAsambleas' && (
@@ -163,7 +160,7 @@ const Timer = () => {
           {playBip && (
             <AudioPlayer
               autoPlay
-              src={`${audioBasePath}bip_sound.mp3`}
+              src="https://res.cloudinary.com/dpjeltekx/video/upload/v1708538266/asambleas/app/bip_sound_y17xhx.mp3"
               onEnded={handleBipEnd}
               controls={true}
               style={{display: 'none'}}
@@ -172,7 +169,7 @@ const Timer = () => {
           {playEndSound && (
             <AudioPlayer
               autoPlay
-              src={`${audioBasePath}end_sound.mp3`}
+              src="https://res.cloudinary.com/dpjeltekx/video/upload/v1708538266/asambleas/app/end_sound_dvdjhg.mp3"
               onEnded={handleEndSoundEnd}
               controls={true}
               style={{display: 'none'}}
