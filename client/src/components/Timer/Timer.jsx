@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {useLocation} from 'react-router-dom';
+import AudioPlayer from 'react-audio-player';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFormik} from 'formik';
 import {VictoryLabel, VictoryPie} from 'victory';
 import {setTimer} from '../../redux/actions';
 import * as Yup from 'yup';
-import AudioPlayer from 'react-audio-player';
-import {useFormik} from 'formik';
 import {setTime} from '../../redux/appSlice';
 import {FaCaretSquareRight} from 'react-icons/fa';
 
@@ -78,6 +78,9 @@ const Timer = () => {
   useEffect(() => {
     if (timeLeft === 0) dispatch(setTime(timeLeft));
   }, [timeLeft]);
+
+  // Ruta base de los archivos de audio
+  const audioBasePath = '/audios/';
 
   return (
     <div className="space-y-2">
@@ -160,19 +163,19 @@ const Timer = () => {
           {playBip && (
             <AudioPlayer
               autoPlay
-              src="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
+              src={`${audioBasePath}bip_sound.mp3`}
               onEnded={handleBipEnd}
               controls={true}
-              // style={{display: 'none'}}
+              style={{display: 'none'}}
             />
           )}
           {playEndSound && (
             <AudioPlayer
               autoPlay
-              src="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
+              src={`${audioBasePath}end_sound.mp3`}
               onEnded={handleEndSoundEnd}
               controls={true}
-              // style={{display: 'none'}}
+              style={{display: 'none'}}
             />
           )}
         </div>
