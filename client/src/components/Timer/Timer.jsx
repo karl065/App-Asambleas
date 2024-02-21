@@ -163,7 +163,7 @@ const Timer = () => {
               src="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
               onEnded={handleBipEnd}
               controls={true}
-              style={{display: 'none'}}
+              // style={{display: 'none'}}
             />
           )}
           {playEndSound && (
@@ -172,7 +172,7 @@ const Timer = () => {
               src="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
               onEnded={handleEndSoundEnd}
               controls={true}
-              style={{display: 'none'}}
+              // style={{display: 'none'}}
             />
           )}
         </div>

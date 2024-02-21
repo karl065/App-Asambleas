@@ -21,9 +21,6 @@ const authenticateUser = async (documento, password) => {
     const DBs = await GetControllerDB();
     if (documento === 'SuperAdmin' || documento === 'View') {
       user = await Usuarios.findOne({documento});
-      // .populate('respuestas')
-      // .populate('autorizador')
-      // .populate('autorizado');
 
       const passwordValid = await bcryptjs.compare(password, user.password);
 
@@ -32,9 +29,6 @@ const authenticateUser = async (documento, password) => {
       }
 
       const userLogin = await Usuarios.findOne({documento});
-      // .populate('respuestas')
-      // .populate('autorizador')
-      // .populate('autorizado');
       const payload = {
         user: {
           id: userLogin._id,
