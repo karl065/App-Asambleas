@@ -5,7 +5,7 @@ import {useLocation} from 'react-router-dom';
 import {VictoryLabel, VictoryPie} from 'victory';
 import {setTimer} from '../../redux/actions';
 import * as Yup from 'yup';
-import Sound from 'react-sound';
+import AudioPlayer from 'react-audio-player';
 import {useFormik} from 'formik';
 import {setTime} from '../../redux/appSlice';
 import {FaCaretSquareRight} from 'react-icons/fa';
@@ -74,6 +74,7 @@ const Timer = () => {
   const handleEndSoundEnd = () => {
     setPlayEndSound(false);
   };
+
   useEffect(() => {
     if (timeLeft === 0) dispatch(setTime(timeLeft));
   }, [timeLeft]);
@@ -113,7 +114,7 @@ const Timer = () => {
       {location.pathname === '/ControlAsambleas' && (
         <hr className="border-4 rounded-2xl" />
       )}
-      <div className="border-2 border-black inline-block rounded-full overflow-hidden">
+      <div className="inline-block overflow-hidden border-2 border-black rounded-full">
         <svg viewBox="0 0 400 400" width="100%" height="100%">
           <VictoryPie
             standalone={false}
@@ -157,17 +158,21 @@ const Timer = () => {
       {location.pathname === '/view' && (
         <div>
           {playBip && (
-            <Sound
-              url="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
-              playStatus={Sound.status.PLAYING}
-              onFinishedPlaying={handleBipEnd}
+            <AudioPlayer
+              autoPlay
+              src="/audios/bip_sound.mp3" // Ruta relativa al archivo de audio de bip
+              onEnded={handleBipEnd}
+              controls={true}
+              style={{display: 'none'}}
             />
           )}
           {playEndSound && (
-            <Sound
-              url="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
-              playStatus={Sound.status.PLAYING}
-              onFinishedPlaying={handleEndSoundEnd}
+            <AudioPlayer
+              autoPlay
+              src="/audios/end_sound.mp3" // Ruta relativa al archivo de audio de fin
+              onEnded={handleEndSoundEnd}
+              controls={true}
+              style={{display: 'none'}}
             />
           )}
         </div>

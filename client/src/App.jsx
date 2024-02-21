@@ -44,7 +44,6 @@ function App() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    console.log(login);
     if (!token) {
       logout(dispatch, navigate);
     } else {
