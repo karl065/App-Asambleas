@@ -1,8 +1,10 @@
-const Respuestas = require('../../Models/Respuestas');
-const Preguntas = require('../../Models/Preguntas');
-
-const putControllerRespuestas = async (updateRespuesta, idRespuesta) => {
+const putControllerRespuestas = async (
+  dbConnection,
+  updateRespuesta,
+  idRespuesta
+) => {
   try {
+    const Respuestas = dbConnection.model('Respuestas');
     await Respuestas.findByIdAndUpdate(idRespuesta, updateRespuesta);
     const respuestaActualizada = await Respuestas.findById(idRespuesta);
     return respuestaActualizada;

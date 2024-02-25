@@ -1,7 +1,7 @@
-const Respuestas = require('../../Models/Respuestas');
-
-const getControllerRespuestas = async (idRespuesta, opcion) => {
+const getControllerRespuestas = async (dbConnection, idRespuesta, opcion) => {
   try {
+    const Respuestas = dbConnection.model('Respuestas');
+
     const whereConditions = {
       ...(idRespuesta && {_id: idRespuesta}),
       ...(opcion && {opcion}),

@@ -1,7 +1,7 @@
-const Usuarios = require('../../Models/Usuarios.js');
-
-const deleteControllerUsuarios = async (idUser) => {
+const deleteControllerUsuarios = async (dbConnection, idUser) => {
   try {
+    const Usuarios = dbConnection.model('Usuarios');
+
     const usuario = await Usuarios.findById(idUser);
     await Usuarios.findByIdAndDelete(idUser);
     return usuario;

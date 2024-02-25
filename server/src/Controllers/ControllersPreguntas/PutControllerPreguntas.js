@@ -1,8 +1,10 @@
-const Preguntas = require('../../Models/Preguntas');
-const Respuestas = require('../../Models/Respuestas');
-
-const putControllerPreguntas = async (updatePregunta, idPregunta) => {
+const putControllerPreguntas = async (
+  dbConnection,
+  updatePregunta,
+  idPregunta
+) => {
   try {
+    const Preguntas = dbConnection.model('Preguntas');
     await Preguntas.findByIdAndUpdate(idPregunta, updatePregunta);
     const preguntaActualizada = await Preguntas.findById(idPregunta).populate(
       'respuestas'

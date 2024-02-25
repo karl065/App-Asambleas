@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useDispatch, useSelector} from 'react-redux';
 import CardsPreguntas from '../../../../components/CardsPreguntas/CardsPreguntas';
 import {useEffect} from 'react';
@@ -6,11 +7,12 @@ import {Link} from 'react-router-dom';
 
 const ResponderPreguntas = () => {
   const preguntas = useSelector((state) => state.asambleas.preguntas);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getPreguntas(dispatch);
+    getPreguntas(DBConectada, dispatch);
   }, [dispatch]);
 
   return (

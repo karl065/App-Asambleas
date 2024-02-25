@@ -1,9 +1,9 @@
-const Usuarios = require('../../Models/Usuarios');
-const Respuestas = require('../../Models/Respuestas');
-const Preguntas = require('../../Models/Preguntas');
-
-const putControllerVotaciones = async (idUser, idRespuesta) => {
+const putControllerVotaciones = async (dbConnection, idUser, idRespuesta) => {
   try {
+    const Usuarios = dbConnection.model('Usuarios');
+    const Preguntas = dbConnection.model('Preguntas');
+    const Respuestas = dbConnection.model('Respuestas');
+
     const usuario = await Usuarios.findById(idUser);
     const respuesta = await Respuestas.findById(idRespuesta);
     const pregunta = await Preguntas.findById(respuesta.idPregunta);

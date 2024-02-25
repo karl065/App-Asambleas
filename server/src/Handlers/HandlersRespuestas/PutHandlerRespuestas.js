@@ -1,13 +1,17 @@
 const {
   putControllerRespuestas,
 } = require('../../Controllers/ControllersRespuestas/PutControllerRespuestas');
+const {conectarDB} = require('../../config/DB');
 
 const putHandlerRespuestas = async (req, res) => {
   try {
     const {id} = req.params;
-    const updateRespuesta = req.body;
+    const {DBConectada, updateRespuestas} = req.body;
+    const dbConnection = await conectarDB(DBConectada);
+
     const repuestaActualizada = await putControllerRespuestas(
-      updateRespuesta,
+      dbConnection,
+      updateRespuestas,
       id
     );
     return res.status(200).json(repuestaActualizada);

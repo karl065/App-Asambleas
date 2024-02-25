@@ -18,6 +18,8 @@ const prediosSchema = new mongoose.Schema(
   }
 );
 
-const PrediosModel = mongoose.model('Predios', prediosSchema);
+// const PrediosModel = mongoose.model('Predios', prediosSchema);
 
-module.exports = PrediosModel;
+// module.exports = PrediosModel;
+
+module.exports = prediosSchema;

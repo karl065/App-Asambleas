@@ -2,7 +2,7 @@
 import {useFormik} from 'formik';
 
 import * as Yup from 'yup';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {useEffect, useState} from 'react';
 import {actualizarUsuarios} from '../../../../redux/actions';
@@ -13,10 +13,10 @@ import {paramsLocations} from '../../../../helpers/Params';
 const ActualizarUsuarios = () => {
   const doc = paramsLocations('doc');
   const usuarios = useSelector((state) => state.asambleas.usuarios);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const [documentoBuscado, setDocumentoBuscado] = useState('');
   const role = useSelector((state) => state.asambleas.roles);
   const [idUser, setIdUser] = useState('');
-  const dispatch = useDispatch();
   const [usuario, setUsuario] = useState({
     documento: '',
     primerNombre: '',
@@ -68,18 +68,25 @@ const ActualizarUsuarios = () => {
     onSubmit: async (values) => {
       if (!values.password) {
         const dataUpdate = {
-          documento: values.documento,
-          primerNombre: values.primerNombre,
-          segundoNombre: values.segundoNombre,
-          primerApellido: values.primerApellido,
-          segundoApellido: values.segundoApellido,
-          correo: values.correo,
-          celular: values.celular,
-          role: values.role,
+          DBConectada,
+          updateUser: {
+            documento: values.documento,
+            primerNombre: values.primerNombre,
+            segundoNombre: values.segundoNombre,
+            primerApellido: values.primerApellido,
+            segundoApellido: values.segundoApellido,
+            correo: values.correo,
+            celular: values.celular,
+            role: values.role,
+          },
         };
-        await actualizarUsuarios(idUser, dataUpdate, dispatch);
+        await actualizarUsuarios(idUser, dataUpdate);
       } else {
-        await actualizarUsuarios(idUser, values, dispatch);
+        const dataUpdate = {
+          DBConectada,
+          updateUser: values,
+        };
+        await actualizarUsuarios(idUser, dataUpdate);
       }
       alertSuccess('Actualizado con exito');
     },

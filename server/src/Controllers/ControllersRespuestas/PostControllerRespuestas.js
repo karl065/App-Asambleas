@@ -1,14 +1,26 @@
-const Respuestas = require('../../Models/Respuestas');
-const Preguntas = require('../../Models/Preguntas');
-
-const postControllerRespuestas = async (respuestas) => {
+const postControllerRespuestas = async (dbConnection, respuestas) => {
   try {
-    const nuevaRespuesta = await Respuestas.create(respuestas);
+    const Respuestas = dbConnection.model('Respuestas');
+    const Preguntas = dbConnection.model('Preguntas');
 
-    // Asociar la respuesta con la pregunta
+    // Asegúrate de que siempre trabajas con un array de respuestas
+    const respuestasArray = Array.isArray(respuestas)
+      ? respuestas
+      : [respuestas];
+
+    // Array para almacenar los IDs de las nuevas respuestas
+    const nuevasRespuestasIds = [];
+
+    // Crear cada respuesta y guardar su ID
+    for (const respuesta of respuestasArray) {
+      const nuevaRespuesta = await Respuestas.create(respuesta);
+      nuevasRespuestasIds.push(nuevaRespuesta._id);
+    }
+
+    // Asociar las respuestas con la pregunta
     const pregunta = await Preguntas.findByIdAndUpdate(
-      nuevaRespuesta.idPregunta,
-      {$push: {respuestas: nuevaRespuesta._id}},
+      respuestasArray[0].idPregunta,
+      {$push: {respuestas: nuevasRespuestasIds}},
       {new: true}
     ).populate('respuestas');
 

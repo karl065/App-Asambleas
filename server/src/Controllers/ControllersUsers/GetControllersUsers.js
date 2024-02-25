@@ -1,6 +1,5 @@
-const Usuarios = require('../../Models/Usuarios');
-
 const getControllerUsers = async (
+  dbConnection,
   documento,
   primerNombre,
   segundoNombre,
@@ -17,6 +16,7 @@ const getControllerUsers = async (
   obtenerEnum
 ) => {
   try {
+    const Usuarios = dbConnection.model('Usuarios');
     if (obtenerEnum) {
       const rolesEnum = Usuarios.schema.path('role').enumValues;
       return rolesEnum;

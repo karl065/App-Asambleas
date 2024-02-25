@@ -9,6 +9,7 @@ import Tabla from '../../../../components/Tabla/Tabla';
 import {FcCollapse, FcExpand} from 'react-icons/fc';
 
 const CrearConjunto = () => {
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const [usuarios, setUsuarios] = useState([]);
   const [predios, setPredios] = useState([]);
   const [db, setDb] = useState('');
@@ -121,7 +122,9 @@ const CrearConjunto = () => {
   });
 
   const handleCargarDatos = () => {
-    crearUsuariosDBs(usuarios, predios, dispatch);
+    const datosUsuarios = {DBConectada, usuarios};
+    const datosPredios = {DBConectada, predios};
+    crearUsuariosDBs(datosUsuarios, datosPredios, dispatch);
   };
 
   useEffect(() => {

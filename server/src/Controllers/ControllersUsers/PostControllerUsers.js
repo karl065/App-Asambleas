@@ -1,9 +1,9 @@
-const Usuarios = require('../../Models/Usuarios.js');
 const bcryptjs = require('bcryptjs');
 
-const crearUsuario = async (usuarios) => {
+const crearUsuario = async (dbConnection, usuarios) => {
   try {
-    // Asegúrate de que siempre trabajas con un array
+    const Usuarios = dbConnection.model('Usuarios');
+    // Asegúrate de que siempre trabajas con un arrays
     const usuariosArray = Array.isArray(usuarios) ? usuarios : [usuarios];
 
     // Usar Promise.all para ejecutar operaciones en paralelo
@@ -27,7 +27,6 @@ const crearUsuario = async (usuarios) => {
         return nuevoUsuario.save();
       })
     );
-
     return nuevosUsuarios;
   } catch (error) {
     return error;

@@ -18,6 +18,4 @@ const preguntaSchema = new mongoose.Schema(
   }
 );
 
-const PreguntasModel = mongoose.model('Preguntas', preguntaSchema);
-
-module.exports = PreguntasModel;
+module.exports = preguntaSchema;

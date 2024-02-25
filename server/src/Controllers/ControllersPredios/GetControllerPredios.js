@@ -1,8 +1,7 @@
-const Predios = require('../../Models/Predios.js');
-
-const getControllerPredios = async () => {
+const getControllerPredios = async (dbConnection) => {
   try {
-    const predios = await Predios.find().populate('idUsuario');
+    const Predios = dbConnection.model('Predios');
+    const predios = await Predios.find();
     return predios;
   } catch (error) {
     return error;

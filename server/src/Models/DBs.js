@@ -1,4 +1,3 @@
-// Models/DBs.js
 const mongoose = require('mongoose');
 
 const dbsSchema = new mongoose.Schema(
@@ -10,6 +9,8 @@ const dbsSchema = new mongoose.Schema(
   }
 );
 
-const DBsAdmin = mongoose.model('DBsAdmin', dbsSchema);
+// const DBsAdmin = mongoose.model('DBsAdmin', dbsSchema);
 
-module.exports = DBsAdmin;
+// module.exports = DBsAdmin;
+
+module.exports = dbsSchema;

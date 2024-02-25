@@ -26,6 +26,8 @@ const respuestaSchema = new mongoose.Schema(
   }
 );
 
-const RespuestasModel = mongoose.model('Respuestas', respuestaSchema);
+// const RespuestasModel = mongoose.model('Respuestas', respuestaSchema);
 
-module.exports = RespuestasModel;
+// module.exports = RespuestasModel;
+
+module.exports = respuestaSchema;

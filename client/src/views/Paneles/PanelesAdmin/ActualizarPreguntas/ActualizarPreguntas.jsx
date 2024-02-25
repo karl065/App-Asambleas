@@ -199,7 +199,7 @@ const ActualizarPreguntas = () => {
                 onChange={handlePreguntaSelectChange}
               >
                 <option value="">Seleccionar una pregunta</option>
-                {preguntas.map((pregunta) => (
+                {preguntas?.map((pregunta) => (
                   <option value={pregunta._id} key={pregunta._id}>
                     {pregunta.pregunta}
                   </option>

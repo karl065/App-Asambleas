@@ -1,8 +1,8 @@
-const Respuestas = require('../../Models/Respuestas');
-const Preguntas = require('../../Models/Preguntas');
-
-const deleteControllerRespuestas = async (idRespuesta) => {
+const deleteControllerRespuestas = async (dbConnection, idRespuesta) => {
   try {
+    const Respuestas = dbConnection.model('Respuestas');
+    const Preguntas = dbConnection.model('Preguntas');
+
     // Buscar la respuesta por su ID
     const respuesta = await Respuestas.findById(idRespuesta);
 

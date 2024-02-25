@@ -7,6 +7,7 @@ import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 
 const CrearUsuarios = () => {
   const role = useSelector((state) => state.asambleas.roles);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
@@ -33,7 +34,8 @@ const CrearUsuarios = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, {resetForm}) => {
-      await crearUsuariosDBs(values, null, dispatch);
+      const datosUsuarios = {DBConectada, usuarios: values};
+      await crearUsuariosDBs(datosUsuarios, null, dispatch);
       resetForm();
     },
   });

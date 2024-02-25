@@ -1,8 +1,6 @@
 require('dotenv').config();
 const {PORT} = process.env;
 
-const {superUser} = require('./src/Root/Root.js');
-
 const {httpServer, io} = require('./src/server.js');
 const {socket} = require('./src/socket/socket.js');
 

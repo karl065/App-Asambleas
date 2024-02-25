@@ -5,13 +5,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import {useEffect, useState} from 'react';
 import {alertSuccess} from '../../../../helpers/Alertas';
+import {useNavigate} from 'react-router-dom';
 
 const CrearEmpoderado = () => {
   const login = useSelector((state) => state.asambleas.login);
   const usuarios = useSelector((state) => state.asambleas.usuarios);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const [usuarioCreado, setUsuarioCreado] = useState('');
   const [documentoCreado, setDocumentoCreado] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     documento: Yup.string().required('Campo obligatorio'),
@@ -37,7 +40,11 @@ const CrearEmpoderado = () => {
     validationSchema: validationSchema,
     onSubmit: async (values, {resetForm}) => {
       setDocumentoCreado(values.documento);
-      await crearUsuariosDBs(values, null, dispatch);
+      const dataUpdate = {
+        DBConectada,
+        usuarios: values,
+      };
+      await crearUsuariosDBs(dataUpdate, null, dispatch);
       resetForm();
     },
   });
@@ -51,8 +58,13 @@ const CrearEmpoderado = () => {
 
   useEffect(() => {
     if (usuarioCreado) {
-      actualizarUsuarios(login._id, {autorizado: usuarioCreado._id}, dispatch);
+      const dataUpdate = {
+        DBConectada,
+        updateUser: {autorizado: usuarioCreado._id},
+      };
+      actualizarUsuarios(login._id, dataUpdate);
       alertSuccess('Empoderado Creado y Asignado');
+      navigate('/usuario');
     }
   }, [usuarioCreado]);
 

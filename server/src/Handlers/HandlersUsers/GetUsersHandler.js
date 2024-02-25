@@ -1,10 +1,12 @@
 const {
   getControllerUsers,
 } = require('../../Controllers/ControllersUsers/GetControllersUsers');
+const {conectarDB} = require('../../config/DB');
 
 const getHandlerUsers = async (req, res) => {
   try {
     const {
+      DBConectada,
       documento,
       primerNombre,
       segundoNombre,
@@ -21,7 +23,10 @@ const getHandlerUsers = async (req, res) => {
       obtenerEnum,
     } = req.query;
 
+    const dbConnection = await conectarDB(DBConectada);
+
     const usuarios = await getControllerUsers(
+      dbConnection,
       documento,
       primerNombre,
       segundoNombre,

@@ -7,6 +7,7 @@ import {crearUsuariosDBs} from '../../../../redux/actions';
 
 const CrearPredios = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const dispatch = useDispatch();
 
@@ -28,7 +29,8 @@ const CrearPredios = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, {resetForm}) => {
-      await crearUsuariosDBs(null, values, dispatch);
+      const datosPredios = {DBConectada, values};
+      await crearUsuariosDBs(null, datosPredios, dispatch);
       resetForm();
     },
   });

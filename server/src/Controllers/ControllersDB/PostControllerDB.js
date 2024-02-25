@@ -1,15 +1,17 @@
 const {default: mongoose} = require('mongoose');
-const DBsAdmin = require('../../Models/DBs.js');
+
 const {conectarDB} = require('../../config/DB.js');
 
 const crearDB = async (DB) => {
   try {
-    await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
+    let dbConnection;
+    dbConnection = await conectarDB('DBAdmin');
+    const DBsAdmin = dbConnection.model('DBsAdmin');
     const db = new DBsAdmin(DB);
     const newDB = await db.save();
     await mongoose.disconnect();
     const {nombre} = DB;
-    await conectarDB(nombre, ['DBsAdmin']);
+    dbConnection = await conectarDB(nombre);
     return newDB;
   } catch (error) {
     return error;

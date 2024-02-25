@@ -127,9 +127,6 @@ export const reLogin = async (token, dispatch, navigate) => {
           if (data.documento !== 'View') {
             socket.emit('joinRoom', data.connectedDB);
             socket.emit('login', data.connectedDB);
-            socket.on('login', (data) => {
-              dispatch(cargarUsuariosSuccess(data));
-            });
           }
         }
 
@@ -152,13 +149,14 @@ export const reLogin = async (token, dispatch, navigate) => {
 export const logout = async (dispatch, navigate, idUser, DBConectada) => {
   try {
     if (idUser) {
-      await axios.put(`${server.api.baseURL}users/${idUser}`, {
-        userStatus: false,
-      });
+      const dataUpdate = {
+        DBConectada,
+        updateUser: {
+          userStatus: false,
+        },
+      };
+      await axios.put(`${server.api.baseURL}users/${idUser}`, dataUpdate);
       socket.emit('logoutUsuario', DBConectada);
-      socket.on('logoutUsuario', (data) => {
-        dispatch(cargarUsuariosSuccess(data));
-      });
       localStorage.removeItem('token');
       localStorage.removeItem('connect');
       dispatch(setLogin([]));
@@ -220,11 +218,15 @@ export const conectarDB = async (DB, dispatch, token) => {
     });
 
     socket.emit('joinRoom', DB.nombre);
-    const response = await axios.get(`${server.api.baseURL}users`);
-    getPreguntas(dispatch);
+    const response = await axios.get(
+      `${server.api.baseURL}users?DBConectada=${DB.nombre}`
+    );
+    getPreguntas(DB.nombre, dispatch);
 
     dispatch(cargarUsuariosSuccess(response.data));
-    const {data} = await axios.get(`${server.api.baseURL}predios`);
+    const {data} = await axios.get(
+      `${server.api.baseURL}predios?DBConectada=${DB.nombre}`
+    );
     dispatch(cargarPredios(data));
     return msg.data.msg;
   } catch (error) {
@@ -232,62 +234,66 @@ export const conectarDB = async (DB, dispatch, token) => {
   }
 };
 
-export const actualizarUsuarios = async (
-  idUser,
-  dataUpdate,
-  dispatch,
-  DBConectada
-) => {
+export const actualizarUsuarios = async (idUser, dataUpdate) => {
   try {
     await axios.put(`${server.api.baseURL}users/${idUser}`, dataUpdate);
-    socket.emit('logoutUsuario', DBConectada);
+    socket.emit('logoutUsuario', dataUpdate.DBConectada);
   } catch (error) {
     console.log(error);
   }
 };
 
 export const crearPreguntas = async (
-  pregunta,
+  preguntas,
   dispatch,
   idPregunta,
   DBConectada
 ) => {
   try {
+    const {respuestas, pregunta} = preguntas;
     if (idPregunta) {
-      const promises = pregunta.map(async (respuesta) => {
+      const RespuestasIdPreguntas = preguntas.map((respuesta) => {
         respuesta.idPregunta = idPregunta;
-        await axios.post(`${server.api.baseURL}respuestas`, respuesta);
+        return respuesta;
       });
 
-      await Promise.all(promises);
+      const postRespuestas = {
+        DBConectada,
+        respuestas: RespuestasIdPreguntas,
+      };
 
-      const response = await axios.get(`${server.api.baseURL}preguntas`);
-
-      dispatch(cargarPreguntas(response.data));
+      await axios.post(`${server.api.baseURL}respuestas`, postRespuestas);
     } else {
-      const {respuestas} = pregunta;
-      const {data} = await axios.post(`${server.api.baseURL}preguntas`, {
-        pregunta: pregunta.pregunta,
-      });
-      const promises = respuestas.map(async (respuesta) => {
+      const dataPreguntas = {
+        DBConectada,
+        pregunta: {pregunta: pregunta},
+      };
+      const {data} = await axios.post(
+        `${server.api.baseURL}preguntas`,
+        dataPreguntas
+      );
+      const RespuestasIdPreguntas = respuestas.map((respuesta) => {
         respuesta.idPregunta = data._id;
-        await axios.post(`${server.api.baseURL}respuestas`, respuesta);
+        return respuesta;
       });
+      const postRespuestas = {
+        DBConectada,
+        respuestas: RespuestasIdPreguntas,
+      };
 
-      await Promise.all(promises);
+      await axios.post(`${server.api.baseURL}respuestas`, postRespuestas);
     }
     socket.emit('crearPreguntas', DBConectada);
-    socket.on('crearPreguntas', (data) => {
-      dispatch(cargarPreguntas(data));
-    });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getPreguntas = async (dispatch) => {
+export const getPreguntas = async (DB, dispatch) => {
   try {
-    const {data} = await axios.get(`${server.api.baseURL}preguntas`);
+    const {data} = await axios.get(
+      `${server.api.baseURL}preguntas?DBConectada=${DB}`
+    );
     dispatch(cargarPreguntas(data));
   } catch (error) {
     console.log(error);
@@ -301,7 +307,14 @@ export const actualizarPreguntas = async (
   DBConectada
 ) => {
   try {
-    await axios.put(`${server.api.baseURL}preguntas/${idPregunta}`, dataUpdate);
+    const dataPregunta = {
+      DBConectada,
+      updatePregunta: dataUpdate,
+    };
+    await axios.put(
+      `${server.api.baseURL}preguntas/${idPregunta}`,
+      dataPregunta
+    );
     socket.emit('crearPreguntas', DBConectada);
     socket.on('crearPreguntas', (data) => {
       dispatch(cargarPreguntas(data));
@@ -318,9 +331,13 @@ export const actualizarRespuestas = async (
   DBConectada
 ) => {
   try {
+    const dataRespuestas = {
+      DBConectada,
+      updateRespuestas: dataUpdate,
+    };
     await axios.put(
       `${server.api.baseURL}respuestas/${idRespuesta}`,
-      dataUpdate
+      dataRespuestas
     );
     socket.emit('crearPreguntas', DBConectada);
     socket.on('crearPreguntas', (data) => {
@@ -337,24 +354,22 @@ export const eliminarRespuestas = async (
   DBConectada
 ) => {
   try {
-    await axios.delete(`${server.api.baseURL}respuestas/${idRespuesta}`);
+    await axios.delete(
+      `${server.api.baseURL}respuestas/${idRespuesta}?DBConectada=${DBConectada}`
+    );
 
     socket.emit('crearPreguntas', DBConectada);
-    socket.on('crearPreguntas', (data) => {
-      dispatch(cargarPreguntas(data));
-    });
   } catch (error) {
     console.log(error);
   }
 };
 export const eliminarPreguntas = async (dispatch, idPregunta, DBConectada) => {
   try {
-    await axios.delete(`${server.api.baseURL}preguntas/${idPregunta}`);
+    await axios.delete(
+      `${server.api.baseURL}preguntas/${idPregunta}?DBConectada=${DBConectada}`
+    );
 
     socket.emit('crearPreguntas', DBConectada);
-    socket.on('crearPreguntas', (data) => {
-      dispatch(cargarPreguntas(data));
-    });
   } catch (error) {
     console.log(error);
   }
@@ -362,15 +377,11 @@ export const eliminarPreguntas = async (dispatch, idPregunta, DBConectada) => {
 
 export const votar = async (dispatch, idUser, idRespuesta, DBConectada) => {
   try {
-    conectarDB(DBConectada);
     const {data} = await axios.put(
-      `${server.api.baseURL}votaciones?idUser=${idUser}&idRespuesta=${idRespuesta}`
+      `${server.api.baseURL}votaciones?idUser=${idUser}&idRespuesta=${idRespuesta}&DBConectada=${DBConectada}`
     );
     alertSuccess(data.message);
     socket.emit('crearPreguntas', DBConectada);
-    socket.on('crearPreguntas', (data) => {
-      dispatch(cargarPreguntas(data));
-    });
   } catch (error) {
     const {data} = error.response;
     alertWarning(data);
@@ -388,11 +399,6 @@ export const setTimer = async (time, DBConectada) => {
 export const cargarManos = async (data, DBConectada) => {
   try {
     socket.emit('mano', {data, DBConectada});
-    // socket.on('mano', (data) => {
-    //   dispatch(cargarMano(data));
-    //   alertInfo(data);
-    // });
-    // socket.off('mano');
   } catch (error) {
     console.log(error);
   }

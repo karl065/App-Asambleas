@@ -10,6 +10,7 @@ const {
 const {
   getControllerUsers,
 } = require('../Controllers/ControllersUsers/GetControllersUsers.js');
+const {conectarDB} = require('../config/DB.js');
 
 const socket = (io) => {
   io.on('connection', async (socket) => {
@@ -24,7 +25,8 @@ const socket = (io) => {
     });
 
     socket.on('login', async (DBConectada) => {
-      const usuarios = await getControllerUsers();
+      const dbConnection = await conectarDB(DBConectada);
+      const usuarios = await getControllerUsers(dbConnection);
       io.to(DBConectada).emit('login', usuarios);
     });
 
@@ -37,20 +39,23 @@ const socket = (io) => {
     });
 
     socket.on('crearPreguntas', async (DBConectada) => {
+      const dbConnection = await conectarDB(DBConectada);
       // Emitir el evento solo a los clientes en la sala correspondiente
-      const preguntas = await getControllerPreguntas();
+      const preguntas = await getControllerPreguntas(dbConnection);
       io.to(DBConectada).emit('crearPreguntas', preguntas);
     });
 
     socket.on('actualizarPreguntas', async (DBConectada) => {
+      const dbConnection = await conectarDB(DBConectada);
       // Emitir el evento solo a los clientes en la sala correspondiente
-      const preguntas = await getControllerPreguntas();
+      const preguntas = await getControllerPreguntas(dbConnection);
       io.to(DBConectada).emit('actualizarPreguntas', preguntas);
     });
 
     socket.on('logoutUsuario', async (DBConectada) => {
+      const dbConnection = await conectarDB(DBConectada);
       // Realizar la actualización de usuarios aquí
-      const usuarios = await getControllerUsers();
+      const usuarios = await getControllerUsers(dbConnection);
       // Emitir el evento 'cargarUsuario' después de actualizar
       io.to(DBConectada).emit('logoutUsuario', usuarios);
     });

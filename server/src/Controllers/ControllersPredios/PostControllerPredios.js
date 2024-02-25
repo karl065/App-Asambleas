@@ -1,11 +1,11 @@
-const Predios = require('../../Models/Predios.js');
-const Usuarios = require('../../Models/Usuarios.js');
 const {
   getControllerUsers,
 } = require('../ControllersUsers/GetControllersUsers.js');
 
-const postControllerPredios = async (predios) => {
+const postControllerPredios = async (dbConnection, predios) => {
   try {
+    const Predios = dbConnection.model('Predios');
+    const Usuarios = dbConnection.model('Usuarios');
     if (!Array.isArray(predios)) {
       predios = [predios];
     }
@@ -43,7 +43,7 @@ const postControllerPredios = async (predios) => {
     );
 
     // Actualiza la lista de usuarios y predios
-    const nuevosDatos = await getControllerUsers();
+    const nuevosDatos = await getControllerUsers(dbConnection);
     return nuevosDatos;
   } catch (error) {
     return error;

@@ -1,8 +1,8 @@
-const Preguntas = require('../../Models/Preguntas');
-const Respuestas = require('../../Models/Respuestas');
-
-const deleteControllerPreguntas = async (idPregunta) => {
+const deleteControllerPreguntas = async (dbConnection, idPregunta) => {
   try {
+    const Respuestas = dbConnection.model('Respuestas');
+    const Preguntas = dbConnection.model('Preguntas');
+
     // Paso 1: Obtener las ID de las respuestas asociadas a la pregunta
     const pregunta = await Preguntas.findById(idPregunta);
     const respuestasAsociadas = pregunta.respuestas;

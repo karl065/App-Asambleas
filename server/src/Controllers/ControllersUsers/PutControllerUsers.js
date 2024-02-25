@@ -1,9 +1,9 @@
-const Usuarios = require('../../Models/Usuarios');
-const Respuestas = require('../../Models/Respuestas'); // Asegúrate de tener el modelo de Respuestas configurado
 const bcryptjs = require('bcryptjs');
 
-const putControllerUser = async (updateUser, idUser) => {
+const putControllerUser = async (dbConnection, updateUser, idUser) => {
   try {
+    const Usuarios = dbConnection.model('Usuarios');
+
     const {autorizado} = updateUser;
 
     // Verifica si se proporcionó un idEmpoderado

@@ -3,15 +3,15 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Autorizaciones from '../../../../components/Autorizaciones/Autorizaciones';
 import {actualizarUsuarios} from '../../../../redux/actions';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import {alertSuccess} from '../../../../helpers/Alertas';
 
 const ActualizarDatos = () => {
   const login = useSelector((state) => state.asambleas.login);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
 
   const [idUser, setIdUser] = useState('');
-  const dispatch = useDispatch();
   const [usuario, setUsuario] = useState({
     documento: '',
     primerNombre: '',
@@ -53,17 +53,24 @@ const ActualizarDatos = () => {
     onSubmit: async (values) => {
       if (!values.password) {
         const dataUpdate = {
-          documento: values.documento,
-          primerNombre: values.primerNombre,
-          segundoNombre: values.segundoNombre,
-          primerApellido: values.primerApellido,
-          segundoApellido: values.segundoApellido,
-          correo: values.correo,
-          celular: values.celular,
+          DBConectada,
+          updateUser: {
+            documento: values.documento,
+            primerNombre: values.primerNombre,
+            segundoNombre: values.segundoNombre,
+            primerApellido: values.primerApellido,
+            segundoApellido: values.segundoApellido,
+            correo: values.correo,
+            celular: values.celular,
+          },
         };
-        await actualizarUsuarios(idUser, dataUpdate, dispatch);
+        await actualizarUsuarios(idUser, dataUpdate);
       } else {
-        await actualizarUsuarios(idUser, values, dispatch);
+        const dataUpdate = {
+          DBConectada,
+          updateUser: values,
+        };
+        await actualizarUsuarios(idUser, dataUpdate);
       }
       alertSuccess('Actualizado con exito');
     },

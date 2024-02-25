@@ -1,4 +1,3 @@
-const Usuarios = require('../Models/Usuarios');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {
@@ -6,7 +5,6 @@ const {
 } = require('../Controllers/ControllersUsers/PutControllerUsers');
 const {conectarDB} = require('../config/DB');
 
-const {default: mongoose} = require('mongoose');
 const {
   GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB');
@@ -14,12 +12,13 @@ const {SECRETA} = process.env;
 
 const authenticateUser = async (documento, password) => {
   try {
-    await conectarDB('DBAdmin', ['Preguntas', 'Respuestas', 'Predios']);
+    const dbConnection = await conectarDB('DBAdmin');
     let user;
     let connectedDB;
     let usuarioLogin;
-    const DBs = await GetControllerDB();
+    const DBs = await GetControllerDB(dbConnection);
     if (documento === 'SuperAdmin' || documento === 'View') {
+      const Usuarios = dbConnection.model('Usuarios');
       user = await Usuarios.findOne({documento});
 
       const passwordValid = await bcryptjs.compare(password, user.password);
@@ -64,9 +63,6 @@ const authenticateUser = async (documento, password) => {
               coeficiente: userLogin.coeficiente,
               role: userLogin.role,
               status: userLogin.userStatus,
-              // respuestas: userLogin.respuestas,
-              // autorizador: userLogin.autorizador,
-              // autorizado: userLogin.autorizado,
               connectedDB: 'DBAdmin',
             };
             resolve(auth);
@@ -74,8 +70,11 @@ const authenticateUser = async (documento, password) => {
         );
       });
     } else {
+      let Usuarios;
+      let dbConnection;
       for (const db of DBs.slice(1)) {
-        await conectarDB(db.nombre, ['DBsAdmin']);
+        dbConnection = await conectarDB(db.nombre);
+        Usuarios = dbConnection.model('Usuarios');
         user = await Usuarios.findOne({documento})
           .populate('respuestas')
           .populate('autorizador')
@@ -96,11 +95,19 @@ const authenticateUser = async (documento, password) => {
 
       if (user.autorizador.length !== 0) {
         user.autorizador.map((usuario) => {
-          putControllerUser({userStatus: true}, usuario._id);
+          putControllerUser(dbConnection, {userStatus: true}, usuario._id);
         });
-        usuarioLogin = putControllerUser({userStatus: true}, user._id);
+        usuarioLogin = putControllerUser(
+          dbConnection,
+          {userStatus: true},
+          user._id
+        );
       } else {
-        usuarioLogin = putControllerUser({userStatus: true}, user._id);
+        usuarioLogin = putControllerUser(
+          dbConnection,
+          {userStatus: true},
+          user._id
+        );
       }
       const userLogin = await Usuarios.findOne({documento})
         .populate('respuestas')

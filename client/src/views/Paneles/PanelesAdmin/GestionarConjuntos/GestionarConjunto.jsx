@@ -7,7 +7,7 @@ import {FcCollapse} from 'react-icons/fc';
 import {FcExpand} from 'react-icons/fc';
 import Switch from '@mui/material/Switch';
 import {PiNotePencilFill} from 'react-icons/pi';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import {actualizarUsuarios} from '../../../../redux/actions';
 import {useNavigate} from 'react-router-dom';
@@ -16,7 +16,6 @@ const GestionarConjunto = () => {
   const predios = useSelector((state) => state.asambleas.predios);
   const usuarios = useSelector((state) => state.asambleas.usuarios);
   const DBConectada = useSelector((state) => state.asambleas.DBConectada);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [usuariosVisible, setUsuariosVisible] = useState(false);
   const [prediosVisible, setPrediosVisible] = useState(false);
@@ -40,14 +39,10 @@ const GestionarConjunto = () => {
             checked={row.original.userStatus}
             color="primary"
             onChange={() =>
-              actualizarUsuarios(
-                row.original._id,
-                {
-                  userStatus: !row.original.userStatus,
-                },
-                dispatch,
-                DBConectada
-              )
+              actualizarUsuarios(row.original._id, {
+                DBConectada,
+                updateUser: {userStatus: !row.original.userStatus},
+              })
             }
             inputProps={{'aria-label': 'controlled'}}
             className="bg-green-200 rounded-full px-1"

@@ -5,11 +5,11 @@ const ControllerConexionDB = async (DB) => {
   try {
     if (DB === 'DBAdmin') {
       await mongoose.disconnect();
-      await conectarDB(DB, ['Preguntas', 'Respuestas', 'Predios']);
+      await conectarDB(DB);
       return {msg: `La conexión con ${DB} fue exitosa.`};
     } else {
       await mongoose.disconnect();
-      await conectarDB(DB, ['DBsAdmin']);
+      await conectarDB(DB);
       return {msg: `La conexión con ${DB} fue exitosa.`};
     }
   } catch (error) {

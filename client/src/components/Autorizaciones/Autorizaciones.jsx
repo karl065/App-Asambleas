@@ -1,18 +1,22 @@
 /* eslint-disable react/prop-types */
 
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {actualizarUsuarios} from '../../redux/actions';
 import {alertSuccess} from '../../helpers/Alertas';
 
 const Autorizaciones = ({idUser}) => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
-  const dispatch = useDispatch();
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const [poder, setPoder] = useState(false);
   const [idAutorizado, setIdAutorizado] = useState('');
 
   const handleAsignar = () => {
-    actualizarUsuarios(idUser, {autorizado: idAutorizado}, dispatch);
+    const dataUpdate = {
+      DBConectada,
+      updateUser: {autorizado: idAutorizado},
+    };
+    actualizarUsuarios(idUser, dataUpdate);
     alertSuccess('Empoderado Asignado');
   };
 

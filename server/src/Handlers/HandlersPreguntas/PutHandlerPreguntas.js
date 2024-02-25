@@ -1,12 +1,17 @@
 const {
   putControllerPreguntas,
 } = require('../../Controllers/ControllersPreguntas/PutControllerPreguntas');
+const {conectarDB} = require('../../config/DB');
 
 const putHandlerPreguntas = async (req, res) => {
   try {
     const {id} = req.params;
-    const updatePregunta = req.body;
+    const {DBConectada, updatePregunta} = req.body;
+
+    const dbConnection = await conectarDB(DBConectada);
+
     const preguntaActualizada = await putControllerPreguntas(
+      dbConnection,
       updatePregunta,
       id
     );
