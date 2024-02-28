@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import {useTable} from 'react-table';
 
-const Tabla = ({columns, data, className}) => {
+const Tabla = ({columns, data, className, timeLeft}) => {
   const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} =
     useTable({columns, data});
 
@@ -29,7 +29,10 @@ const Tabla = ({columns, data, className}) => {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                className={`${timeLeft !== 0 && 'text-green-700'} `}
+              >
                 {row.cells.map((cell, index) => (
                   <td
                     {...cell.getCellProps()}

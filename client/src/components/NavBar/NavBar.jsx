@@ -7,6 +7,8 @@ import {alertInfo} from '../../helpers/Alertas';
 const NavBar = () => {
   const connectedDB = useSelector((state) => state.asambleas.DBConectada);
   const login = useSelector((state) => state.asambleas.login);
+  const interventores = useSelector((state) => state.asambleas.interventores);
+  const mano = useSelector((state) => state.asambleas.mano);
 
   const location = useLocation();
 
@@ -14,12 +16,28 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const handleLevantarMano = () => {
-    cargarManos(
-      `${login.primerNombre} ${login.primerApellido} ✋`,
-      connectedDB,
-      dispatch
+    const actualIntervenciones = [...interventores];
+    const idExiste = actualIntervenciones.some(
+      (usuarioInter) => usuarioInter.id === login._id
     );
-    alertInfo('¡Levantaste la mano, espera tu turno!');
+    const idMano = mano.some((usuarioMano) => usuarioMano.id === login._id);
+    if (idExiste) {
+      alertInfo('Espere su turno para intervenir');
+    } else {
+      if (idMano) {
+        alertInfo('!Su solicitud esta en proceso por favor espere');
+      } else {
+        cargarManos(
+          {
+            id: login._id,
+            nombre: `${login.primerNombre} ${login.primerApellido} ✋`,
+          },
+          connectedDB,
+          dispatch
+        );
+        alertInfo('¡Levantaste la mano, espera tu turno!');
+      }
+    }
   };
 
   const handleLogOut = (e) => {

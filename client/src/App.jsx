@@ -32,6 +32,7 @@ import {
   cargarMano,
   cargarPreguntas,
   cargarUsuariosSuccess,
+  setInterventores,
   setTime,
 } from './redux/appSlice';
 import {alertInfo} from './helpers/Alertas';
@@ -40,6 +41,7 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = useSelector((state) => state.asambleas.login);
+  const mano = useSelector((state) => state.asambleas.mano);
   const {pathname} = useLocation();
   const token = localStorage.getItem('token');
 
@@ -63,22 +65,36 @@ function App() {
     socket.on('timer', (data) => {
       dispatch(setTime(data));
     });
+    socket.on('setearMano', (data) => {
+      dispatch(cargarMano(data));
+    });
+    socket.on('setearInterventores', (data) => {
+      dispatch(setInterventores(data));
+    });
 
     return () => {
       socket.off('login');
       socket.off('logoutUsuario');
       socket.off('crearPreguntas');
       socket.off('timer');
-      socket.off('mano');
+      socket.off('setearMano');
+      socket.off('setearInterventores');
     };
   }, []);
 
   useEffect(() => {
     socket.on('mano', (data) => {
-      dispatch(cargarMano(data));
-      const user = data.split(' ');
-      if (user[0] !== login.primerNombre) {
-        alertInfo(data);
+      const manoActual = [...mano];
+      const idExiste = manoActual.some(
+        (usuario) => usuario.id === String(data.id)
+      );
+
+      if (!idExiste) {
+        manoActual.push(data);
+        dispatch(cargarMano(manoActual));
+        if (login._id !== data.id) {
+          alertInfo(data.nombre);
+        }
       }
     });
 

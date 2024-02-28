@@ -15,6 +15,7 @@ const appSlice = createSlice({
     usuariosActivos: 0,
     time: 0,
     mano: [],
+    interventores: [],
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
@@ -77,7 +78,10 @@ const appSlice = createSlice({
       state.time = action.payload;
     },
     cargarMano: (state, action) => {
-      state.mano = [...state.mano, action.payload];
+      state.mano = action.payload;
+    },
+    setInterventores: (state, action) => {
+      state.interventores = action.payload;
     },
   },
 });
@@ -97,5 +101,6 @@ export const {
   setActivos,
   setTime,
   cargarMano,
+  setInterventores,
 } = appSlice.actions;
 export default appSlice.reducer;

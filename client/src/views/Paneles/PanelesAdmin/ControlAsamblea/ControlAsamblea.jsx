@@ -5,12 +5,16 @@ import Preguntas from '../../../../components/Preguntas/Preguntas';
 import {useState} from 'react';
 import {FcCollapse, FcExpand} from 'react-icons/fc';
 import Timer from '../../../../components/Timer/Timer';
+import LevantaronMano from '../../../../components/LevantaronMano/LevantaronMano';
+import Interventores from '../../../../components/Interventores/Interventores';
 
 const ControlAsamblea = () => {
   const dbConnected = useSelector((state) => state.asambleas.DBConectada);
   const preguntas = useSelector((state) => state.asambleas.preguntas);
   const [quorumView, setQuorumView] = useState(false);
   const [preguntasView, setPreguntasView] = useState(false);
+  const [manoView, setManoView] = useState(false);
+  const [interventoresView, setInterventoresView] = useState(false);
 
   const handleQuorumView = () => {
     setQuorumView(!quorumView);
@@ -19,8 +23,16 @@ const ControlAsamblea = () => {
     setPreguntasView(!preguntasView);
   };
 
+  const handlerManoView = () => {
+    setManoView(!manoView);
+  };
+
+  const handlerInterventoresView = () => {
+    setInterventoresView(!interventoresView);
+  };
+
   return (
-    <div className="flex">
+    <div className="flex font-bold">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5 overflow-y-auto">
         <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="md:space-y-6 sm:p-8 border-2 border-black rounded-lg">
@@ -81,6 +93,49 @@ const ControlAsamblea = () => {
                         <Preguntas pregunta={pregunta} />
                       </div>
                     ))}
+                  </div>
+                )}
+              </div>
+              <div className="w-full space-y-2">
+                <button
+                  onClick={handlerManoView}
+                  disabled={dbConnected === 'DBAdmin'}
+                  title={
+                    dbConnected !== 'DBAdmin'
+                      ? 'Preguntas'
+                      : 'Seleccione un Conjunto'
+                  }
+                >
+                  {manoView ? <FcCollapse /> : <FcExpand />}
+                </button>
+                <label className="text-white uppercase">
+                  {' '}
+                  Levantaron la mano
+                </label>
+
+                {manoView && (
+                  <div>
+                    <LevantaronMano />
+                  </div>
+                )}
+              </div>
+              <div className="w-full space-y-2">
+                <button
+                  onClick={handlerInterventoresView}
+                  disabled={dbConnected === 'DBAdmin'}
+                  title={
+                    dbConnected !== 'DBAdmin'
+                      ? 'Preguntas'
+                      : 'Seleccione un Conjunto'
+                  }
+                >
+                  {interventoresView ? <FcCollapse /> : <FcExpand />}
+                </button>
+                <label className="text-white uppercase"> Interventores</label>
+
+                {interventoresView && (
+                  <div>
+                    <Interventores />
                   </div>
                 )}
               </div>

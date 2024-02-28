@@ -38,6 +38,13 @@ const socket = (io) => {
       io.to(data.DBConectada).emit('mano', data.data);
     });
 
+    socket.on('setearMano', async (data) => {
+      io.to(data.DBConectada).emit('setearMano', data.data);
+    });
+    socket.on('setearInterventores', async (data) => {
+      io.to(data.DBConectada).emit('setearInterventores', data.data);
+    });
+
     socket.on('crearPreguntas', async (DBConectada) => {
       const dbConnection = await conectarDB(DBConectada);
       // Emitir el evento solo a los clientes en la sala correspondiente

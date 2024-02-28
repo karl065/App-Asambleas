@@ -403,3 +403,18 @@ export const cargarManos = async (data, DBConectada) => {
     console.log(error);
   }
 };
+
+export const setManos = async (data, DBConectada) => {
+  try {
+    socket.emit('setearMano', {data, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const setInterventoresAction = async (data, DBConectada) => {
+  try {
+    socket.emit('setearInterventores', {data, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};
