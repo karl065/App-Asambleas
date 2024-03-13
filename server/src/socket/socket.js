@@ -5,6 +5,9 @@ const {
   GetControllerDB,
 } = require('../Controllers/ControllersDB/GetControllerDB.js');
 const {
+  getControllerIntervenciones,
+} = require('../Controllers/ControllersIntervenciones/GetControllerIntervenciones.js');
+const {
   getControllerPreguntas,
 } = require('../Controllers/ControllersPreguntas/GetControllerPreguntas.js');
 const {
@@ -38,6 +41,10 @@ const socket = (io) => {
       io.to(data.DBConectada).emit('mano', data.data);
     });
 
+    socket.on('setDebate', async (data) => {
+      io.to(data.DBConectada).emit('setDebate', data.debate);
+    });
+
     socket.on('setearMano', async (data) => {
       io.to(data.DBConectada).emit('setearMano', data.data);
     });
@@ -57,6 +64,14 @@ const socket = (io) => {
       // Emitir el evento solo a los clientes en la sala correspondiente
       const preguntas = await getControllerPreguntas(dbConnection);
       io.to(DBConectada).emit('actualizarPreguntas', preguntas);
+    });
+
+    socket.on('setTemas', async (DBConectada) => {
+      const dbConnection = await conectarDB(DBConectada);
+
+      const intervenciones = await getControllerIntervenciones(dbConnection);
+
+      io.to(DBConectada).emit('setTemas', intervenciones);
     });
 
     socket.on('logoutUsuario', async (DBConectada) => {

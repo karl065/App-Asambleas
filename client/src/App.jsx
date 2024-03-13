@@ -10,6 +10,7 @@ import {
   CrearEmpoderado,
   CrearPredios,
   CrearPreguntas,
+  CrearTema,
   CrearUsuarios,
   GestionarConjunto,
   GestionarPreguntas,
@@ -32,7 +33,9 @@ import {
   cargarMano,
   cargarPreguntas,
   cargarUsuariosSuccess,
+  setDebate,
   setInterventores,
+  setTemas,
   setTime,
 } from './redux/appSlice';
 import {alertInfo} from './helpers/Alertas';
@@ -72,6 +75,14 @@ function App() {
       dispatch(setInterventores(data));
     });
 
+    socket.on('setDebate', (data) => {
+      dispatch(setDebate(data));
+    });
+
+    socket.on('setTemas', (data) => {
+      dispatch(setTemas(data));
+    });
+
     return () => {
       socket.off('login');
       socket.off('logoutUsuario');
@@ -79,6 +90,8 @@ function App() {
       socket.off('timer');
       socket.off('setearMano');
       socket.off('setearInterventores');
+      socket.off('setDebate');
+      socket.off('setTemas');
     };
   }, []);
 
@@ -91,17 +104,17 @@ function App() {
 
       if (!idExiste) {
         manoActual.push(data);
-        dispatch(cargarMano(manoActual));
-        if (login._id !== data.id) {
-          alertInfo(data.nombre);
-        }
+      }
+      dispatch(cargarMano(manoActual));
+      if (login._id !== data.id) {
+        alertInfo(data.nombre);
       }
     });
 
     return () => {
       socket.off('mano');
     };
-  }, [login]);
+  }, [login, mano]);
 
   return (
     <div className="w-screen h-screen max-h-[calc(100vh-2rem)] overflow-y-auto flex p-2 space-x-2">
@@ -153,6 +166,7 @@ function App() {
             <Route path="/Voto" element={<Voto />} />
             <Route path="/view" element={<IngresoView />} />
             <Route path="/viewRespuestas" element={<ViewRespuestas />} />
+            <Route path="/crearTema" element={<CrearTema />} />
           </Routes>
         </div>
       </div>

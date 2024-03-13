@@ -74,7 +74,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         });
       }
     }
-
+    socket.emit('setTemas', data.connectedDB);
     dispatch(setLoading(false));
     dispatch(connectedDB(data.connectedDB));
     dispatch(setLogin(data));
@@ -130,6 +130,7 @@ export const reLogin = async (token, dispatch, navigate) => {
           }
         }
 
+        socket.emit('setTemas', data.connectedDB);
         dispatch(connectedDB(data.connectedDB));
         dispatch(setLogin(data));
         filtroUsuarios({obtenerEnum: true}, dispatch);
@@ -414,6 +415,26 @@ export const setManos = async (data, DBConectada) => {
 export const setInterventoresAction = async (data, DBConectada) => {
   try {
     socket.emit('setearInterventores', {data, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setDebateActions = (debate, DBConectada) => {
+  try {
+    socket.emit('setDebate', {debate, DBConectada});
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const crearTemas = async (tema, DBConectada) => {
+  try {
+    await axios.post(`${server.api.baseURL}intervenciones`, {
+      DBConectada,
+      intervenciones: tema,
+    });
+    socket.emit('setTemas', DBConectada);
   } catch (error) {
     console.log(error);
   }

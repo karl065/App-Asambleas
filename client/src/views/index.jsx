@@ -16,6 +16,7 @@ import ResponderPreguntas from './Paneles/PanelesClientes/ResponderPreguntas/Res
 import Voto from './Paneles/PanelesClientes/Votos/Voto.jsx';
 import IngresoView from './Paneles/PanelesView/IngresoView/IngresoView.jsx';
 import ViewRespuestas from './Paneles/PanelesView/ViewRespuestas/ViewRespuestas.jsx';
+import CrearTema from './Paneles/PanelesAdmin/CrearTema/CrearTema.jsx';
 
 export {
   Login,
@@ -36,4 +37,5 @@ export {
   Voto,
   IngresoView,
   ViewRespuestas,
+  CrearTema,
 };

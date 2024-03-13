@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
 import {useSelector} from 'react-redux';
 import Tabla from '../Tabla/Tabla';
-import {FcCheckmark} from 'react-icons/fc';
+import {FaCheck} from 'react-icons/fa6';
 import {setInterventoresAction, setManos} from '../../redux/actions';
 import {alertInfo} from '../../helpers/Alertas';
 
@@ -10,6 +12,18 @@ const LevantaronMano = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
   const interventores = useSelector((state) => state.asambleas.interventores);
   const DBConectada = useSelector((state) => state.asambleas.DBConectada);
+  const temas = useSelector((state) => state.asambleas.temas);
+
+  const validationSchema = Yup.object({
+    tema: Yup.string().required('Tiene que elegir un tema obligatoriamente'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      tema: '',
+    },
+    validationSchema: validationSchema,
+  });
 
   const filtroRepetidos = {};
   const listaMano = mano
@@ -48,8 +62,13 @@ const LevantaronMano = () => {
       Header: 'ACCIONES',
       accessor: 'icon',
       Cell: ({row}) => (
-        <button onClick={() => handleAceptarIntervenciones(row.original)}>
-          <FcCheckmark />
+        <button
+          type="submit"
+          className="bg-green-500 rounded-full p-2"
+          onClick={() => handleAceptarIntervenciones(row.original)}
+          title="Aceptar intervención"
+        >
+          <FaCheck style={{color: 'white'}} />
         </button>
       ),
     },
@@ -68,8 +87,44 @@ const LevantaronMano = () => {
     : [];
 
   return (
-    <div className="w-full">
-      <Tabla columns={columnasMano} data={data} className="w-full" />
+    <div className="w-full space-y-2">
+      <div>
+        <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
+          <div className="flex space-x-4 items-center justify-center ">
+            <div className="flex-1 relative">
+              <select
+                name="tema"
+                id="tema"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.tema}
+                className={`bg-blue-700 uppercase border-4 border-black inline-block text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                  formik.touched.tema && formik.errors.tema
+                    ? 'border-red-500'
+                    : ''
+                }`}
+              >
+                <option value="">Seleccione un tema</option>
+                {temas.map((tema) => (
+                  <option value={tema._id} key={tema._id}>
+                    {tema.tema}
+                  </option>
+                ))}
+              </select>
+              <div
+                className={`text-xs bg-black font-bold border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                  formik.touched.tema && formik.errors.tema
+                    ? 'visible'
+                    : 'hidden'
+                }`}
+              >
+                {formik.errors.tema}
+              </div>
+            </div>
+          </div>
+          <Tabla columns={columnasMano} data={data} className="w-full" />
+        </form>
+      </div>
     </div>
   );
 };

@@ -21,6 +21,7 @@ const conectarDB = async (DB) => {
     conn.model('Predios', require('../Models/Predios'));
     conn.model('Preguntas', require('../Models/Preguntas'));
     conn.model('Respuestas', require('../Models/Respuestas'));
+    conn.model('Intervenciones', require('../Models/Intervenciones'));
 
     return conn;
   } catch (error) {

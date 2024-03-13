@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import {useTable} from 'react-table';
 
-const Tabla = ({columns, data, className, timeLeft}) => {
+const Tabla = ({columns, data, className, firstRowClass}) => {
   const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} =
     useTable({columns, data});
 
@@ -16,8 +16,12 @@ const Tabla = ({columns, data, className, timeLeft}) => {
                 <th
                   {...column.getHeaderProps()}
                   className={`p-2 ${
+                    index === headerGroup.headers.length - 1
+                      ? 'rounded-tr-lg'
+                      : ''
+                  } ${index === 0 ? 'rounded-tl-lg' : ''} ${
                     index === headerGroup.headers.length - 1 ? '' : 'border-r'
-                  } font-bold text-left text-white`}
+                  } font-bold text-left text-white bg-gray-600 `}
                 >
                   {column.render('Header')}
                 </th>
@@ -29,14 +33,13 @@ const Tabla = ({columns, data, className, timeLeft}) => {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr
-                {...row.getRowProps()}
-                className={`${timeLeft !== 0 && 'text-green-700'} `}
-              >
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell, index) => (
                   <td
                     {...cell.getCellProps()}
-                    className={`border-t-4 p-2 text-white font-bold hover:bg-white hover:text-black ${
+                    className={`${
+                      firstRowClass ? firstRowClass : 'text-white'
+                    } border-t-4 p-2 font-bold hover:bg-white hover:text-black ${
                       index === row.cells.length - 1 ? '' : 'border-r '
                     }`}
                   >

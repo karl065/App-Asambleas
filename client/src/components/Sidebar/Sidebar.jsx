@@ -156,6 +156,22 @@ const Sidebar = () => {
                 <hr className="my-2" />
                 <li
                   className={`flex w-full ${
+                    location.pathname === '/crearTema'
+                      ? 'opacity-60 cursor-not-allowed'
+                      : ''
+                  }`}
+                >
+                  {location.pathname === '/crearTema' ? (
+                    <span className=" text-white flex-grow">Crear Tema</span>
+                  ) : (
+                    <Link to="/crearTema" className="text-white flex-grow">
+                      <span>Crear Tema</span>
+                    </Link>
+                  )}
+                </li>
+                <hr className="my-2" />
+                <li
+                  className={`flex w-full ${
                     location.pathname === '/CrearPreguntas'
                       ? 'opacity-60 cursor-not-allowed'
                       : ''

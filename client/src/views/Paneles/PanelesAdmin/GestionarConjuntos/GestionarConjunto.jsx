@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-case-declarations */
-
 import {useState} from 'react';
 import Tabla from '../../../../components/Tabla/Tabla';
 import {FcCollapse} from 'react-icons/fc';
@@ -55,8 +55,11 @@ const GestionarConjunto = () => {
       Header: 'ACCIONES',
       accessor: 'icon',
       Cell: ({row}) => (
-        <button onClick={() => handleIconButton(row.original.documento)}>
-          <PiNotePencilFill style={{color: 'blue'}} size={24} />
+        <button
+          className="bg-yellow-400 p-2 rounded-full"
+          onClick={() => handleIconButton(row.original.documento)}
+        >
+          <PiNotePencilFill style={{color: 'white'}} size={24} />
         </button>
       ),
     },

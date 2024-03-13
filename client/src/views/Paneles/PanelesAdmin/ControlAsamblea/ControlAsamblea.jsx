@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useSelector} from 'react-redux';
 import ConectarDBs from '../../../../components/ConectarDB/ConectarDBs';
 import Quorum from '../../../../components/Quorum/Quorum';
@@ -9,7 +10,7 @@ import LevantaronMano from '../../../../components/LevantaronMano/LevantaronMano
 import Interventores from '../../../../components/Interventores/Interventores';
 
 const ControlAsamblea = () => {
-  const dbConnected = useSelector((state) => state.asambleas.DBConectada);
+  const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const preguntas = useSelector((state) => state.asambleas.preguntas);
   const [quorumView, setQuorumView] = useState(false);
   const [preguntasView, setPreguntasView] = useState(false);
@@ -46,9 +47,9 @@ const ControlAsamblea = () => {
                 <div>
                   <button
                     onClick={handleQuorumView}
-                    disabled={dbConnected === 'DBAdmin'}
+                    disabled={DBConectada === 'DBAdmin'}
                     title={
-                      dbConnected !== 'DBAdmin'
+                      DBConectada !== 'DBAdmin'
                         ? 'Quorum'
                         : 'Seleccione un Conjunto'
                     }
@@ -75,9 +76,9 @@ const ControlAsamblea = () => {
               <div>
                 <button
                   onClick={handlePreguntasView}
-                  disabled={dbConnected === 'DBAdmin'}
+                  disabled={DBConectada === 'DBAdmin'}
                   title={
-                    dbConnected !== 'DBAdmin'
+                    DBConectada !== 'DBAdmin'
                       ? 'Preguntas'
                       : 'Seleccione un Conjunto'
                   }
@@ -99,9 +100,9 @@ const ControlAsamblea = () => {
               <div className="w-full space-y-2">
                 <button
                   onClick={handlerManoView}
-                  disabled={dbConnected === 'DBAdmin'}
+                  disabled={DBConectada === 'DBAdmin'}
                   title={
-                    dbConnected !== 'DBAdmin'
+                    DBConectada !== 'DBAdmin'
                       ? 'Preguntas'
                       : 'Seleccione un Conjunto'
                   }
@@ -122,9 +123,9 @@ const ControlAsamblea = () => {
               <div className="w-full space-y-2">
                 <button
                   onClick={handlerInterventoresView}
-                  disabled={dbConnected === 'DBAdmin'}
+                  disabled={DBConectada === 'DBAdmin'}
                   title={
-                    dbConnected !== 'DBAdmin'
+                    DBConectada !== 'DBAdmin'
                       ? 'Preguntas'
                       : 'Seleccione un Conjunto'
                   }

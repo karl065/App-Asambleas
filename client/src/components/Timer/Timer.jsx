@@ -5,10 +5,11 @@ import AudioPlayer from 'react-audio-player';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFormik} from 'formik';
 import {VictoryLabel, VictoryPie} from 'victory';
-import {setTimer} from '../../redux/actions';
+import {setDebateActions, setTimer} from '../../redux/actions';
 import * as Yup from 'yup';
 import {setTime} from '../../redux/appSlice';
 import {FaCaretSquareRight} from 'react-icons/fa';
+import {alertInfo} from '../../helpers/Alertas';
 
 const Timer = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const Timer = () => {
   const [playBip, setPlayBip] = useState(false);
   const [playEndSound, setPlayEndSound] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const interventores = useSelector((state) => state.asambleas.interventores);
 
   const validationSchema = Yup.object({
     tiempo: Yup.number().required('Campo obligatorio'),
@@ -30,8 +32,14 @@ const Timer = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, {resetForm}) => {
-      setTimer(values.tiempo, DBConectada);
-      resetForm({values: {tiempo: 0}});
+      if (interventores.length === 0) {
+        alertInfo('No hay interventores');
+        resetForm({values: {tiempo: 0}});
+      } else {
+        setDebateActions('intervención', DBConectada);
+        setTimer(values.tiempo, DBConectada);
+        resetForm({values: {tiempo: 0}});
+      }
     },
   });
 
@@ -114,7 +122,7 @@ const Timer = () => {
       {location.pathname === '/ControlAsambleas' && (
         <hr className="border-4 rounded-2xl" />
       )}
-      <div className="inline-block overflow-hidden border-2 border-black rounded-full">
+      <div className="inline-block overflow-hidden border-2 bg-white border-black rounded-full">
         <svg viewBox="0 0 400 400" width="100%" height="100%">
           <VictoryPie
             standalone={false}

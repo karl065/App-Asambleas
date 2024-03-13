@@ -17,17 +17,23 @@ const authenticateUser = async (documento, password) => {
     let connectedDB;
     let usuarioLogin;
     const DBs = await GetControllerDB(dbConnection);
-    if (documento === 'SuperAdmin' || documento === 'View') {
+    if (
+      documento.toLowerCase() === 'superadmin' ||
+      documento.toLowerCase() === 'view'
+    ) {
       const Usuarios = dbConnection.model('Usuarios');
-      user = await Usuarios.findOne({documento});
-
+      user = await Usuarios.findOne({
+        documento: {$regex: new RegExp('^' + documento + '$', 'i')},
+      });
       const passwordValid = await bcryptjs.compare(password, user.password);
 
       if (!user || !passwordValid) {
         throw new Error('Usuario o Contraseña incorrectos');
       }
 
-      const userLogin = await Usuarios.findOne({documento});
+      const userLogin = await Usuarios.findOne({
+        documento: {$regex: new RegExp('^' + documento + '$', 'i')},
+      });
       const payload = {
         user: {
           id: userLogin._id,
@@ -86,10 +92,13 @@ const authenticateUser = async (documento, password) => {
           break;
         }
       }
+      if (!user) {
+        throw new Error('Documento o Contraseña incorrectos');
+      }
       if (user.userStatus) throw new Error('El usuario ya esta en asamblea');
       const passwordValid = await bcryptjs.compare(password, user.password);
 
-      if (!user || !passwordValid) {
+      if (!user) {
         throw new Error('Documento o Contraseña incorrectos');
       }
 

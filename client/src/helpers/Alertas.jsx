@@ -1,4 +1,9 @@
 import Swal from 'sweetalert2';
+import {
+  setDebateActions,
+  setInterventoresAction,
+  setTimer,
+} from '../redux/actions';
 
 export const alertSuccess = (msg) => {
   const Toast = Swal.mixin({
@@ -53,5 +58,78 @@ export const alertWarning = (msg) => {
   Toast.fire({
     icon: 'warning',
     title: msg,
+  });
+};
+
+export const alertIntervenciones = (DBConectada, interventores, debate) => {
+  const Toast = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false,
+  });
+
+  Toast.fire({
+    title: `Se acabo el tiempo de la ${debate}`,
+    text: `¿Desea extender la ${debate}?`,
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      const {value: tiempo} = await Toast.fire({
+        title: 'Ingrese el tiempo adicional',
+        input: 'number',
+        inputPlaceholder: 'Tiempo en segundos',
+      });
+      if (tiempo) {
+        setTimer(tiempo, DBConectada);
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      if (debate === 'intervención') {
+        Toast.fire({
+          title: '¿Para esta intervención habrá replica?',
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            setDebateActions('replica', DBConectada);
+            const {value: tiempo} = await Toast.fire({
+              title: 'Ingrese el tiempo de replica',
+              input: 'number',
+              inputPlaceholder: 'Tiempo en segundos',
+            });
+            if (tiempo) {
+              setTimer(tiempo, DBConectada);
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Toast.fire({
+              title: 'Finalizado',
+              text: 'Esta intervención a finalizado',
+              icon: 'success',
+            });
+
+            setDebateActions('', DBConectada);
+            const nuevosInterventores = [...interventores];
+            nuevosInterventores.shift();
+            setInterventoresAction(nuevosInterventores, DBConectada);
+          }
+        });
+      } else {
+        Toast.fire({
+          title: 'Finalizado',
+          text: 'Esta intervención a finalizado',
+          icon: 'success',
+        });
+        setDebateActions('', DBConectada);
+        const nuevosInterventores = [...interventores];
+        nuevosInterventores.shift();
+        setInterventoresAction(nuevosInterventores, DBConectada);
+      }
+    }
   });
 };

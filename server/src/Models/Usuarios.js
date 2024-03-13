@@ -53,15 +53,17 @@ const usuarioSchema = new mongoose.Schema(
         ref: 'Predios',
       },
     ],
+    intervenciones: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Intervenciones',
+      },
+    ],
   },
   {
     timestamps: false,
     autoCreate: false,
   }
 );
-
-// const UsuarioModel = mongoose.model('Usuarios', usuarioSchema);
-
-// module.exports = UsuarioModel;
 
 module.exports = usuarioSchema;
