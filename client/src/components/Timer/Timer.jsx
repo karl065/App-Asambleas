@@ -91,7 +91,10 @@ const Timer = () => {
     <div className="space-y-2">
       {location.pathname === '/ControlAsambleas' && (
         <div>
-          <form className="flex space-x-2" onSubmit={formik.handleSubmit}>
+          <form
+            className="flex space-x-2 items-center"
+            onSubmit={formik.handleSubmit}
+          >
             <div>
               <input
                 type="number"
@@ -113,9 +116,14 @@ const Timer = () => {
                 </div>
               ) : null}
             </div>
-            <button type="submit">
-              <FaCaretSquareRight size={24} style={{color: 'blue'}} />
-            </button>
+            <div>
+              <button
+                type="submit"
+                className="bg-white inline-block p-1 rounded-lg"
+              >
+                <FaCaretSquareRight size={24} style={{color: 'blue'}} />
+              </button>
+            </div>
           </form>
         </div>
       )}

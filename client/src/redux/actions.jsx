@@ -51,6 +51,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         data.role === 'Propietario-Empoderado' ||
         data.role === 'Empoderado'
       ) {
+        socket.emit('setTemas', data.connectedDB);
         navigate('/usuario');
       } else {
         const response = await axios.get(`${server.api.baseURL}DB`, {
@@ -74,7 +75,7 @@ export const loginSuccess = async (userLogin, dispatch, navigate) => {
         });
       }
     }
-    socket.emit('setTemas', data.connectedDB);
+
     dispatch(setLoading(false));
     dispatch(connectedDB(data.connectedDB));
     dispatch(setLogin(data));
@@ -106,6 +107,7 @@ export const reLogin = async (token, dispatch, navigate) => {
             data.role === 'Propietario-Empoderado' ||
             data.role === 'Empoderado'
           ) {
+            socket.emit('setTemas', data.connectedDB);
             navigate('/usuario');
           } else {
             localStorage.setItem('connect', data.connectedDB);
@@ -130,7 +132,6 @@ export const reLogin = async (token, dispatch, navigate) => {
           }
         }
 
-        socket.emit('setTemas', data.connectedDB);
         dispatch(connectedDB(data.connectedDB));
         dispatch(setLogin(data));
         filtroUsuarios({obtenerEnum: true}, dispatch);
@@ -229,6 +230,7 @@ export const conectarDB = async (DB, dispatch, token) => {
       `${server.api.baseURL}predios?DBConectada=${DB.nombre}`
     );
     dispatch(cargarPredios(data));
+    socket.emit('setTemas', DB.nombre);
     return msg.data.msg;
   } catch (error) {
     console.log(error);
@@ -433,6 +435,18 @@ export const crearTemas = async (tema, DBConectada) => {
     await axios.post(`${server.api.baseURL}intervenciones`, {
       DBConectada,
       intervenciones: tema,
+    });
+    socket.emit('setTemas', DBConectada);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const actualizarTemas = async (idTema, dataUpdate, DBConectada) => {
+  try {
+    await axios.put(`${server.api.baseURL}intervenciones/${idTema}`, {
+      DBConectada,
+      dataUpdate,
     });
     socket.emit('setTemas', DBConectada);
   } catch (error) {

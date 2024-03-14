@@ -67,7 +67,6 @@ export const alertIntervenciones = (DBConectada, interventores, debate) => {
       confirmButton: 'btn btn-success',
       cancelButton: 'btn btn-danger',
     },
-    buttonsStyling: false,
   });
 
   Toast.fire({
@@ -75,6 +74,8 @@ export const alertIntervenciones = (DBConectada, interventores, debate) => {
     text: `¿Desea extender la ${debate}?`,
     icon: 'info',
     showCancelButton: true,
+    confirmButtonColor: '#4CAF50',
+    cancelButtonColor: '#FF5252',
     confirmButtonText: 'Si',
     cancelButtonText: 'No',
   }).then(async (result) => {
@@ -93,6 +94,8 @@ export const alertIntervenciones = (DBConectada, interventores, debate) => {
           title: '¿Para esta intervención habrá replica?',
           icon: 'info',
           showCancelButton: true,
+          confirmButtonColor: '#4CAF50',
+          cancelButtonColor: '#FF5252',
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
         }).then(async (result) => {
@@ -110,6 +113,7 @@ export const alertIntervenciones = (DBConectada, interventores, debate) => {
             Toast.fire({
               title: 'Finalizado',
               text: 'Esta intervención a finalizado',
+              confirmButtonColor: '#4CAF50',
               icon: 'success',
             });
 
@@ -122,6 +126,7 @@ export const alertIntervenciones = (DBConectada, interventores, debate) => {
       } else {
         Toast.fire({
           title: 'Finalizado',
+          confirmButtonColor: '#4CAF50',
           text: 'Esta intervención a finalizado',
           icon: 'success',
         });

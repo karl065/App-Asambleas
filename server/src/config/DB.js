@@ -15,6 +15,7 @@ const conectarDB = async (DB) => {
       conn.model('DBsAdmin', require('../Models/DBs'));
       return conn;
     }
+
     if (DB) DB = DB.replace(/\s/g, '_');
     const conn = mongoose.createConnection(`${DB_MONGODB}${DB}`, mongoOption);
     conn.model('Usuarios', require('../Models/Usuarios'));

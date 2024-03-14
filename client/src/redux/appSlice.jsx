@@ -18,6 +18,8 @@ const appSlice = createSlice({
     interventores: [],
     debate: '',
     temas: [],
+    maxInterventores: 0,
+    temaActual: '',
   },
   reducers: {
     cargarUsuariosSuccess: (state, action) => {
@@ -91,6 +93,12 @@ const appSlice = createSlice({
     setTemas: (state, action) => {
       state.temas = action.payload;
     },
+    setMaxInterventores: (state, action) => {
+      state.maxInterventores = action.payload;
+    },
+    setTemaActual: (state, action) => {
+      state.temaActual = action.payload;
+    },
   },
 });
 
@@ -98,6 +106,7 @@ export const {
   cargarUsuariosSuccess,
   setLogin,
   cargarDBs,
+  setTemaActual,
   crearDB,
   cargarPredios,
   actualizarUsuario,
@@ -112,5 +121,6 @@ export const {
   setInterventores,
   setDebate,
   setTemas,
+  setMaxInterventores,
 } = appSlice.actions;
 export default appSlice.reducer;

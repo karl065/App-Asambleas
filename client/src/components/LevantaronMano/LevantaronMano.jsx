@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Tabla from '../Tabla/Tabla';
 import {FaCheck} from 'react-icons/fa6';
-import {setInterventoresAction, setManos} from '../../redux/actions';
+import {
+  actualizarTemas,
+  setInterventoresAction,
+  setManos,
+} from '../../redux/actions';
 import {alertInfo} from '../../helpers/Alertas';
+import {setMaxInterventores, setTemaActual} from '../../redux/appSlice';
 
 const LevantaronMano = () => {
   const mano = useSelector((state) => state.asambleas.mano);
@@ -13,6 +18,12 @@ const LevantaronMano = () => {
   const interventores = useSelector((state) => state.asambleas.interventores);
   const DBConectada = useSelector((state) => state.asambleas.DBConectada);
   const temas = useSelector((state) => state.asambleas.temas);
+  const maxInterventores = useSelector(
+    (state) => state.asambleas.maxInterventores
+  );
+  const temaActual = useSelector((state) => state.asambleas.temaActual);
+
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     tema: Yup.string().required('Tiene que elegir un tema obligatoriamente'),
@@ -40,12 +51,39 @@ const LevantaronMano = () => {
     .filter(Boolean);
 
   const handleAceptarIntervenciones = (usuario) => {
+    const indexTema = parseInt(formik.values.tema);
+
+    if (formik.values.tema.trim() === '') {
+      alertInfo('Debe seleccionar un tema antes de aceptar la intervención');
+      return;
+    }
+
+    if (maxInterventores === 0) {
+      dispatch(setMaxInterventores(temas[indexTema].maxInterventores));
+    }
+
+    if (!temaActual) {
+      dispatch(setTemaActual(temas[indexTema]._id));
+    }
+
+    if (interventores.length === temas[indexTema].maxInterventores) {
+      alertInfo(
+        'Ya se alcanzo el numero máximo de intervenciones para este tema'
+      );
+      return;
+    }
+
     const actualIntervenciones = [...interventores];
     const idExiste = actualIntervenciones.some(
       (usuarioInter) => usuarioInter.id === usuario.id
     );
     if (!idExiste) {
       actualIntervenciones.push(usuario);
+      actualizarTemas(
+        temas[indexTema]._id,
+        {usuarios: usuario.id},
+        DBConectada
+      );
       setInterventoresAction(actualIntervenciones, DBConectada);
       const nuevoMano = mano.filter((user) => user.id !== usuario.id);
       setManos(nuevoMano, DBConectada);
@@ -88,9 +126,9 @@ const LevantaronMano = () => {
 
   return (
     <div className="w-full space-y-2">
-      <div>
+      <div className="space-y-2">
         <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
-          <div className="flex space-x-4 items-center justify-center ">
+          <div className="flex items-center justify-center ">
             <div className="flex-1 relative">
               <select
                 name="tema"
@@ -105,11 +143,14 @@ const LevantaronMano = () => {
                 }`}
               >
                 <option value="">Seleccione un tema</option>
-                {temas.map((tema) => (
-                  <option value={tema._id} key={tema._id}>
-                    {tema.tema}
-                  </option>
-                ))}
+                {temas?.map(
+                  (tema, index) =>
+                    !tema.temaCompleto && (
+                      <option value={index} key={index}>
+                        {tema.tema}
+                      </option>
+                    )
+                )}
               </select>
               <div
                 className={`text-xs bg-black font-bold border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
@@ -122,8 +163,8 @@ const LevantaronMano = () => {
               </div>
             </div>
           </div>
-          <Tabla columns={columnasMano} data={data} className="w-full" />
         </form>
+        <Tabla columns={columnasMano} data={data} className="w-full" />
       </div>
     </div>
   );
