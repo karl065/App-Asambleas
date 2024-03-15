@@ -3,6 +3,13 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../redux/actions';
 import {useCallback} from 'react';
+import {
+  FaHome,
+  FaUserEdit,
+  FaUserPlus,
+  FaQuestionCircle,
+  FaSignOutAlt,
+} from 'react-icons/fa';
 
 const SidebarUsuario = () => {
   const navigate = useNavigate();
@@ -24,18 +31,18 @@ const SidebarUsuario = () => {
   );
 
   return (
-    <div>
+    <div className="w-[100px] lg:w-auto">
       <nav className="p-2 bg-black rounded-lg  opacity-70">
         <div className="rounded-lg shadow  border bg-gray-800 border-gray-700">
           <div className="flex justify-center p-2 border-2 border-black rounded-lg">
-            <div className="p-2">
-              <div className="font-bold text-white uppercase">
+            <div className=" lg:p-2 lg:w-full">
+              <div className="font-bold text-white uppercase hidden lg:block">
                 <span>
                   {login.role} {login.primerNombre} {login.primerApellido}
                 </span>
               </div>
-              <hr className="my-2 border-2" />
-              <ul className="m2">
+              <hr className="lg:my-2 border-2 hidden lg:block" />
+              <ul className="lg:m2">
                 <li
                   className={`flex w-full ${
                     location.pathname === '/usuario'
@@ -44,10 +51,20 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/usuario' ? (
-                    <span className="flex-grow text-white ">Inicio</span>
+                    <span className="flex-grow text-white flex justify-center lg:justify-normal ">
+                      <h1 className="hidden lg:block">Inicio</h1>
+                      <div className="rounded-full flex justify-center bg-green-900 w-[40px] h-[40px] items-center lg:hidden">
+                        <FaHome size={24} />
+                      </div>
+                    </span>
                   ) : (
                     <Link to="/usuario" className="flex-grow text-white">
-                      <span>Inicio</span>
+                      <span className="flex-grow text-white flex justify-center lg:justify-normal ">
+                        <h1 className="hidden lg:block">Inicio</h1>
+                        <div className="rounded-full flex justify-center bg-green-700 w-[40px] h-[40px] items-center lg:hidden">
+                          <FaHome style={{color: 'white'}} size={24} />
+                        </div>
+                      </span>
                     </Link>
                   )}
                 </li>
@@ -60,15 +77,27 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/ActualizarDatos' ? (
-                    <span className="flex-grow text-white ">
-                      Actualizar Datos / Dar Poder
+                    <span className="flex-grow text-white flex justify-center lg:justify-normal">
+                      <h1 className="hidden lg:block">
+                        Actualizar Datos / Dar Poder
+                      </h1>
+                      <div className="rounded-full flex justify-center bg-green-900 w-[40px] h-[40px] items-center lg:hidden">
+                        <FaUserEdit size={24} />
+                      </div>
                     </span>
                   ) : (
                     <Link
                       to="/ActualizarDatos"
                       className="flex-grow text-white"
                     >
-                      <span>Actualizar Datos / Dar Poder</span>
+                      <span className="flex-grow text-white flex justify-center lg:justify-normal ">
+                        <h1 className="hidden lg:block">
+                          Actualizar Datos / Dar Poder
+                        </h1>
+                        <div className="rounded-full flex justify-center bg-green-700 w-[40px] h-[40px] items-center lg:hidden">
+                          <FaUserEdit style={{color: 'white'}} size={24} />
+                        </div>
+                      </span>
                     </Link>
                   )}
                 </li>
@@ -81,15 +110,23 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/CrearEmpoderado' ? (
-                    <span className="flex-grow text-white ">
-                      Crear Empoderado
+                    <span className="flex-grow text-white flex justify-center lg:justify-normal">
+                      <h1 className="hidden lg:block">Crear Empoderado</h1>
+                      <div className="rounded-full flex justify-center bg-green-900 w-[40px] h-[40px] items-center lg:hidden">
+                        <FaUserPlus size={24} />
+                      </div>
                     </span>
                   ) : (
                     <Link
                       to="/CrearEmpoderado"
                       className="flex-grow text-white"
                     >
-                      <span>Crear Empoderado</span>
+                      <span className="flex-grow text-white flex justify-center lg:justify-normal ">
+                        <h1 className="hidden lg:block">Crear Empoderado</h1>
+                        <div className="rounded-full flex justify-center bg-green-700 w-[40px] h-[40px] items-center lg:hidden">
+                          <FaUserPlus style={{color: 'white'}} size={24} />
+                        </div>
+                      </span>
                     </Link>
                   )}
                 </li>
@@ -102,15 +139,26 @@ const SidebarUsuario = () => {
                   } `}
                 >
                   {location.pathname === '/ResponderPreguntas' ? (
-                    <span className="flex-grow text-white ">
-                      Responder Preguntas
+                    <span className="flex-grow text-white flex justify-center lg:justify-normal">
+                      <h1 className="hidden lg:block">Responder Preguntas</h1>
+                      <div className="rounded-full flex justify-center bg-green-900 w-[40px] h-[40px] items-center lg:hidden">
+                        <FaQuestionCircle size={24} />
+                      </div>
                     </span>
                   ) : (
                     <Link
                       to="/ResponderPreguntas"
                       className="flex-grow text-white"
                     >
-                      <span>Responder Preguntas</span>
+                      <span className="flex-grow text-white flex justify-center lg:justify-normal ">
+                        <h1 className="hidden lg:block">Responder Preguntas</h1>
+                        <div className="rounded-full flex justify-center bg-green-700 w-[40px] h-[40px] items-center lg:hidden">
+                          <FaQuestionCircle
+                            style={{color: 'white'}}
+                            size={24}
+                          />
+                        </div>
+                      </span>
                     </Link>
                   )}
                 </li>
@@ -122,7 +170,14 @@ const SidebarUsuario = () => {
                     className="w-full text-white bg-red-600 hover:bg-red-700 py-2 rounded-lg"
                   >
                     <Link to="/">
-                      <span>Salir</span>
+                      <span className="flex-grow text-white flex justify-center ">
+                        <h1 className="hidden lg:block">Salir</h1>
+                        <FaSignOutAlt
+                          className="lg:hidden"
+                          style={{color: 'white'}}
+                          size={24}
+                        />
+                      </span>
                     </Link>
                   </button>
                 </li>

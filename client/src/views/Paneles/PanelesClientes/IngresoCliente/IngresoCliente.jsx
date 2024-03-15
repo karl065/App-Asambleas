@@ -7,10 +7,10 @@ const IngresoCliente = () => {
   const usuarios = useSelector((state) => state.asambleas.usuarios);
 
   return (
-    <div className="flex ">
+    <div className="flex w-[310px] lg:w-auto">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5">
-        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="border-2 border-black rounded-lg">
+        <div className="rounded-lg shadow border bg-gray-800 border-gray-700">
+          <div className="border-2 border-black rounded-lg p-2">
             {usuarios.length > 0 ? <Quorum /> : null}
           </div>
         </div>

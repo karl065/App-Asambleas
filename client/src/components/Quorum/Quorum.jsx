@@ -57,13 +57,13 @@ const Quorum = () => {
   }, [usuariosEnTrue]);
 
   return (
-    <div className="flex items-center justify-center space-x-10 uppercase">
+    <div className="flex-col flex lg:flex-row items-center justify-center space-y-2 lg:space-x-2 uppercase">
       <div className="border-2 rounded-lg">
         <Pie percent={porcentajeUsuarios} porcentajeData={porcentajeUsuarios} />
       </div>
       <div className="p-5 space-y-5 overflow-y-auto font-extrabold text-white bg-black rounded-lg opacity-70">
         <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="border-2 border-black rounded-lg md:space-y-6 sm:p-8">
+          <div className="border-2 border-black rounded-lg space-y-2 lg:space-y-6 p-2 lg:p-8">
             <div
               className={`bg-white rounded-lg p-1 ${
                 porcentajeUsuarios > 51 ? 'text-green-800' : 'text-red-700'

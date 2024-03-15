@@ -36,17 +36,17 @@ const Voto = () => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex w-[310px] lg:w-auto">
       <div className="w-full p-5 space-y-5 overflow-y-auto bg-black rounded-lg opacity-70">
-        <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="border-2 border-black rounded-lg md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <div className="rounded-lg shadow border bg-gray-800 border-gray-700">
+          <div className="border-2 border-black rounded-lg space-y-3 lg:space-y-6 p-2 lg:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight lg:text-2xl text-white">
               Seleccione una Respuesta
             </h1>
-            <div className="text-white uppercase flex justify-center font-extrabold underline underline-offset-8 decoration-4">
+            <div className="text-white uppercase flex p-2 justify-center font-extrabold underline underline-offset-8 decoration-4">
               <label>{pregunta.pregunta}</label>
             </div>
-            <div className="space-x-2 flex justify-center">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-2">
               {pregunta.respuestas?.map((respuesta) => (
                 <div
                   className="uppercase bg-white inline-block max-w-md p-2 rounded-lg shadow-md"
@@ -69,7 +69,7 @@ const Voto = () => {
               <button
                 onClick={handleVotar}
                 type="submit"
-                className=" text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 uppercase"
+                className=" text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 uppercase"
               >
                 Enviar Voto
               </button>

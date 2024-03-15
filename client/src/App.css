@@ -1,20 +1,38 @@
+/* Estilos base */
 html {
-  height: 100vh;
+  height: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 #root {
-  flex: 1 1 100vh;
-  /* Establece una altura mínima de 100vh (altura de la ventana) */
-  min-height: 100vh;
-  background-image: url("https://res.cloudinary.com/dpjeltekx/image/upload/v1700513237/asambleas/app/cor033-p0rx9wxdjqomx5p3zagnjmxt8p9rq3u5vkm64ws774_omnhyo.jpg");
+  flex: 1;
+  min-height: 100%;
+  background-image: url('https://res.cloudinary.com/dpjeltekx/image/upload/v1700513237/asambleas/app/cor033-p0rx9wxdjqomx5p3zagnjmxt8p9rq3u5vkm64ws774_omnhyo.jpg');
   background-size: cover;
   background-position: center;
+}
+
+/* Media queries para tablets y celulares */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px; /* Tamaño de fuente más pequeño para dispositivos más pequeños */
+  }
+
+  #root {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 12px; /* Tamaño de fuente aún más pequeño para dispositivos muy pequeños */
+  }
 }

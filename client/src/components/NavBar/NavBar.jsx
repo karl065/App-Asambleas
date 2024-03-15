@@ -46,8 +46,8 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="flex bg-black opacity-70 rounded-lg p-2 sm:w-full xl:w-full justify-center">
+    <div className="flex-1 w-[310px] lg:w-auto">
+      <div className="flex bg-black opacity-70 rounded-lg p-2 justify-center">
         <div className=" bg-white rounded-lg shadow w-full dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-2 border-2 border-black rounded-lg justify-center flex">
             <div
@@ -57,7 +57,7 @@ const NavBar = () => {
                   : 'flex flex-1 justify-center p-2'
               }`}
             >
-              <h1 className="text-white uppercase font-bold text-lg">{`Conjunto ${connectedDB}`}</h1>
+              <h1 className="text-white uppercase font-bold text-sm lg:text-lg">{`Conjunto ${connectedDB}`}</h1>
             </div>
             {login.role === 'View' && (
               <div className="flex flex-1 justify-end p-2 space-x-2 ">

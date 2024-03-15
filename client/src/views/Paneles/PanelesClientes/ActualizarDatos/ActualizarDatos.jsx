@@ -40,11 +40,11 @@ const ActualizarDatos = () => {
   };
 
   const validationSchema = Yup.object({
-    documento: Yup.string().required('Campo obligatorio'),
-    primerNombre: Yup.string().required('Campo obligatorio'),
-    primerApellido: Yup.string().required('Campo obligatorio'),
-    correo: Yup.string().required('Campo obligatorio'),
-    celular: Yup.string().required('Campo obligatorio'),
+    documento: Yup.string().required('Debe colocar su documento'),
+    primerNombre: Yup.string().required('Debe colocar su primer nombre'),
+    primerApellido: Yup.string().required('Debe colocar su primer apellido'),
+    correo: Yup.string().required('El correo es obligatorio'),
+    celular: Yup.string().required('Numero de celular requerido'),
   });
 
   const formik = useFormik({
@@ -80,17 +80,17 @@ const ActualizarDatos = () => {
     handleSetUser();
   }, [login]);
   return (
-    <div className="flex">
+    <div className="flex w-[310px] lg:w-auto">
       <div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5 overflow-y-auto">
-        <div className=" bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="space-y-2 sm:p-8 border-2 border-black rounded-lg">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <div className=" rounded-lg shadow border bg-gray-800 border-gray-700">
+          <div className="space-y-2 p-2 lg:p-8 border-2  rounded-lg">
+            <h1 className="text-xl font-bold leading-tight tracking-tight lg:text-2xl text-white">
               Actualizar Datos
             </h1>
             <form className="space-x-2" onSubmit={formik.handleSubmit}>
-              <div className="flex">
+              <div className="flex flex-col lg:flex-row">
                 <div className="justify-center items-center p-2 space-y-2">
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="documento"
@@ -98,20 +98,24 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.documento}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.documento && formik.errors.documento
                           ? 'border-red-500'
                           : ''
                       }`}
                       placeholder="Documento"
                     />
-                    {formik.touched.documento && formik.errors.documento ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.documento}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.documento && formik.errors.documento
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.documento}
+                    </div>
                   </div>
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="primerNombre"
@@ -119,7 +123,7 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.primerNombre}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.primerNombre &&
                         formik.errors.primerNombre
                           ? 'border-red-500'
@@ -127,16 +131,20 @@ const ActualizarDatos = () => {
                       }`}
                       placeholder="Primer Nombre"
                     />
-                    {formik.touched.primerNombre &&
-                    formik.errors.primerNombre ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.primerNombre}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.primerNombre &&
+                        formik.errors.primerNombre
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.primerNombre}
+                    </div>
                   </div>
                 </div>
                 <div className="justify-center items-center p-2 space-y-2">
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="segundoNombre"
@@ -144,7 +152,7 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.segundoNombre}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.segundoNombre &&
                         formik.errors.segundoNombre
                           ? 'border-red-500'
@@ -152,14 +160,18 @@ const ActualizarDatos = () => {
                       }`}
                       placeholder="Segundo Nombre"
                     />
-                    {formik.touched.segundoNombre &&
-                    formik.errors.segundoNombre ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.segundoNombre}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.segundoNombre &&
+                        formik.errors.segundoNombre
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.segundoNombre}
+                    </div>
                   </div>
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="primerApellido"
@@ -167,7 +179,7 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.primerApellido}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.primerApellido &&
                         formik.errors.primerApellido
                           ? 'border-red-500'
@@ -175,16 +187,20 @@ const ActualizarDatos = () => {
                       }`}
                       placeholder="Primer Apellido"
                     />
-                    {formik.touched.primerApellido &&
-                    formik.errors.primerApellido ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.primerApellido}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.primerApellido &&
+                        formik.errors.primerApellido
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.primerApellido}
+                    </div>
                   </div>
                 </div>
                 <div className="justify-center items-center p-2 space-y-2">
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="segundoApellido"
@@ -192,7 +208,7 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.segundoApellido}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.segundoApellido &&
                         formik.errors.segundoApellido
                           ? 'border-red-500'
@@ -200,14 +216,18 @@ const ActualizarDatos = () => {
                       }`}
                       placeholder="Segundo Apellido"
                     />
-                    {formik.touched.segundoApellido &&
-                    formik.errors.segundoApellido ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.segundoApellido}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.segundoApellido &&
+                        formik.errors.segundoApellido
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.segundoApellido}
+                    </div>
                   </div>
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="correo"
@@ -215,22 +235,26 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.correo}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.correo && formik.errors.correo
                           ? 'border-red-500'
                           : ''
                       }`}
                       placeholder="Correo"
                     />
-                    {formik.touched.correo && formik.errors.correo ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.correo}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.correo && formik.errors.correo
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.correo}
+                    </div>
                   </div>
                 </div>
                 <div className="justify-center items-center p-2 space-y-2">
-                  <div>
+                  <div className="relative">
                     <input
                       type="text"
                       name="celular"
@@ -238,20 +262,24 @@ const ActualizarDatos = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.celular}
-                      className={`bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4  sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.celular && formik.errors.celular
                           ? 'border-red-500'
                           : ''
                       }`}
                       placeholder="Celular"
                     />
-                    {formik.touched.celular && formik.errors.celular ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.celular}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.celular && formik.errors.celular
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.celular}
+                    </div>
                   </div>
-                  <div>
+                  <div className="relative">
                     <input
                       type="password"
                       name="password"
@@ -260,24 +288,28 @@ const ActualizarDatos = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       placeholder="Contraseña Nueva"
-                      className={`bg-gray-50 uppercase border-4 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
+                      className={`uppercase border-4 border-gray-300 sm:text-sm rounded-lg   block w-full p-2.5 bg-gray-700  placeholder-white text-white focus:ring-blue-500 focus:border-blue-500 ${
                         formik.touched.password && formik.errors.password
                           ? 'border-red-500'
                           : ''
                       }`}
                     />
-                    {formik.touched.password && formik.errors.password ? (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.password}
-                      </div>
-                    ) : null}
+                    <div
+                      className={`text-xs bg-black border-2 rounded-lg p-2 text-red-500 absolute top-full z-10 ${
+                        formik.touched.password && formik.errors.password
+                          ? 'visible'
+                          : 'hidden'
+                      }`}
+                    >
+                      {formik.errors.password}
+                    </div>
                   </div>
                 </div>
                 <div className="justify-center items-center p-2 space-y-2">
                   <div>
                     <button
                       type="submit"
-                      className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                      className="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800"
                     >
                       Actualizar
                     </button>

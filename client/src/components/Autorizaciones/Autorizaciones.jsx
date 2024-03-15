@@ -53,11 +53,11 @@ const Autorizaciones = ({idUser}) => {
         </label>
       </div>
       {poder && (
-        <div className="flex space-x-2">
+        <div className="flex-col flex lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 ">
           <select
             name="Autorizacion"
             id="Autorizacion"
-            className="bg-blue-700 uppercase border-4 border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-black dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className=" uppercase border-4  sm:text-sm rounded-lg block p-2.5 bg-gray-700 border-black placeholder-white text-white focus:ring-blue-500 focus:border-blue-500"
             onChange={handleSelectChange}
             value={idAutorizado}
           >
@@ -76,7 +76,7 @@ const Autorizaciones = ({idUser}) => {
           <button
             type="button"
             onClick={handleAsignar}
-            className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            className="text-white bg-primary-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2 text-center  hover:bg-primary-700 focus:ring-primary-800"
           >
             Asignar
           </button>
