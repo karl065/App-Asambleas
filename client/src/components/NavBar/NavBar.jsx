@@ -48,7 +48,7 @@ const NavBar = () => {
   return (
     <div className="flex-1 w-[310px] lg:w-auto">
       <div className="flex bg-black opacity-70 rounded-lg p-2 justify-center">
-        <div className=" bg-white rounded-lg shadow w-full dark:border dark:bg-gray-800 dark:border-gray-700">
+        <div className=" bg-white text-black rounded-lg shadow w-full dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-2 border-2 border-black rounded-lg justify-center flex">
             <div
               className={`${
