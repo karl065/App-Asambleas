@@ -57,7 +57,7 @@ const NavBar = () => {
                   : 'flex flex-1 justify-center p-2'
               }`}
             >
-              <h1 className="text-black dark:text-white uppercase font-bold text-sm lg:text-lg">{`Conjunto ${connectedDB}`}</h1>
+              <h1 className="text-black uppercase font-bold text-sm lg:text-lg">{`Conjunto ${connectedDB}`}</h1>
             </div>
             {login.role === 'View' && (
               <div className="flex flex-1 justify-end p-2 space-x-2 ">
