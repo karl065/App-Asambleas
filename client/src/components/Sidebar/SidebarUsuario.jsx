@@ -68,9 +68,9 @@ const SidebarUsuario = () => {
                     </Link>
                   )}
                 </li>
-                <hr className="my-2" />
+                <hr className="my-2 invisible" />
                 <li
-                  className={`flex w-full ${
+                  className={`flex w-full invisible ${
                     location.pathname === '/ActualizarDatos'
                       ? 'opacity-60 cursor-not-allowed'
                       : ''
@@ -101,9 +101,9 @@ const SidebarUsuario = () => {
                     </Link>
                   )}
                 </li>
-                <hr className="my-2" />
+                <hr className="my-2 invisible" />
                 <li
-                  className={`flex w-full ${
+                  className={`flex w-full invisible ${
                     location.pathname === '/CrearEmpoderado'
                       ? 'opacity-60 cursor-not-allowed'
                       : ''
