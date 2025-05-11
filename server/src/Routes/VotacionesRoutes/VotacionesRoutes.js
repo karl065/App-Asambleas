@@ -1,9 +1,8 @@
-const {
-  putHandlerVotaciones,
-} = require('../../Handlers/HandlersVotaciones/PutHandlerVotaciones');
+import { Router } from 'express';
+import putHandlerVotaciones from '../../Handlers/HandlersVotaciones/PutHandlerVotaciones.js';
 
-const router = require('express').Router();
+const router = Router();
 
 router.put('/', putHandlerVotaciones);
 
-module.exports = router;
+export default router;

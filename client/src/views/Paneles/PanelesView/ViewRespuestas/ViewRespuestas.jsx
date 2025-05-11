@@ -36,7 +36,7 @@ const ViewRespuestas = () => {
             <div className="border-2 border-black p-2  rounded-lg font-bold bg-black text-white space-y-2">
               {pregunta &&
                 pregunta.respuestas.map((respuesta) => (
-                  <div key={respuesta._id} className="space-x-2">
+                  <div key={respuesta._id}>
                     <label>
                       Votos por {respuesta.respuesta}: {respuesta.conteo}
                     </label>

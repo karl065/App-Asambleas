@@ -1,6 +1,6 @@
-const Usuarios = require('../Models/Usuarios.js');
-const DBsAdmin = require('../Models/DBs.js');
-const bcryptjs = require('bcryptjs');
+import Usuarios from '../Models/Usuarios.js';
+import DBsAdmin from '../Models/DBs.js';
+import bcryptjs from 'bcryptjs';
 const {PSWROOT, PSWVIEW} = process.env;
 
 const superUser = async (DB) => {
@@ -58,4 +58,4 @@ const viewUser = async () => {
   }
 };
 
-module.exports = {superUser, viewUser};
+export default {superUser, viewUser};

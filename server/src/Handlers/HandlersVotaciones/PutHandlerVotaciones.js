@@ -1,24 +1,22 @@
-const {
-  putControllerVotaciones,
-} = require('../../Controllers/ControllersVotaciones/PutControllerVotaciones');
-const {conectarDB} = require('../../config/DB');
+import putControllerVotaciones from '../../Controllers/ControllersVotaciones/PutControllerVotaciones.js';
+import conectarDB from '../../config/DB.js';
 
 const putHandlerVotaciones = async (req, res) => {
-  try {
-    const {idUser, idRespuesta, DBConectada} = req.query;
+	try {
+		const { idUser, idRespuesta, DBConectada } = req.query;
 
-    const dbConnection = await conectarDB(DBConectada);
+		const dbConnection = await conectarDB(DBConectada);
 
-    const respuesta = await putControllerVotaciones(
-      dbConnection,
-      idUser,
-      idRespuesta
-    );
+		const respuesta = await putControllerVotaciones(
+			dbConnection,
+			idUser,
+			idRespuesta
+		);
 
-    return res.status(200).json(respuesta);
-  } catch (error) {
-    return res.status(400).json(error);
-  }
+		return res.status(200).json(respuesta);
+	} catch (error) {
+		return res.status(400).json(error);
+	}
 };
 
-module.exports = {putHandlerVotaciones};
+export default putHandlerVotaciones;

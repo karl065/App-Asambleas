@@ -1,12 +1,14 @@
-const {getHandlerDB} = require('../../Handlers/HandlerDB/GetHandlerDB');
-const {conexionDB} = require('../../Handlers/HandlerDB/HandlerConexionDB');
-const {postHandlerDB} = require('../../Handlers/HandlerDB/PostHandlerDB');
-const {authMiddle} = require('../../Middleware/authMiddle');
+import getHandlerDB from '../../Handlers/HandlerDB/GetHandlerDB.js';
+import conexionDB from '../../Handlers/HandlerDB/HandlerConexionDB.js';
+import postHandlerDB from '../../Handlers/HandlerDB/PostHandlerDB.js';
+import authMiddle from '../../Middleware/authMiddle.js';
 
-const router = require('express').Router();
+import { Router } from 'express';
+
+const router = Router();
 
 router.post('/', authMiddle, postHandlerDB);
 router.post('/conexion', authMiddle, conexionDB);
 router.get('/', authMiddle, getHandlerDB);
 
-module.exports = router;
+export default router;

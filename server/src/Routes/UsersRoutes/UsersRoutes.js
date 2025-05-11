@@ -1,21 +1,15 @@
-const {
-  deleteHandlerUsuarios,
-} = require('../../Handlers/HandlersUsers/DeleteUsersHandler');
-const {
-  getHandlerUsers,
-} = require('../../Handlers/HandlersUsers/GetUsersHandler');
-const {
-  postHandlerUsers,
-} = require('../../Handlers/HandlersUsers/PostUsersHandler');
-const {
-  putUsersHandler,
-} = require('../../Handlers/HandlersUsers/PutUsersHandler');
+import deleteHandlerUsuarios from '../../Handlers/HandlersUsers/DeleteUsersHandler.js';
+import getHandlerUsers from '../../Handlers/HandlersUsers/GetUsersHandler.js';
+import postHandlerUsers from '../../Handlers/HandlersUsers/PostUsersHandler.js';
+import putUsersHandler from '../../Handlers/HandlersUsers/PutUsersHandler.js';
 
-const router = require('express').Router();
+import express from 'express';
+
+const router = express.Router();
 
 router.post('/', postHandlerUsers);
 router.get('/', getHandlerUsers);
 router.put('/:id', putUsersHandler);
 router.delete('/:id', deleteHandlerUsuarios);
 
-module.exports = router;
+export default router;

@@ -1,21 +1,15 @@
-const {
-  deleteHandlerRespuestas,
-} = require('../../Handlers/HandlersRespuestas/DeleteHandlerRespuestas');
-const {
-  postHandlerRespuestas,
-} = require('../../Handlers/HandlersRespuestas/PostRespuestasHandler');
-const {
-  putHandlerRespuestas,
-} = require('../../Handlers/HandlersRespuestas/PutHandlerRespuestas');
-const {
-  getHandleRespuestas,
-} = require('../../Handlers/HandlersRespuestas/GetHandlerRespuestas');
+import deleteHandlerRespuestas from '../../Handlers/HandlersRespuestas/DeleteHandlerRespuestas.js';
+import postHandlerRespuestas from '../../Handlers/HandlersRespuestas/PostRespuestasHandler.js';
+import putHandlerRespuestas from '../../Handlers/HandlersRespuestas/PutHandlerRespuestas.js';
+import getHandleRespuestas from '../../Handlers/HandlersRespuestas/GetHandlerRespuestas.js';
 
-const router = require('express').Router();
+import { Router } from 'express';
+
+const router = Router();
 
 router.post('/', postHandlerRespuestas);
 router.get('/', getHandleRespuestas);
 router.put('/:id', putHandlerRespuestas);
 router.delete('/:id', deleteHandlerRespuestas);
 
-module.exports = router;
+export default router;

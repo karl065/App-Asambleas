@@ -2,3 +2,11 @@ node_modules
 .env
 archivos
 estructura.txt
+estructuraBack.txt
+estructuraFront.txt
+modificaciones.txt
+package-lock.json
+agregarJs.mjs
+convertirModule.mjs
+deshacerModule.mjs
+*.backup_cjs

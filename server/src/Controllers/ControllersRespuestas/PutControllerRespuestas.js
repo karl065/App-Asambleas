@@ -1,16 +1,16 @@
 const putControllerRespuestas = async (
-  dbConnection,
-  updateRespuesta,
-  idRespuesta
+	dbConnection,
+	updateRespuesta,
+	idRespuesta
 ) => {
-  try {
-    const Respuestas = dbConnection.model('Respuestas');
-    await Respuestas.findByIdAndUpdate(idRespuesta, updateRespuesta);
-    const respuestaActualizada = await Respuestas.findById(idRespuesta);
-    return respuestaActualizada;
-  } catch (error) {
-    return error;
-  }
+	try {
+		const Respuestas = dbConnection.model('Respuestas');
+		await Respuestas.findByIdAndUpdate(idRespuesta, updateRespuesta);
+		const respuestaActualizada = await Respuestas.findById(idRespuesta);
+		return respuestaActualizada;
+	} catch (error) {
+		return error;
+	}
 };
 
-module.exports = {putControllerRespuestas};
+export default putControllerRespuestas;

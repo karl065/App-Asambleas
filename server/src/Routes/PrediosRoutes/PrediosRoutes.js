@@ -1,13 +1,11 @@
-const {
-  getHandlerPredios,
-} = require('../../Handlers/HandlerPredios/GetHandlerPredios');
-const {
-  postHandlerPredios,
-} = require('../../Handlers/HandlerPredios/PostHandlerPredios');
+import getHandlerPredios from '../../Handlers/HandlerPredios/GetHandlerPredios.js';
+import postHandlerPredios from '../../Handlers/HandlerPredios/PostHandlerPredios.js';
 
-const router = require('express').Router();
+import { Router } from 'express';
+
+const router = Router();
 
 router.post('/', postHandlerPredios);
 router.get('/', getHandlerPredios);
 
-module.exports = router;
+export default router;

@@ -1,16 +1,12 @@
-const express = require('express');
+import authMiddle from '../../Middleware/authMiddle.js';
+import handlerAuthenticate from '../../Handlers/HandlerAuth/HandlerAuthenticate.js';
+import handlerAuthenticated from '../../Handlers/HandlerAuth/HandlerAuthenticated.js';
 
-const {authMiddle} = require('../../Middleware/authMiddle');
-const {
-  handlerAuthenticate,
-} = require('../../Handlers/HandlerAuth/HandlerAuthenticate');
-const {
-  handlerAuthenticated,
-} = require('../../Handlers/HandlerAuth/HandlerAuthenticated');
+import { Router } from 'express';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/', handlerAuthenticate);
 router.get('/', authMiddle, handlerAuthenticated);
 
-module.exports = router;
+export default router;

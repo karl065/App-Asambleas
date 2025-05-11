@@ -1,13 +1,13 @@
 const deleteControllerUsuarios = async (dbConnection, idUser) => {
-  try {
-    const Usuarios = dbConnection.model('Usuarios');
+	try {
+		const Usuarios = dbConnection.model('Usuarios');
 
-    const usuario = await Usuarios.findById(idUser);
-    await Usuarios.findByIdAndDelete(idUser);
-    return usuario;
-  } catch (error) {
-    return error;
-  }
+		const usuario = await Usuarios.findById(idUser);
+		await Usuarios.findByIdAndDelete(idUser);
+		return usuario;
+	} catch (error) {
+		return error;
+	}
 };
 
-module.exports = {deleteControllerUsuarios};
+export default deleteControllerUsuarios;

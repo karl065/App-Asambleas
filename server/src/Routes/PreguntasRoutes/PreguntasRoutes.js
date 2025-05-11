@@ -1,21 +1,15 @@
-const {
-  deleteHandlerPreguntas,
-} = require('../../Handlers/HandlersPreguntas/DeletePreguntasHandler');
-const {
-  getHandlerPreguntas,
-} = require('../../Handlers/HandlersPreguntas/GetPreguntasHandler');
-const {
-  postHandlerPreguntas,
-} = require('../../Handlers/HandlersPreguntas/PostPreguntasHandler');
-const {
-  putHandlerPreguntas,
-} = require('../../Handlers/HandlersPreguntas/PutHandlerPreguntas');
+import deleteHandlerPreguntas from '../../Handlers/HandlersPreguntas/DeletePreguntasHandler.js';
+import getHandlerPreguntas from '../../Handlers/HandlersPreguntas/GetPreguntasHandler.js';
+import postHandlerPreguntas from '../../Handlers/HandlersPreguntas/PostPreguntasHandler.js';
+import putHandlerPreguntas from '../../Handlers/HandlersPreguntas/PutHandlerPreguntas.js';
 
-const router = require('express').Router();
+import { Router } from 'express';
+
+const router = Router();
 
 router.post('/', postHandlerPreguntas);
 router.get('/', getHandlerPreguntas);
 router.put('/:id', putHandlerPreguntas);
 router.delete('/:id', deleteHandlerPreguntas);
 
-module.exports = router;
+export default router;
