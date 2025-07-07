@@ -92,9 +92,9 @@ export const reLogin = async (token, dispatch, navigate) => {
 	try {
 		if (token) {
 			const expirado = isTokenExpired(token);
-
+			console.log('Expirado: ', expirado);
 			if (expirado.expired || expirado === true) {
-				alertInfo('Sesion expirada');
+				alertInfo('Sesión expirada');
 				const { user } = expirado;
 				user ? logout(dispatch, navigate, user.id) : logout(dispatch, navigate);
 			} else {
@@ -103,6 +103,7 @@ export const reLogin = async (token, dispatch, navigate) => {
 						'x-auth-token': token,
 					},
 				});
+				console.log('Data ReLogin: ', data);
 				if (data) {
 					if (
 						data.role === 'Propietario' ||

@@ -1,4 +1,4 @@
-const getControllerUsers = async (
+const getControllerUsers = async ({
 	dbConnection,
 	documento,
 	primerNombre,
@@ -13,8 +13,8 @@ const getControllerUsers = async (
 	coeficiente,
 	role,
 	userStatus,
-	obtenerEnum
-) => {
+	obtenerEnum,
+}) => {
 	try {
 		const Usuarios = dbConnection.model('Usuarios');
 		if (obtenerEnum) {

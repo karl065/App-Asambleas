@@ -12,15 +12,23 @@ const mongoOption = {
 
 const conectarDB = async (DB) => {
 	try {
-		console.log(DB);
-		const dbName = DB.replace(/\s/g, '_');
+		console.log('DB en Conectar: ', DB);
+		let dbName;
 
-		const conn = createConnection(`${DB_MONGODB}${dbName}`, mongoOption);
+		let conn;
 
-		await registrarModelos(conn, DB); // Se pasa el nombre original para la lógica condicional
+		if (DB) {
+			dbName = DB.replace(/\s/g, '_');
 
-		console.log(`MongoDB Conectado en: ${dbName}`);
-		return conn;
+			conn = createConnection(`${DB_MONGODB}${dbName}`, mongoOption);
+
+			await registrarModelos(conn, DB); // Se pasa el nombre original para la lógica condicional
+
+			console.log(`MongoDB Conectado en: ${dbName}`);
+			return conn;
+		} else {
+			throw new Error('No se proporcionó un nombre de base de datos');
+		}
 	} catch (error) {
 		console.error('Error al conectar DB:', error.message);
 		throw error;
