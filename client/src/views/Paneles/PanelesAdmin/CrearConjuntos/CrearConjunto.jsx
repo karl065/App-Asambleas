@@ -1,11 +1,14 @@
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { crearDBs, crearUsuariosDBs } from '../../../../redux/actions';
+
 import ExcelUploader from '../../../../components/ExcelUploader/ExcelUploader';
 import { useEffect, useState } from 'react';
 import Tabla from '../../../../components/Tabla/Tabla';
 import { FcCollapse, FcExpand } from 'react-icons/fc';
+import { alertInfo, alertSuccess } from '../../../../helpers/Alertas';
+import { crearDBsAction } from '../../../../redux/admin/actions/dbActions/crearDBAction';
+import { crearUsuariosDBsAction } from '../../../../redux/admin/actions/usuariosActions/CrearUsuarioAction';
 
 const CrearConjunto = () => {
 	const DBConectada = useSelector((state) => state.conectarDB.DBConectada);
@@ -52,7 +55,7 @@ const CrearConjunto = () => {
 						usuario.primerApellido = value ? value.trim() : '';
 						break;
 					case 'SEGUNDO APELLIDO':
-						usuario.primerApellido = value ? value.trim() : '';
+						usuario.segundoApellido = value ? value.trim() : '';
 						break;
 					case 'CORREO':
 						usuario.correo = value ? value.trim() : 'Sin Correo';
@@ -116,14 +119,23 @@ const CrearConjunto = () => {
 		validationSchema: validationSchema,
 		onSubmit: (values) => {
 			setDb(values.nombre);
-			crearDBs(token, dispatch, values);
+			crearDBsAction(token, dispatch, values);
 		},
 	});
 
 	const handleCargarDatos = () => {
-		const datosUsuarios = { DBConectada, usuarios };
-		const datosPredios = { DBConectada, predios };
-		crearUsuariosDBs(datosUsuarios, datosPredios, dispatch);
+		if (db) {
+			if (usuarios.length !== 0 || predios.length !== 0) {
+				const datosUsuarios = { DBConectada, usuarios };
+				const datosPredios = { DBConectada, predios };
+				crearUsuariosDBsAction(datosUsuarios, datosPredios, dispatch);
+				alertSuccess('Conjunto cargado correctamente');
+			} else {
+				alertInfo('No hay datos para cargar');
+			}
+		} else {
+			alertInfo('Crear una base de datos primero');
+		}
 	};
 
 	useEffect(() => {
@@ -132,7 +144,7 @@ const CrearConjunto = () => {
 	}, [db]);
 	return (
 		<div className="flex">
-			<div className="bg-black opacity-70 w-full rounded-lg p-5 space-y-5">
+			<div className="w-full p-5 space-y-5 bg-black rounded-lg opacity-70">
 				<form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
 					<div>
 						<input
@@ -150,7 +162,7 @@ const CrearConjunto = () => {
 							placeholder="nombre"
 						/>
 						{formik.touched.nombre && formik.errors.nombre ? (
-							<div className="text-red-500 text-xs">{formik.errors.nombre}</div>
+							<div className="text-xs text-red-500">{formik.errors.nombre}</div>
 						) : null}
 					</div>
 					<button
@@ -160,10 +172,10 @@ const CrearConjunto = () => {
 					</button>
 				</form>
 				<div>
-					<div className="flex space-x-4 items-center justify-center ">
+					<div className="flex items-center justify-center space-x-4 ">
 						<label className="flex-1 text-white">{db}</label>
 						<ExcelUploader onUpload={handleUpload} />
-						<div className="flex-1  flex justify-center items-center">
+						<div className="flex items-center justify-center flex-1">
 							<button
 								type="submit"
 								className=" text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

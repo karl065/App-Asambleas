@@ -1,17 +1,18 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { conectarDB } from '../../redux/actions';
-import { alertSuccess } from '../../helpers/Alertas';
+import { alertSuccess } from '../../helpers/Alertas.jsx';
 
 import { InfinitySpin } from 'react-loader-spinner';
-import { setLoading } from '../../redux/app/slices/loadingSlice';
-import { conectarDBAction } from '../../redux/shared/actions/conectarDBAction';
+import { setLoading } from '../../redux/app/slices/loadingSlice.jsx';
+import { conectarDBAction } from '../../redux/shared/actions/conectarDBAction.jsx';
+import { cargarUsuariosAction } from '../../redux/admin/actions/usuariosActions/cargarUsuariosAction.jsx';
+import { cargarPrediosAction } from '../../redux/admin/actions/usuariosActions/cargarPrediosAction.jsx';
 
 const ConectarDBs = () => {
 	const dispatch = useDispatch();
 	const DBS = useSelector((state) => state.db.DBs);
-	const loading = useSelector((state) => state.loading.loading);
+	const loading = useSelector((state) => state.loading.isLoading);
 	const token = localStorage.getItem('token');
 
 	const validationSchema = Yup.object({
@@ -25,9 +26,10 @@ const ConectarDBs = () => {
 		validationSchema: validationSchema,
 		onSubmit: async (values) => {
 			dispatch(setLoading(true));
-			const msg = await conectarDBAction(values.nombre, dispatch, token);
+			const { msg } = await conectarDBAction(values, dispatch, token);
 			localStorage.setItem('connect', values.nombre);
-			// dispatch(connectedDB(values.nombre));
+			cargarUsuariosAction(dispatch, { DBConectada: values.nombre });
+			cargarPrediosAction(dispatch, { DBConectada: values.nombre });
 			dispatch(setLoading(false));
 			alertSuccess(msg);
 		},
@@ -35,7 +37,7 @@ const ConectarDBs = () => {
 	return (
 		<div>
 			<form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
-				<div className="flex space-x-4 items-center justify-center ">
+				<div className="flex items-center justify-center space-x-4 ">
 					<div className="flex-1">
 						<select
 							name="nombre"
@@ -56,7 +58,7 @@ const ConectarDBs = () => {
 							))}
 						</select>
 						{formik.touched.nombre && formik.errors.nombre && (
-							<div className="text-red-500 text-xs">{formik.errors.nombre}</div>
+							<div className="text-xs text-red-500">{formik.errors.nombre}</div>
 						)}
 					</div>
 					{loading ? (
@@ -71,7 +73,7 @@ const ConectarDBs = () => {
 					) : (
 						''
 					)}
-					<div className="flex-1  flex justify-center items-center">
+					<div className="flex items-center justify-center flex-1">
 						<button
 							type="submit"
 							className=" text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">

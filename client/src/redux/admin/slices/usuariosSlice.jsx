@@ -13,6 +13,12 @@ const usuariosSlice = createSlice({
 		cargarPredios: (state, action) => {
 			state.predios = action.payload;
 		},
+		agregarUsuario: (state, action) => {
+			state.usuarios.push(action.payload[0]);
+		},
+		agregarPredio: (state, action) => {
+			state.predios.push(action.payload[0]);
+		},
 		actualizarUsuario: (state, action) => {
 			const { _id, data } = action.payload;
 
@@ -28,6 +34,11 @@ const usuariosSlice = createSlice({
 	},
 });
 
-export const { cargarUsuarios, cargarPredios, actualizarUsuario } =
-	usuariosSlice.actions;
+export const {
+	cargarUsuarios,
+	cargarPredios,
+	agregarUsuario,
+	agregarPredio,
+	actualizarUsuario,
+} = usuariosSlice.actions;
 export default usuariosSlice.reducer;

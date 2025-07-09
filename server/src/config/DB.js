@@ -12,7 +12,6 @@ const mongoOption = {
 
 const conectarDB = async (DB) => {
 	try {
-		console.log('DB en Conectar: ', DB);
 		let dbName;
 
 		let conn;

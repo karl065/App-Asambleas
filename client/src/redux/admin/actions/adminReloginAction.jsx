@@ -5,6 +5,10 @@ import { conectarDBAction } from '../../shared/actions/conectarDBAction';
 import { setLogin } from '../slices/loginSlice';
 import { cargarDBAction } from './dbActions/cargarDBAction';
 import server from '../../../conexiones/conexiones';
+import { cargarUsuariosAction } from './usuariosActions/cargarUsuariosAction';
+import { adminFiltrosUsuariosAction } from './adminFiltrosUsuariosAction';
+import { cargarPrediosAction } from './usuariosActions/cargarPrediosAction';
+import { setDBConectada } from '../../shared/slices/conectarDBSlices';
 
 export const adminReloginAction = async (
 	token,
@@ -13,7 +17,6 @@ export const adminReloginAction = async (
 	navigate
 ) => {
 	try {
-		console.log('DBConectada ReLogin: ', DBconectada);
 		if (token) {
 			const expirado = isTokenExpired(token, dispatch, navigate, DBconectada);
 			if (!expirado) {
@@ -24,9 +27,17 @@ export const adminReloginAction = async (
 				});
 
 				if (data) {
-					cargarDBAction(data.DBs, dispatch);
-					conectarDBAction(DBconectada, dispatch, token);
 					dispatch(setLogin(data));
+					dispatch(setDBConectada(DBconectada));
+					cargarDBAction(data.DBs, dispatch);
+					cargarUsuariosAction(dispatch, { DBConectada: DBconectada });
+					cargarPrediosAction(dispatch, {
+						DBConectada: DBconectada,
+					});
+					adminFiltrosUsuariosAction(
+						{ obtenerEnum: true, DBConectada: data.connectedDB },
+						dispatch
+					);
 				}
 				if (data.role === 'View') {
 					navigate('/view');

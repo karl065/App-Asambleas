@@ -48,20 +48,20 @@ const NavBar = () => {
 	};
 
 	return (
-		<div className="flex-1 w-[310px] lg:w-auto">
-			<div className="flex bg-black opacity-70 rounded-lg p-2 justify-center">
-				<div className="bg-white rounded-lg shadow w-full dark:border dark:bg-gray-800 dark:border-gray-700">
-					<div className="p-2 border-2 border-black rounded-lg justify-center flex">
+		<div className="flex w-[310px] lg:w-auto h-auto items-center justify-center">
+			<div className="flex justify-center w-full p-2 bg-black rounded-lg opacity-70">
+				<div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+					<div className="flex justify-center p-2 border-2 border-black rounded-lg">
 						<div
 							className={`${
 								login.role === 'View'
 									? 'flex flex-1 justify-end p-2'
 									: 'flex flex-1 justify-center p-2'
 							}`}>
-							<h1 className="text-black dark:text-white uppercase font-bold text-sm lg:text-lg">{`Conjunto ${connectedDB}`}</h1>
+							<h1 className="text-sm font-bold text-black uppercase dark:text-white lg:text-lg">{`Conjunto ${connectedDB}`}</h1>
 						</div>
 						{login.role === 'View' && (
-							<div className="flex flex-1 justify-end p-2 space-x-2 ">
+							<div className="flex justify-end flex-1 p-2 space-x-2 ">
 								{location.pathname !== '/view' && (
 									<Link to="/view">
 										<GoMoveToStart style={{ color: 'white' }} size={34} />
@@ -69,10 +69,10 @@ const NavBar = () => {
 								)}
 								<button
 									onClick={handleLogOut}
-									className="flex items-center justify-center w-8 h-8 rounded-full bg-red-500 hover:bg-red-300 text-white hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500">
+									className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full hover:bg-red-300 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
-										className="h-6 w-6"
+										className="w-6 h-6"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor">
