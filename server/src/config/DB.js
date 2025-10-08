@@ -8,6 +8,7 @@ const { DB_MONGODB } = process.env;
 const mongoOption = {
 	maxPoolSize: 200,
 	maxConnecting: 200,
+	serverSelectionTimeoutMS: 10000,
 };
 
 const conectarDB = async (DB) => {

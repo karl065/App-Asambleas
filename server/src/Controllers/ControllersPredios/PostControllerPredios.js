@@ -41,7 +41,7 @@ const postControllerPredios = async (dbConnection, predios) => {
 		);
 
 		// Actualiza la lista de usuarios y predios
-		const nuevosDatos = await getControllerUsers(dbConnection);
+		const nuevosDatos = await getControllerUsers({ dbConnection });
 		return nuevosDatos;
 	} catch (error) {
 		return error;
